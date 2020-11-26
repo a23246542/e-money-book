@@ -16,14 +16,25 @@ function App() {
         id: '1',
         name: '旅行',
         type: 'outcome'
-      }
+      },
+    },
+    {
+      id: 2,
+      title: '去台灣旅遊',
+      price: 400,
+      date: '2020-11-27',
+      category: {
+        id: '1',
+        name: '旅行',
+        type: 'outcome'
+      },
     }
   ]
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -38,8 +49,8 @@ function App() {
       </header>
       <PriceList 
         items={items}
-        onModifyItem={()=>{}}
-        onDeleteItem={()=>{}}
+        onModifyItem={(item)=>{ alert(item.title) }}
+        onDeleteItem={(item)=>{ alert(item.title) }}
         ></PriceList>
     </div>
   );
