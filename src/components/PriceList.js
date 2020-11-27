@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Ionicons from '../plugin/ionicons';
 
 const PriceList = ({items, onModifyItem, onDeleteItem}) => {
@@ -62,5 +63,15 @@ const PriceList = ({items, onModifyItem, onDeleteItem}) => {
 
 
 }
+
+PriceList.propTypes = {
+  items:PropTypes.array.isRequired,
+  onModifyItem:PropTypes.func.isRequired,
+  onDeleteItem:PropTypes.func.isRequired
+}
+
+// PriceList.defaultTypes = {
+
+// }
 
 export default PriceList;
