@@ -4,6 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import LedgerList from './components/LedgerList';
 import ViewTab from './components/ViewTab';
+import { LIST_VIEW, CHART_VIEW } from './constants';
 
 function App() {
 
@@ -51,7 +52,7 @@ function App() {
         </a>
       </header>
       <ViewTab
-        activeTab="chart"
+        activeTab={ LIST_VIEW }
       />
       <LedgerList 
         items={items}
