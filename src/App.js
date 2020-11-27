@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import LedgerList from './components/LedgerList';
+import ViewTab from './components/ViewTab';
 
 function App() {
 
@@ -49,6 +50,9 @@ function App() {
           Learn React
         </a>
       </header>
+      <ViewTab
+        activeTab="chart"
+      />
       <LedgerList 
         items={items}
         onModifyItem={(item)=>{ alert(item.title) }}
