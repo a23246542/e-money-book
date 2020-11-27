@@ -15,7 +15,8 @@ function App() {
       category: {
         id: '1',
         name: '旅行',
-        type: 'outcome'
+        type: 'outcome',
+        iconName: 'IosPlane'
       },
     },
     {
@@ -26,7 +27,8 @@ function App() {
       category: {
         id: '1',
         name: '旅行',
-        type: 'outcome'
+        type: 'outcome',
+        iconName: 'IosPlane'
       },
     }
   ]
