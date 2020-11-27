@@ -2,7 +2,7 @@ import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import PriceList from './components/PriceList';
+import LedgerList from './components/LedgerList';
 
 function App() {
 
@@ -49,11 +49,11 @@ function App() {
           Learn React
         </a>
       </header>
-      <PriceList 
+      <LedgerList 
         items={items}
         onModifyItem={(item)=>{ alert(item.title) }}
         onDeleteItem={(item)=>{ alert(item.title) }}
-        ></PriceList>
+        ></LedgerList>
     </div>
   );
 }
