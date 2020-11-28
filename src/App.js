@@ -4,6 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import LedgerList from './components/LedgerList';
 import ViewTab from './components/ViewTab';
+import TotalNumber from './components/TotalNumber';
 import { LIST_VIEW, CHART_VIEW } from './constants';
 
 function App() {
@@ -50,6 +51,17 @@ function App() {
         >
           Learn React
         </a>
+        <div className="headerWrap">
+          <div className="row">
+            <div className="col">月份選擇</div>
+            <div className="col">
+              <TotalNumber
+                income="200"
+                outcome="100"
+              />
+            </div>
+          </div>
+        </div>
       </header>
       <ViewTab
         activeTab={ LIST_VIEW }
