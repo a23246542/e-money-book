@@ -53,6 +53,7 @@ function App() {
       </header>
       <ViewTab
         activeTab={ LIST_VIEW }
+        onTabChange={(view)=>{ console.log(view);}}
       />
       <LedgerList 
         items={items}
