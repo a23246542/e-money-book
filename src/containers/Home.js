@@ -75,15 +75,18 @@ const Home = () => {
           </div>
         </div>
       </header>
-      <ViewTab
-        activeTab={ LIST_VIEW }
-        onTabChange={(view)=>{ console.log(view);}}
-      />
-      <LedgerList 
-        items={items}
-        onModifyItem={(item)=>{ alert(item.title) }}
-        onDeleteItem={(item)=>{ alert(item.title) }}
-        ></LedgerList>
+      <div className="content-area py-3 px-3">
+        <ViewTab
+          activeTab={ LIST_VIEW }
+          onTabChange={(view)=>{ console.log(view);}}
+        />
+        <p>createBtn</p>
+        <LedgerList 
+          items={items}
+          onModifyItem={(item)=>{ alert(item.title) }}
+          onDeleteItem={(item)=>{ alert(item.title) }}
+          ></LedgerList>
+      </div>
     </Fragment>
   )
 }
