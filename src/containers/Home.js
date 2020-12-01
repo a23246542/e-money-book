@@ -7,42 +7,40 @@ import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
 import TotalNumber from '../components/TotalNumber';
 
+const category = {
+  1: {
+    name: '旅行',
+    type: 'outcome',
+    iconName: 'IosPlane'
+  },
+  2: {
+    name: '領薪水',
+    type: 'income',
+    iconName: 'IosPlane'
+  }
+}
+
 const items = [
   {
     id: 1,
     title: '去雲南旅遊',
     price: 200,
     date: '2020-11-26',
-    category: {
-      id: '1',
-      name: '旅行',
-      type: 'outcome',
-      iconName: 'IosPlane'
-    },
+    categoryId: 1, 
   },
   {
     id: 2,
     title: '領薪水',
     price: 1000,
     date: '2020-11-26',
-    category: {
-      id: '1',
-      name: '旅行',
-      type: 'income',
-      iconName: 'IosPlane'
-    },
+    categoryId: 2,
   },
   {
     id: 3,
     title: '去台灣旅遊',
     price: 400,
     date: '2020-11-27',
-    category: {
-      id: '1',
-      name: '旅行',
-      type: 'outcome',
-      iconName: 'IosPlane'
-    },
+    categoryId: 1,
   },
 ]
 /* @param 
@@ -53,7 +51,12 @@ const items = [
   帳目表的分類資訊跟月份資訊
 */
 const Home = () => {
-  const [ list, setList ] = useState(items);
+  const itemsWithCategory = items.map(item => {
+    item.category = category[item.categoryId];
+    return item;
+  })
+  
+  const [ list, setList ] = useState(itemsWithCategory);
   const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
   const [ tabView, ListView ] = useState(CHART_VIEW);
 
