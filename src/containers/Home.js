@@ -110,13 +110,13 @@ const Home = () => {
       <div className="content-area py-3 px-3">
         <ViewTab
           activeTab={ tabView }
-          onTabChange={(view)=>{ changeView(view);}}
+          onTabChange={changeView}
         />
         <p>createBtn</p>
         <LedgerList 
           items={items}
-          onModifyItem={(item)=>{ modifyItem(item.title) }}
-          onDeleteItem={(item)=>{ deleteItem(item.title) }}
+          onModifyItem={modifyItem}
+          onDeleteItem={deleteItem}
           ></LedgerList>
       </div>
     </Fragment>
