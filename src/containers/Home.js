@@ -2,6 +2,7 @@ import { useState, Fragment, useMemo } from 'react';
 import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW } from '../constants';
+import { parseToYearsAndMonth } from '../utilitiy';
 import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
 import TotalNumber from '../components/TotalNumber';
@@ -21,6 +22,18 @@ const items = [
   },
   {
     id: 2,
+    title: '領薪水',
+    price: 1000,
+    date: '2020-11-26',
+    category: {
+      id: '1',
+      name: '旅行',
+      type: 'income',
+      iconName: 'IosPlane'
+    },
+  },
+  {
+    id: 3,
     title: '去台灣旅遊',
     price: 400,
     date: '2020-11-27',
@@ -30,14 +43,24 @@ const items = [
       type: 'outcome',
       iconName: 'IosPlane'
     },
-  }
+  },
 ]
-
+/* @param 
+  ledgerList //帳目列表
+  currentDate //當前年月
+  totalIncome,totalOutcome //收入支出總和
+  tabView //當前視圖信息
+  帳目表的分類資訊跟月份資訊
+*/
 const Home = () => {
+  const [ list, setList ] = useState(items);
+  const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
+  const [ tabView, ListView ] = useState(CHART_VIEW);
+
   const {totalIncome, totalOutcome} = useMemo(()=>{
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
     let totalIncome = 0,totalOutcome = 0;
-    items.forEach(item => {
+    list.forEach(item => {
       if(item.category.type === 'outcome') {
         totalOutcome += item.price;
       } else {
@@ -46,7 +69,7 @@ const Home = () => {
     })
     console.log('count total');
     return { totalIncome, totalOutcome }
-  },[items.length])
+  },[list.length])
 
   return (
     <Fragment>
@@ -77,7 +100,7 @@ const Home = () => {
       </header>
       <div className="content-area py-3 px-3">
         <ViewTab
-          activeTab={ LIST_VIEW }
+          activeTab={ tabView }
           onTabChange={(view)=>{ console.log(view);}}
         />
         <p>createBtn</p>
