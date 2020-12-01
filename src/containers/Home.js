@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useMemo } from 'react';
 import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW } from '../constants';
@@ -34,6 +34,19 @@ const items = [
 ]
 
 const Home = () => {
+  const {totalIncome, totalOutcome} = useMemo(()=>{
+    // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
+    let totalIncome = 0,totalOutcome = 0;
+    items.forEach(item => {
+      if(item.category.type === 'outcome') {
+        totalOutcome += item.price;
+      } else {
+        totalIncome += item.price
+      }
+    })
+    console.log('count total');
+    return { totalIncome, totalOutcome }
+  },[items.length])
 
   return (
     <Fragment>
@@ -55,8 +68,8 @@ const Home = () => {
             <div className="col">月份選擇</div>
             <div className="col">
               <TotalNumber
-                income="200"
-                outcome="100"
+                income={totalIncome}
+                outcome={totalOutcome}
               />
             </div>
           </div>
