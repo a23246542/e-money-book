@@ -58,7 +58,7 @@ const Home = () => {
 
   const [ list, setList ] = useState(itemsWithCategory);
   const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
-  const [ tabView, ListView ] = useState(CHART_VIEW);
+  const [ tabView, setTabView ] = useState(CHART_VIEW);
 
   const {totalIncome, totalOutcome} = useMemo(()=>{
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
@@ -75,7 +75,9 @@ const Home = () => {
   },[list.length])
 
   const changeDate = () => {};
-  const changeView = () => {};
+  const changeView = (view) => {
+    setTabView(view);
+  };
   const modifyItem = () => {};
   const createItem = () => {};
   const deleteItem = () => {};
@@ -110,14 +112,20 @@ const Home = () => {
       <div className="content-area py-3 px-3">
         <ViewTab
           activeTab={ tabView }
-          onTabChange={changeView}
+          onTabChange={ changeView }
         />
         <p>createBtn</p>
-        <LedgerList 
-          items={items}
-          onModifyItem={modifyItem}
-          onDeleteItem={deleteItem}
-          ></LedgerList>
+        { tabView === LIST_VIEW &&
+          <LedgerList 
+            items={items}
+            onModifyItem={modifyItem}
+            onDeleteItem={deleteItem}
+            ></LedgerList>
+        }
+        {
+          tabView === CHART_VIEW &&
+          "這裡是圖表模式"
+        }
       </div>
     </Fragment>
   )
