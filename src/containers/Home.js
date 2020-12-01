@@ -55,7 +55,7 @@ const Home = () => {
     item.category = category[item.categoryId];
     return item;
   })
-  
+
   const [ list, setList ] = useState(itemsWithCategory);
   const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
   const [ tabView, ListView ] = useState(CHART_VIEW);
@@ -73,6 +73,12 @@ const Home = () => {
     console.log('count total');
     return { totalIncome, totalOutcome }
   },[list.length])
+
+  const changeDate = () => {};
+  const changeView = () => {};
+  const modifyItem = () => {};
+  const createItem = () => {};
+  const deleteItem = () => {};
 
   return (
     <Fragment>
@@ -104,13 +110,13 @@ const Home = () => {
       <div className="content-area py-3 px-3">
         <ViewTab
           activeTab={ tabView }
-          onTabChange={(view)=>{ console.log(view);}}
+          onTabChange={(view)=>{ changeView(view);}}
         />
         <p>createBtn</p>
         <LedgerList 
           items={items}
-          onModifyItem={(item)=>{ alert(item.title) }}
-          onDeleteItem={(item)=>{ alert(item.title) }}
+          onModifyItem={(item)=>{ modifyItem(item.title) }}
+          onDeleteItem={(item)=>{ deleteItem(item.title) }}
           ></LedgerList>
       </div>
     </Fragment>

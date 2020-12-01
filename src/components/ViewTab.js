@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Ionicons from '../plugin/ionicons';
 import { LIST_VIEW, CHART_VIEW } from '../constants';
 
-const ViewTab = ({ activeTab, onTabChange }) => {
+const ViewTab = ({ activeTab, onChangeView }) => {
 
   const generateLinkClass = (current, view) => {
     return (current === view )? "nav-link active" : "nav-link"
@@ -31,7 +31,7 @@ const ViewTab = ({ activeTab, onTabChange }) => {
         <a 
           className={ generateLinkClass(CHART_VIEW,activeTab)}
           href="#"
-          onClick={(e)=>{e.preventDefault();onTabChange(CHART_VIEW)}}
+          onClick={(e)=>{e.preventDefault();onChangeView(CHART_VIEW)}}
           >
           <IosPie
             className="mr-2 align-bottom"
