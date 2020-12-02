@@ -1,4 +1,4 @@
-import { useState, Fragment, useMemo } from 'react';
+import { useState, Fragment, useMemo, useEffect } from 'react';
 import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW } from '../constants';
@@ -16,6 +16,11 @@ const category = {
   },
   2: {
     name: '領薪水',
+    type: 'income',
+    iconName: 'IosPlane'
+  },
+  3: {
+    name: '投資',
     type: 'income',
     iconName: 'IosPlane'
   }
@@ -44,20 +49,67 @@ const items = [
     categoryId: 1,
   },
 ]
+
+const initItemsWithCategory = items.map(item => { //!!@移到外面就不會切換時一直執行
+  console.log('四次為一遍');
+  item.category = category[item.categoryId];
+  return item;
+})
+
+
 /* @param 
   ledgerList //帳目列表
   currentDate //當前年月
   totalIncome,totalOutcome //收入支出總和
   tabView //當前視圖信息
   帳目表的分類資訊跟月份資訊
+
 */
 const Home = () => {
-  const itemsWithCategory = items.map(item => {
-    item.category = category[item.categoryId];
-    return item;
-  })
 
-  const [ list, setList ] = useState(itemsWithCategory);
+  // let initItemsWithCategory = []
+  // useEffect(() => { //%%% useState會沒有資料 mounted才執行
+  //   console.log('應該只跑一遍');
+  //   initItemsWithCategory = items.map(item => {
+  //     // console.log('四次為一遍');
+  //     item.category = category[item.categoryId];
+  //     return item;
+  //   })
+  // }, [''])
+
+  // const initItemsWithCategory = items.map(item => {
+  //   console.log('四次為一遍');
+  //   item.category = category[item.categoryId];
+  //   return item;
+  // })
+
+  // const itemsWithCategory = items.map(item => {
+  //   item.category = category[item.categoryId];
+  //   return item;
+  // })
+
+  const itemsWithCategory = useMemo(() => { //@@不適用這個!!
+    console.log('跑itemsWithCategory');
+    return items.map(item => {
+      item.category = category[item.categoryId];
+      return item;
+    })
+  },[items.length])//@@實驗 發現還是可以追蹤到items的變化
+
+  console.log('78',itemsWithCategory); //!!!undefined ??useMemo是mounted之後
+
+
+  const parseItemWithCategory = (items) => {
+    return items.map(item =>{
+      item.category = category[item.categoryId];
+      return item
+    })
+  }
+  
+  // const [ items1, setItems1]  = useState(items);
+  // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));
+  const [ list, setList ] = useState(initItemsWithCategory);
+  // const [ list, setList ] = useState(itemsWithCategory);//%%%初始值不能變化
   const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
   const [ tabView, setTabView ] = useState(CHART_VIEW);
 
@@ -92,7 +144,34 @@ const Home = () => {
 
   };
   const createItem = () => {
-      alert('aaa')
+    // let newList = [...list];
+    // const lastId = newList[newList.length-1].id;
+    // const newItem =  {
+    //   id: lastId + 1,
+    //   title: '創富投資',
+    //   price: 400,
+    //   date: '2020-11-28',
+    //   categoryId: 3,
+    // };
+    // newList.push(newItem);
+    // setList(newList);
+    const lastId = items[items.length-1].id;
+    const newItem =  {
+      id: lastId + 1,
+      title: '創富投資',
+      price: 400,
+      date: '2020-11-28',
+      categoryId: 3,
+    };
+    items.push(newItem);
+    console.log('setList之前',items,list);
+    setList(parseItemWithCategory(items))
+    // setList(itemsWithCategory)//
+    console.log(items,list);//@@@比setList還慢印出來
+    setTimeout(()=>{
+      console.log(items,list);//@@@印出來list比items少一個，但畫面上的list是對的
+    },1000)
+    
   };
   const deleteItem = (clickedItem) => {
     let newList = [];
