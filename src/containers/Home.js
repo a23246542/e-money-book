@@ -6,6 +6,7 @@ import { parseToYearsAndMonth } from '../utilitiy';
 import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
 import TotalNumber from '../components/TotalNumber';
+import CreateBtn from '../components/CreateBtn';
 
 const category = {
   1: {
@@ -90,7 +91,9 @@ const Home = () => {
     setList(newList);
 
   };
-  const createItem = () => {};
+  const createItem = () => {
+      alert('aaa')
+  };
   const deleteItem = (clickedItem) => {
     let newList = [];
     newList = list.filter(item => {
@@ -131,7 +134,9 @@ const Home = () => {
           activeTab={ tabView }
           onTabChange={ changeView }
         />
-        <p>createBtn</p>
+        <CreateBtn
+          onCreateItem={ createItem }
+        />
         { tabView === LIST_VIEW &&
           <LedgerList 
             items={list}
