@@ -10,3 +10,8 @@ export const parseToYearsAndMonth = (str) => {
     month: date.getMonth() + 1
   }
 }
+
+export const makeArrByRange = (size, startAt) => {
+  let arr = [];
+  
+}

@@ -17,7 +17,10 @@ const MonthPicker = ({year, month}) => {
         <div className="dropdown-menu dropdown-menu-right" 
             style={{display: 'block'}} //!!!BS4默認隱藏
         >
-          XXX
+          <div className="row text-center">
+            <div className="col border-right">16~24</div>
+            <div className="col">1~12</div>
+          </div>
         </div>
       }
     </div>
