@@ -1,4 +1,4 @@
-import { useState, Fragment, useMemo } from 'react';
+import { useState, Fragment, useMemo, useEffect } from 'react';
 import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW } from '../constants';
@@ -6,6 +6,7 @@ import { parseToYearsAndMonth } from '../utilitiy';
 import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
 import TotalNumber from '../components/TotalNumber';
+import CreateBtn from '../components/CreateBtn';
 
 const category = {
   1: {
@@ -15,6 +16,11 @@ const category = {
   },
   2: {
     name: '領薪水',
+    type: 'income',
+    iconName: 'IosPlane'
+  },
+  3: {
+    name: '投資',
     type: 'income',
     iconName: 'IosPlane'
   }
@@ -43,27 +49,76 @@ const items = [
     categoryId: 1,
   },
 ]
+
+// const initItemsWithCategory = items.map(item => { //!!@移到外面就不會切換時一直執行
+//   console.log('四次為一遍');
+//   item.category = category[item.categoryId];
+//   return item;
+// })
+
+
 /* @param 
   ledgerList //帳目列表
   currentDate //當前年月
   totalIncome,totalOutcome //收入支出總和
   tabView //當前視圖信息
   帳目表的分類資訊跟月份資訊
+
 */
 const Home = () => {
-  const itemsWithCategory = items.map(item => {
-    item.category = category[item.categoryId];
-    return item;
-  })
 
-  const [ list, setList ] = useState(itemsWithCategory);
+  // let initItemsWithCategory = []
+  // useEffect(() => { //%%% useState會沒有資料 mounted才執行
+  //   console.log('應該只跑一遍');
+  //   initItemsWithCategory = items.map(item => {
+  //     // console.log('四次為一遍');
+  //     item.category = category[item.categoryId];
+  //     return item;
+  //   })
+  // }, [''])
+
+  
+  // const itemsWithCategory = useMemo(() => { //@@不適用這個!! 因為修改外部items 不會讓home重新執行
+  //   console.log('跑itemsWithCategory');
+  //   return items.map(item => {
+  //     item.category = category[item.categoryId];
+  //     return item;
+  //   })
+  // },[items.length])
+
+
+  // const parseItemWithCategory = (items) => {
+  //   return items.map(item =>{
+  //     item.category = category[item.categoryId];
+  //     return item
+  //   })
+  // }
+  
+  // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));//@@不需 會自動深拷貝
+  const [ list, setList ] = useState(items);
+  // const [ list, setList ] = useState(itemsWithCategory);//%%%初始值不能變化
   const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
   const [ tabView, setTabView ] = useState(CHART_VIEW);
 
-  const {totalIncome, totalOutcome} = useMemo(()=>{
+  const listWithCategory  = useMemo(()=>{ //切換tabView不會重新來
+    console.log('執行listWithCategory');
+    return list.map(item=>{
+      item.category = category[item.categoryId];
+      return item;
+    })
+  },[list.length])
+
+  // const listWithCategory = list.map(item=>{ //切換tabView會重新來
+  //   console.log('執行listWithCategory');
+  //   item.category = category[item.categoryId];
+  //   return item;
+  // })
+
+  const {totalIncome, totalOutcome} = useMemo(()=>{ //用另一個computed來計算
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
     let totalIncome = 0,totalOutcome = 0;
-    list.forEach(item => {
+    // list.forEach(item => {
+    listWithCategory.forEach(item => {
       if(item.category.type === 'outcome') {
         totalOutcome += item.price;
       } else {
@@ -73,6 +128,7 @@ const Home = () => {
     console.log('count total');
     return { totalIncome, totalOutcome }
   },[list.length])
+
 
   const changeDate = () => {};
   const changeView = (view) => {
@@ -90,7 +146,22 @@ const Home = () => {
     setList(newList);
 
   };
-  const createItem = () => {};
+  const createItem = () => {
+
+    const lastId = list[list.length-1].id;
+    const newItem = {
+      id: lastId + 1,
+      title: '創富投資',
+      price: 400,
+      date: '2020-11-28',
+      categoryId: 3,
+    };
+
+    // setList(parseItemWithCategory(items))
+    setList([...list,newItem]);
+    
+  };
+
   const deleteItem = (clickedItem) => {
     let newList = [];
     newList = list.filter(item => {
@@ -131,10 +202,13 @@ const Home = () => {
           activeTab={ tabView }
           onTabChange={ changeView }
         />
-        <p>createBtn</p>
+        <CreateBtn
+          onCreateItem={ createItem }
+        />
         { tabView === LIST_VIEW &&
           <LedgerList 
-            items={list}
+            // items={list} //!
+            items={listWithCategory}// 改放入計算後的值!!
             onModifyItem={modifyItem}
             onDeleteItem={deleteItem}
             ></LedgerList>
