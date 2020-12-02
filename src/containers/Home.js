@@ -78,9 +78,26 @@ const Home = () => {
   const changeView = (view) => {
     setTabView(view);
   };
-  const modifyItem = () => {};
+  const modifyItem = (clickedItem) => {
+    let newList = [];
+    newList = list.map((item) => {
+      if(item.id === clickedItem.id) {
+        return {...item, title:'this is new Title'}
+      } else {
+        return item;
+      }
+    })
+    setList(newList);
+
+  };
   const createItem = () => {};
-  const deleteItem = () => {};
+  const deleteItem = (clickedItem) => {
+    let newList = [];
+    newList = list.filter(item => {
+      return item.id !== clickedItem.id
+    })
+    setList(newList);
+  };
 
   return (
     <Fragment>
@@ -117,7 +134,7 @@ const Home = () => {
         <p>createBtn</p>
         { tabView === LIST_VIEW &&
           <LedgerList 
-            items={items}
+            items={list}
             onModifyItem={modifyItem}
             onDeleteItem={deleteItem}
             ></LedgerList>
