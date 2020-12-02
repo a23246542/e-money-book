@@ -2,11 +2,13 @@ import { useState, Fragment, useMemo, useEffect } from 'react';
 import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW } from '../constants';
-import { parseToYearsAndMonth } from '../utilitiy';
+import { parseToYearsAndMonth } from '../utility';
 import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
 import TotalNumber from '../components/TotalNumber';
 import CreateBtn from '../components/CreateBtn';
+import MonthPicker from '../components/MonthPicker';
+
 
 const category = {
   1: {
@@ -187,7 +189,13 @@ const Home = () => {
         </a>
         <div className="headerWrap">
           <div className="row">
-            <div className="col">月份選擇</div>
+            <div className="col">
+              <MonthPicker
+                year={currentDate.year}
+                month={currentDate.month}
+                choiceDate={()=>{}}
+              />
+            </div>
             <div className="col">
               <TotalNumber
                 income={totalIncome}
