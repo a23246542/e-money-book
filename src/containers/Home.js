@@ -88,35 +88,50 @@ const Home = () => {
   //   return item;
   // })
 
-  const itemsWithCategory = useMemo(() => { //@@不適用這個!!
-    console.log('跑itemsWithCategory');
-    return items.map(item => {
-      item.category = category[item.categoryId];
-      return item;
-    })
-  },[items.length])//@@實驗 發現還是可以追蹤到items的變化
+  // const itemsWithCategory = useMemo(() => { //@@不適用這個!!
+  //   console.log('跑itemsWithCategory');
+  //   return items.map(item => {
+  //     item.category = category[item.categoryId];
+  //     return item;
+  //   })
+  // },[items.length])//@@實驗 發現還是可以追蹤到items的變化
 
-  console.log('78',itemsWithCategory); //!!!undefined ??useMemo是mounted之後
+  // console.log('78',itemsWithCategory); //!!!undefined ??useMemo是mounted之後
 
 
-  const parseItemWithCategory = (items) => {
-    return items.map(item =>{
-      item.category = category[item.categoryId];
-      return item
-    })
-  }
+  // const parseItemWithCategory = (items) => {
+  //   return items.map(item =>{
+  //     item.category = category[item.categoryId];
+  //     return item
+  //   })
+  // }
   
   // const [ items1, setItems1]  = useState(items);
   // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));
-  const [ list, setList ] = useState(initItemsWithCategory);
+  const [ list, setList ] = useState(items);
   // const [ list, setList ] = useState(itemsWithCategory);//%%%初始值不能變化
   const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
   const [ tabView, setTabView ] = useState(CHART_VIEW);
 
-  const {totalIncome, totalOutcome} = useMemo(()=>{
+  const listWithCategory  = useMemo(()=>{
+    console.log('執行listWithCategory');
+    return list.map(item=>{
+      item.category = category[item.categoryId];
+      return item;
+    })
+  },[list.length])
+
+  // const listWithCategory = list.map(item=>{ //切換tabView會重新來
+  //   console.log('執行listWithCategory');
+  //   item.category = category[item.categoryId];
+  //   return item;
+  // })
+
+  const {totalIncome, totalOutcome} = useMemo(()=>{ //用另一個computed來計算
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
     let totalIncome = 0,totalOutcome = 0;
-    list.forEach(item => {
+    // list.forEach(item => {
+    listWithCategory.forEach(item => {
       if(item.category.type === 'outcome') {
         totalOutcome += item.price;
       } else {
@@ -126,6 +141,7 @@ const Home = () => {
     console.log('count total');
     return { totalIncome, totalOutcome }
   },[list.length])
+
 
   const changeDate = () => {};
   const changeView = (view) => {
@@ -155,22 +171,25 @@ const Home = () => {
     // };
     // newList.push(newItem);
     // setList(newList);
-    const lastId = items[items.length-1].id;
-    const newItem =  {
+    // const lastId = items[items.length-1].id;
+    const lastId = list[list.length-1].id;
+    const newItem = {
       id: lastId + 1,
       title: '創富投資',
       price: 400,
       date: '2020-11-28',
       categoryId: 3,
     };
-    items.push(newItem);
-    console.log('setList之前',items,list);
-    setList(parseItemWithCategory(items))
-    // setList(itemsWithCategory)//
-    console.log(items,list);//@@@比setList還慢印出來
-    setTimeout(()=>{
-      console.log(items,list);//@@@印出來list比items少一個，但畫面上的list是對的
-    },1000)
+    // items.push(newItem);
+    // console.log('setList之前',items,list);
+    // setList(parseItemWithCategory(items))
+    // // setList(itemsWithCategory)//
+    // console.log(items,list);//@@@比setList還慢印出來
+    // setTimeout(()=>{
+    //   console.log(items,list);//@@@印出來list比items少一個，但畫面上的list是對的
+    // },1000)
+
+    setList([...list,newItem]);
     
   };
   const deleteItem = (clickedItem) => {
@@ -218,7 +237,8 @@ const Home = () => {
         />
         { tabView === LIST_VIEW &&
           <LedgerList 
-            items={list}
+            // items={list} //!
+            items={listWithCategory}// 改放入計算後的值!!
             onModifyItem={modifyItem}
             onDeleteItem={deleteItem}
             ></LedgerList>
