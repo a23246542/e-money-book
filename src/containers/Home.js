@@ -185,7 +185,7 @@ const Home = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn Code
         </a>
         <div className="headerWrap">
           <div className="row">

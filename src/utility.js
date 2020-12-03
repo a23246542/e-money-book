@@ -13,5 +13,8 @@ export const parseToYearsAndMonth = (str) => {
 
 export const makeArrByRange = (size, startAt) => {
   let arr = [];
-  
+  for(let i = 0; i<size; i++) {
+    arr[i] = startAt + i;
+  }
+  return arr;
 }
