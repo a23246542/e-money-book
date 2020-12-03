@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { padLeft, makeArrByRange } from '../utility';
 
@@ -6,12 +6,29 @@ const MonthPicker = ({year, month, choiceDate}) => {
   const [isOpen, setOpen] = useState(false);
   const [selectedYear, setYear] = useState(year);
   const [selectedMonth, setMonth] = useState(month);
-
+  let nodeMonthPicker = useRef(null);
   const monthRange = makeArrByRange(12,1);
   const yearRange = makeArrByRange(9,-4).map(number=>number + year);
 
+  useEffect(() => {
+    document.addEventListener('click',docHandleClick,false)
+    return () => {
+      document.removeEventListener('click',docHandleClick,false)
+    }
+  }, [''])
+
+  const docHandleClick = (e) => {
+    // console.log(e.target);
+    // console.log(nodeMonthPicker.current);
+    // if (this.node.current.contains(e.target)) {
+    if (nodeMonthPicker.current.contains(e.target)) {// 要小抓大&!!contains可以Dom(字串)
+      return;
+    }  
+    toggleDropdown();
+  }
+
   const toggleDropdown = () => {
-    setOpen(!isOpen);
+    setOpen(!isOpen);    
   }
 
   const selectYear = (e,yearNum) => {
@@ -28,7 +45,8 @@ const MonthPicker = ({year, month, choiceDate}) => {
   }
   
   return (
-    <div className="dropdown">
+    // <div className="dropdown" ref={ref=>{ this.node = ref}}>
+    <div className="dropdown" ref={nodeMonthPicker}>
       <p>請選擇</p>
       <button 
         className="btn btn-primary dropdown-toggle"
