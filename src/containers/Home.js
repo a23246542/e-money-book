@@ -137,8 +137,12 @@ const Home = () => {
       year:yearNum,
       month:monthNum
     })
+
+    
+    // Object.values(currentDate).join('-')
+    
   };
-  
+
   const changeView = (view) => {
     setTabView(view);
   };
@@ -223,7 +227,10 @@ const Home = () => {
         { tabView === LIST_VIEW &&
           <LedgerList 
             // items={list} //!
-            items={listWithCategory}// 改放入計算後的值!!
+            items={listWithCategory.filter(item=>{
+              const currentDateStr =  Object.values(currentDate).join('-');
+              return item.date.includes(currentDateStr);
+            })}// 改放入計算後的值!!
             onModifyItem={modifyItem}
             onDeleteItem={deleteItem}
             ></LedgerList>
