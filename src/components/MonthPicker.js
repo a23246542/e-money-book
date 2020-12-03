@@ -4,9 +4,22 @@ import { padLeft, makeArrByRange } from '../utility';
 
 const MonthPicker = ({year, month}) => {
   const [isOpen, setOpen] = useState(false);
+  const [selectedYear, setYear] = useState(year);
+  const [selectedMonth, setMonth] = useState(month);
 
   const monthRange = makeArrByRange(12,1);
-  const yearRange = makeArrByRange(9,-4).map(number=>number + year)
+  const yearRange = makeArrByRange(9,-4).map(number=>number + year);
+
+  const changeYear = (e,yearNum) => {
+    e.preventDefault();
+    // console.log(yearNum);
+    setYear(yearNum);
+  }
+
+  const changeMonth = (e,monthNum) => {
+    e.preventDefault();
+    setMonth(monthNum);
+  }
   
   return (
     <div className="dropdown">
@@ -28,7 +41,10 @@ const MonthPicker = ({year, month}) => {
                   (
                     <a href="#" role="button" 
                       key={index}
-                      className="dropdown-item"
+                      //@@@參數括號沒辦法閉包參考到外部yearNum(變成undefined)
+                      // onClick={(e,yearNum)=>{changeYear(e,yearNum)}}
+                      className={ yearNum === selectedYear? `dropdown-item active`:`dropdown-item`}
+                      onClick={(e)=>{changeYear(e,yearNum)}}
                     >
                       {`${yearNum}年`}
                     </a>
@@ -42,7 +58,8 @@ const MonthPicker = ({year, month}) => {
                   (
                     <a href="#" role="button" 
                       key={index}
-                      className="dropdown-item"
+                      className={ monthNum === selectedMonth? `dropdown-item active`:`dropdown-item`}
+                      onClick={(e) => {changeMonth(e,monthNum)}}
                     >
                       {`${padLeft(monthNum)}月`}
                     </a>
