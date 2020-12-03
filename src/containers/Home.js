@@ -132,10 +132,17 @@ const Home = () => {
   },[list.length])
 
 
-  const changeDate = () => {};
+  const changeDate = (yearNum,monthNum) => {
+    setCurrentDate({
+      year:yearNum,
+      month:monthNum
+    })
+  };
+  
   const changeView = (view) => {
     setTabView(view);
   };
+
   const modifyItem = (clickedItem) => {
     let newList = [];
     newList = list.map((item) => {
@@ -146,10 +153,9 @@ const Home = () => {
       }
     })
     setList(newList);
-
   };
-  const createItem = () => {
 
+  const createItem = () => {
     const lastId = list[list.length-1].id;
     const newItem = {
       id: lastId + 1,
@@ -158,7 +164,6 @@ const Home = () => {
       date: '2020-11-28',
       categoryId: 3,
     };
-
     // setList(parseItemWithCategory(items))
     setList([...list,newItem]);
     
@@ -193,7 +198,9 @@ const Home = () => {
               <MonthPicker
                 year={currentDate.year}
                 month={currentDate.month}
-                choiceDate={()=>{}}
+                choiceDate={(yearNum,monthNum)=>{ 
+                  changeDate(yearNum,monthNum);
+                }}
               />
             </div>
             <div className="col">
