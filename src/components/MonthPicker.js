@@ -5,10 +5,8 @@ import { padLeft, makeArrByRange } from '../utility';
 const MonthPicker = ({year, month}) => {
   const [isOpen, setOpen] = useState(false);
 
-  const monthArr = makeArrByRange(12,1);
-  const yearArr = makeArrByRange(9,-4).map(item=>{
-    return item+year;
-  });
+  const monthRange = makeArrByRange(12,1);
+  const yearRange = makeArrByRange(9,-4).map(number=>number + year)
   
   return (
     <div className="dropdown">
@@ -19,33 +17,37 @@ const MonthPicker = ({year, month}) => {
       >
         {`${year}年 ${padLeft(month)}月`}
       </button>
-      { isOpen&& 
+      { isOpen && 
         <div className="dropdown-menu dropdown-menu-right" 
             style={{display: 'block'}} //!!!BS4默認隱藏
         >
           <div className="row text-center">
             <div className="col border-right">
-              { yearArr.map( (year,index)=>{
-                return (
-                  <a href="#" key={index}
-                    className="dropdown-item"
-                  >
-                    {`${year}年`}
-                  </a>
+              { 
+                yearRange.map((yearNum,index) =>
+                  (
+                    <a href="#" role="button" 
+                      key={index}
+                      className="dropdown-item"
+                    >
+                      {`${yearNum}年`}
+                    </a>
+                  )
                 )
-              })}
+              }
             </div>
             <div className="col">
               {
-                monthArr.map((month,index) => {
-                  return (
-                    <a href="#" key={index}
+                monthRange.map((monthNum,index) => 
+                  (
+                    <a href="#" role="button" 
+                      key={index}
                       className="dropdown-item"
                     >
-                      {`${padLeft(month)}月`}
+                      {`${padLeft(monthNum)}月`}
                     </a>
                   )
-                })
+                )
               }
             </div>
           </div>
