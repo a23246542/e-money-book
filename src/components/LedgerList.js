@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Ionicons from '../plugin/ionicons';
 
-const PriceList = ({items, onModifyItem, onDeleteItem}) => {
+const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
 
   const { IosCreate, IosCloseCircle } = Ionicons;
 
@@ -64,7 +64,7 @@ const PriceList = ({items, onModifyItem, onDeleteItem}) => {
 
 }
 
-PriceList.propTypes = {
+LedgerList.propTypes = {
   items:PropTypes.array.isRequired,
   onModifyItem:PropTypes.func.isRequired,
   onDeleteItem:PropTypes.func.isRequired
@@ -74,4 +74,4 @@ PriceList.propTypes = {
 
 // }
 
-export default PriceList;
+export default LedgerList;
