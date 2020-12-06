@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Ionicons from '../../plugin/ionicons';
 import IosPlane from 'react-ionicons/lib/IosPlane';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import LedgerList from '../LedgerList';
 
 const category = {
@@ -64,6 +64,7 @@ let wrapper;
 describe('test LedgerList component',() => {
   beforeEach(() => {
     wrapper = shallow(<LedgerList {...props}/>)
+    // wrapper = mount(<LedgerList {...props}/>)
   });
 
   it('should render component to match snapshot',() => {
@@ -78,8 +79,8 @@ describe('test LedgerList component',() => {
   it('should render correct icon and price for each item',() => {
     const { IosPlane } = Ionicons;
     // const icon = wrapper.find('.list-group-item').first().find(<IosPlane/>);
-    const icon = wrapper.find('.list-group-item').first().find(IosPlane);
-    const test = 'IosPlane'
-    expect(test).toEqual(listWithCategory[0].category.iconName)
+    const iconList = wrapper.find('.list-group-item').first().find(IosPlane);//要直接蒐組件不能用mount 要用shallow
+    // console.log(wrapper.debug());
+    expect(iconList.first().props().iconTitle).toEqual(listWithCategory[0].category.iconName)
   })
 })
