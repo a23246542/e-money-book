@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { padLeft, makeArrByRange } from '../utility';
 
 const MonthPicker = ({year, month, choiceDate}) => {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(false);//我知道了 monthPicker的狀態無法保存
   const [selectedYear, setYear] = useState(year);
   const [selectedMonth, setMonth] = useState(month);
   let nodeMonthPicker = useRef(null);

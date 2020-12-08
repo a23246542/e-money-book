@@ -100,6 +100,7 @@ const Home = () => {
   const [ list, setList ] = useState(items);
   // const [ list, setList ] = useState(itemsWithCategory);//%%%初始值不能變化
   const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
+  //@@ 是否應該改用ref 因為update情況下 useState不會重取
   const [ tabView, setTabView ] = useState(CHART_VIEW);
 
   const listWithCategory  = useMemo(()=>{ //切換tabView不會重新來
