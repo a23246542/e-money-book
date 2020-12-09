@@ -13,6 +13,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
   useEffect(() => {
     document.addEventListener('click',docHandleClick,false)
     return () => {
+      console.log('組件銷毀');
       document.removeEventListener('click',docHandleClick,false)
     }
   }, [''])
@@ -25,17 +26,18 @@ const MonthPicker = ({year, month, choiceDate}) => {
     console.log(nodeMonthPicker.current);
     console.log(e.target);
     toggleDropdown();
+    // setOpen((!isOpen));    
   }
 
   const toggleDropdown = () => {
     console.log('開關');
     console.log(isOpen);
-    // if(isOpen === true) {
-    //   setOpen(false);
-    // } else {
-    //   setOpen(true);
-    // }
-    setOpen((!isOpen));    
+    if(isOpen === true) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+    // setOpen((!isOpen));    
   }
 
   const selectYear = (e,yearNum) => {
@@ -50,6 +52,8 @@ const MonthPicker = ({year, month, choiceDate}) => {
     toggleDropdown();
     choiceDate(selectedYear,monthNum);
   }
+  
+  console.log('渲染');
   
   return (
     // <div className="dropdown" ref={ref=>{ this.node = ref}}>
