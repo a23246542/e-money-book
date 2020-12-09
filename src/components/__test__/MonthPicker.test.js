@@ -1,5 +1,6 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
 import MonthPicker from '../MonthPicker'
 
@@ -61,6 +62,27 @@ describe('test MonthPicker component', () => {
   it('click the year&month item, should trigger the right status change',()=>{})
 
   it('after the dropdown is shown，click the document should close the dropdown',()=>{
-    
+    let eventMap = {};
+    // @@jest.fn作用
+    document.addEventListener = jest.fn((event, cb)=>{
+      eventMap[event] = cb;
+    })
+    wrapper = mount(<MonthPicker {...props}/>);
+    wrapper.find('.dropdown-toggle').simulate('click');
+
+    // 模拟点位置，click()=docHandleClick()
+    act(()=>{
+      eventMap.click({
+        target:ReactDOM.findDOMNode(wrapper.instance()),//!!!@@
+      })
+    })
+    expect(wrapper.find('.dropdown-menu').length).toEqual(1);
+    act(()=>{
+      eventMap.click({
+        target:document,
+      })
+    })
+    expect(wrapper.find('.dropdown-menu').length).toEqual(0);
+
   })
 })

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { padLeft, makeArrByRange } from '../utility';
 
 const MonthPicker = ({year, month, choiceDate}) => {
-  const [isOpen, setOpen] = useState(false);//我知道了 monthPicker的狀態無法保存
+  const [isOpen, setOpen] = useState(false);
   const [selectedYear, setYear] = useState(year);
   const [selectedMonth, setMonth] = useState(month);
   let nodeMonthPicker = useRef(null);
@@ -13,7 +13,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
   useEffect(() => {
     document.addEventListener('click',docHandleClick,false)
     return () => {
-      console.log('組件銷毀');
+      console.log('组件销毁');
       document.removeEventListener('click',docHandleClick,false)
     }
   }, [''])
@@ -25,19 +25,20 @@ const MonthPicker = ({year, month, choiceDate}) => {
     }  
     console.log(nodeMonthPicker.current);
     console.log(e.target);
-    toggleDropdown();
+    // toggleDropdown();
+    console.log(isOpen);
     // setOpen((!isOpen));    
+    setOpen(false);//%%%
   }
 
   const toggleDropdown = () => {
-    console.log('開關');
-    console.log(isOpen);
-    if(isOpen === true) {
-      setOpen(false);
-    } else {
-      setOpen(true);
-    }
-    // setOpen((!isOpen));    
+    console.log('開或關',!isOpen);
+    // if(isOpen === true) {
+    //   setOpen(false);
+    // } else {
+    //   setOpen(true);
+    // }
+    setOpen((!isOpen));    
   }
 
   const selectYear = (e,yearNum) => {
@@ -54,7 +55,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
   }
   
   console.log('渲染');
-  
+
   return (
     // <div className="dropdown" ref={ref=>{ this.node = ref}}>
     <div className="dropdown" ref={nodeMonthPicker}>
