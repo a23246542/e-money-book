@@ -45,7 +45,7 @@ const Create = ({ match }) => {
       {match.params.id}頁
       {/* <Tabs tabIndex="0"> 跟vue不一樣 %%%*/}
       {/* <Tabs tabIndex={0} onTabChange={tabChange}> */}
-      <Tabs activeIndex={selectedTabIndex} onTabChange={tabChange}>
+      <Tabs activeIndex1={selectedTabIndex} onTabChange={tabChange}>
         {/* <Tab>支出</Tab>
         <Tab>收入</Tab>
         <Tab>其他</Tab> */}

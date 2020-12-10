@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`test Tabs and Tab component shot 1`] = `ShallowWrapper {}`;
-
-exports[`test Tabs and Tab component should render the component to match the snapshot 1`] = `ShallowWrapper {}`;
