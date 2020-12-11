@@ -4,6 +4,7 @@ import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
 import { Tabs, Tab } from '../components/Tabs';
 import CategorySelect from '../components/CategorySelect';
 import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
+import { categories } from '../components/__test__/CategorySelect2.test';
 
 const tabs = [
   {
@@ -54,7 +55,7 @@ const Create = ({ match }) => {
           tabs.map((item,index)=>{
           const Icon = Ionicons[item.iconName];
             return(
-              <Tab>
+              <Tab key={index}>
                 {/* {Ionicons[item.iconName]}{item.title} //@@無效 */}
                 {<Icon/>}{item.text}
               </Tab>
@@ -62,7 +63,10 @@ const Create = ({ match }) => {
           })
         }
       </Tabs>
-      <CategorySelect/>
+      {/* //@@要怎麼整個傳進去 */}
+      {/* <CategorySelect {...categories} /> */}
+      <CategorySelect categories={categories} 
+        onSelectCategory={()=>{}} />
     </div>
   )
 }
