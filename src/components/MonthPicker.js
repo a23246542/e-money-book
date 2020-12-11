@@ -13,22 +13,32 @@ const MonthPicker = ({year, month, choiceDate}) => {
   useEffect(() => {
     document.addEventListener('click',docHandleClick,false)
     return () => {
+      console.log('组件销毁');
       document.removeEventListener('click',docHandleClick,false)
     }
   }, [''])
 
   const docHandleClick = (e) => {
-    // console.log(e.target);
-    // console.log(nodeMonthPicker.current);
     // if (this.node.current.contains(e.target)) {
     if (nodeMonthPicker.current.contains(e.target)) {// 要小抓大&!!contains可以Dom(字串)
       return;
     }  
-    toggleDropdown();
+    console.log(nodeMonthPicker.current);
+    console.log(e.target);
+    // toggleDropdown();
+    console.log(isOpen);
+    // setOpen((!isOpen));    
+    setOpen(false);//%%%
   }
 
   const toggleDropdown = () => {
-    setOpen(!isOpen);    
+    console.log('開或關',!isOpen);
+    // if(isOpen === true) {
+    //   setOpen(false);
+    // } else {
+    //   setOpen(true);
+    // }
+    setOpen((!isOpen));    
   }
 
   const selectYear = (e,yearNum) => {
@@ -44,6 +54,8 @@ const MonthPicker = ({year, month, choiceDate}) => {
     choiceDate(selectedYear,monthNum);
   }
   
+  console.log('渲染');
+
   return (
     // <div className="dropdown" ref={ref=>{ this.node = ref}}>
     <div className="dropdown" ref={nodeMonthPicker}>
@@ -59,7 +71,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
             style={{display: 'block'}} //!!!BS4默認隱藏
         >
           <div className="row text-center">
-            <div className="col border-right">
+            <div className="col years-range border-right">
               { 
                 yearRange.map((yearNum,index) =>
                   (
@@ -76,7 +88,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
                 )
               }
             </div>
-            <div className="col">
+            <div className="col months-range">
               {
                 monthRange.map((monthNum,index) => 
                   (
