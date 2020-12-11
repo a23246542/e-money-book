@@ -2,11 +2,13 @@ import { useState, Fragment, useMemo, useEffect } from 'react';
 import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW } from '../constants';
-import { parseToYearsAndMonth } from '../utilitiy';
+import { parseToYearsAndMonth } from '../utility';
 import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
 import TotalNumber from '../components/TotalNumber';
 import CreateBtn from '../components/CreateBtn';
+import MonthPicker from '../components/MonthPicker';
+
 
 const category = {
   1: {
@@ -130,10 +132,21 @@ const Home = () => {
   },[list.length])
 
 
-  const changeDate = () => {};
+  const changeDate = (yearNum,monthNum) => {
+    setCurrentDate({
+      year:yearNum,
+      month:monthNum
+    })
+
+    
+    // Object.values(currentDate).join('-')
+    
+  };
+
   const changeView = (view) => {
     setTabView(view);
   };
+
   const modifyItem = (clickedItem) => {
     let newList = [];
     newList = list.map((item) => {
@@ -144,10 +157,9 @@ const Home = () => {
       }
     })
     setList(newList);
-
   };
-  const createItem = () => {
 
+  const createItem = () => {
     const lastId = list[list.length-1].id;
     const newItem = {
       id: lastId + 1,
@@ -156,7 +168,6 @@ const Home = () => {
       date: '2020-11-28',
       categoryId: 3,
     };
-
     // setList(parseItemWithCategory(items))
     setList([...list,newItem]);
     
@@ -183,11 +194,19 @@ const Home = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn Code
         </a>
         <div className="headerWrap">
           <div className="row">
-            <div className="col">月份選擇</div>
+            <div className="col">
+              <MonthPicker
+                year={currentDate.year}
+                month={currentDate.month}
+                choiceDate={(yearNum,monthNum)=>{ 
+                  changeDate(yearNum,monthNum);
+                }}
+              />
+            </div>
             <div className="col">
               <TotalNumber
                 income={totalIncome}
@@ -208,7 +227,10 @@ const Home = () => {
         { tabView === LIST_VIEW &&
           <LedgerList 
             // items={list} //!
-            items={listWithCategory}// 改放入計算後的值!!
+            items={listWithCategory.filter(item=>{
+              const currentDateStr =  Object.values(currentDate).join('-');
+              return item.date.includes(currentDateStr);
+            })}// 改放入計算後的值!!
             onModifyItem={modifyItem}
             onDeleteItem={deleteItem}
             ></LedgerList>
