@@ -2,11 +2,11 @@ import React,{ useState, memo} from 'react';
 // import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types'
 
-const Tabs = ({children,activeIndex1,onTabChange}) => {
+const Tabs = ({children,activeIndex,onTabChange}) => {
       // const [Index,setIndex] = useState(1)
-      const [activeIndex,setActiveIndex] = useState(activeIndex1)
+      // const [activeIndex,setActiveIndex] = useState(activeIndex1)
       const selectTab = (index) => {
-        setActiveIndex(index)
+        // setActiveIndex(index)
         onTabChange(index)
       }
       console.log('tabs渲染');
@@ -15,10 +15,10 @@ const Tabs = ({children,activeIndex1,onTabChange}) => {
           data-testid="navTabs"
         >
           {React.Children.map(children,(item,index)=>{
-            const activeClassName = index === activeIndex? 'nav-link active': 'nav-link'
+            const activeClassName = index === activeIndex? 'nav-link active': 'nav-link'  
             return(
               <li className="nav-item"
-                data-testid="navItem"
+                data-test="navItem"
               >
                 <div className={activeClassName}
                   onClick={()=>{selectTab(index)}}
