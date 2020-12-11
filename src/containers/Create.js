@@ -2,6 +2,7 @@ import React,{ useState,useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
 import { Tabs, Tab } from '../components/Tabs';
+import CategorySelect from '../components/CategorySelect';
 import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
 
 const tabs = [
@@ -61,6 +62,7 @@ const Create = ({ match }) => {
           })
         }
       </Tabs>
+      <CategorySelect/>
     </div>
   )
 }
