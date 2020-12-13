@@ -27,12 +27,6 @@ export const categories = [
    "type": "income",
    "iconName": "IosPlane", 
  },
- {
-   "id": "4",
-   "name": "理财",
-   "type": "income",
-   "iconName": "IosPlane", 
- }
 ]
 const props = {
   categories,
@@ -47,30 +41,35 @@ const props_with_category = {
 
 let wrapper;
 
-// describe('test CategorySelect component',()=>{
-//   //~~要給不同props就不用beforeEach
+describe('test CategorySelect component',()=>{
+  //~~要給不同props就不用beforeEach
 
-//   // beforeEach(()=>{
-//   //   wrapper = shallow(<CategorySelect>)
-//   // })
+  // beforeEach(()=>{
+  //   wrapper = shallow(<CategorySelect>)
+  // })
 
-//   it('should render the component to match the snapshot',() => {
-//     wrapper = shallow(<CategorySelect {...props_with_category}/>)
-//     expect(wrapper).toMatchSnapshot();
-//   })
-//   //~~~with傳入的意思
-//   it('render with categories should render the correct times and icon',()=>{
-//     wrapper = shallow(<CategorySelect {...props}/>);
-//     // wrapper.debug();
-//     expect(wrapper.find('.category-item').length).toEqual(3);
-//     // expect(wrapper.find('.category-icon').first().props('icon')).toEqual('IosPlane')
+  it('should render the component to match the snapshot',() => {
+    wrapper = shallow(<CategorySelect {...props_with_category}/>)
+    expect(wrapper).toMatchSnapshot();
+  })
+  //~~~with傳入的意思
+  it('render with categories should render the correct times and icon',()=>{
+    wrapper = shallow(<CategorySelect {...props}/>);
+    // wrapper.debug();
+    // expect(wrapper.find('.category-item').length).toEqual(3);//%%%
+    expect(wrapper.find('.category-item').length).toEqual(categories.length);
+    // expect(wrapper.find('.category-icon').first().props('icon')).toEqual('IosPlane')
+    expect(wrapper.find('.category.active').length).toEqual(0);
 
-//     // @@為什麼這會收到這個 Received: {"color": "#ccc", "fontSize": "50px", "icon": "IosPlane"}
-//     // expect(wrapper.find(Icon).first().props('icon')).toEqual('IosPlane')
-//     expect(wrapper.find(Icon).first().props().icon).toEqual('IosPlane')
-//   })
+    // @@為什麼這會收到這個 Received: {"color": "#ccc", "fontSize": "50px", "icon": "IosPlane"}
+    // expect(wrapper.find(Icon).first().props('icon')).toEqual('IosPlane')
+    // expect(wrapper.find(Icon).first().props().icon).toEqual('IosPlane');//%%%
+    // const first 
+    expect(wrapper.find(Icon).first().props().icon).toEqual(categories[0].iconName);//%%%
 
-//   it('render with selectedCategory should highlight the correct item',()=>{})
+  })
 
-//   it('click the item should add active class and trigger the callback',()=>{})
-// })
+  it('render with selectedCategory should highlight the correct item',()=>{})
+
+  it('click the item should add active class and trigger the callback',()=>{})
+})

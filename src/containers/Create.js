@@ -4,7 +4,30 @@ import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
 import { Tabs, Tab } from '../components/Tabs';
 import CategorySelect from '../components/CategorySelect';
 import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
-import { categories } from '../components/__test__/CategorySelect2.test';
+// import { categories } from '../components/__test__/CategorySelect2.test';
+
+const categories = [
+  {
+   "id": "1",
+   "name": "旅行",
+   "type": "outcome",
+   "iconName": "IosPlane",    
+ },
+  {
+   "id": "2",
+   "name": "理财",
+   "type": "income",
+  //  "iconName": "logo-yen", 
+  //  "iconName": "ios-plane", 
+   "iconName": "IosPaper", 
+ },
+ {
+   "id": "3",
+   "name": "理财",
+   "type": "income",
+   "iconName": "IosPlane", 
+ },
+]
 
 const tabs = [
   {
@@ -47,7 +70,7 @@ const Create = ({ match }) => {
       {match.params.id}頁
       {/* <Tabs tabIndex="0"> 跟vue不一樣 %%%*/}
       {/* <Tabs tabIndex={0} onTabChange={tabChange}> */}
-      <Tabs activeIndex1={selectedTabIndex} onTabChange={tabChange}>
+      <Tabs activeIndex={selectedTabIndex} onTabChange={tabChange}>
         {/* <Tab>支出</Tab>
         <Tab>收入</Tab>
         <Tab>其他</Tab> */}
