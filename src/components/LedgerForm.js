@@ -99,6 +99,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
           <input type="checkbox" className="form-check-input" id="inputDate"/>
           <label className="form-check-label" for="exampleCheck1">Check me out</label>
         </div> */}
+        {/* { !validatePass&&alertMessage&& */}
         { !validatePass&&alertMessage&&
           <div className="alert alert-warning" role="alert">
             {alertMessage}

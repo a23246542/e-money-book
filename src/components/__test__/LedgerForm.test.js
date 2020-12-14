@@ -59,6 +59,10 @@ describe('test LedgerForm component', () => {
       expect(getInputValue('#inputAmount',wrapper).toString()).toEqual('');
       expect(getInputValue('#inputDate',wrapper)).toEqual('');
     })
+    //不應該看到alert框(包括背景)%%
+    it('should not be seen alert element',()=>{
+      expect(wrapper.find('.alert').length).toEqual(0);
+    })
     //-交互
     // 空值提交會出現報錯提示
     it('submit form with empty input should show alert message',()=>{
