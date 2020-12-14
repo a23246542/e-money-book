@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
+// const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
+const LedgerForm = ({ledgerItem={}, onFormSubmit, onCancelSubmit}) => { //%%避免無傳入報錯
   //畫面表單
   const [ title, setTitle ] = useState(()=>ledgerItem.title||'');
   const [ amount, setAmount ] = useState(()=>ledgerItem.price||'');//@但其實是數字

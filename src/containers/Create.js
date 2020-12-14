@@ -102,7 +102,7 @@ const Create = ({ match }) => {
       {/* //@@要怎麼整個傳進去 */}
       {/* <CategorySelect {...categories} /> */}
       <CategorySelect {...props_with_category} />
-      <LedgerForm ledgerItem={testItems[0]}/>
+      <LedgerForm/>
     </div>
   )
 }
