@@ -48,53 +48,75 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
   }
   return (
     //!需要改input閉合 className htmlFor
-    <form>
-      <div className="form-group">
-        <label htmlFor="inputTitle">Email address</label>
-        <input type="text" className="form-control" id="inputTitle" aria-describedby="emailHelp"
-          value={title}
-          onChange={(e)=>{setTitle(e.target.value.trim())}}
-          // ref={(input) => {setTitle(input.current.value)}}//@@原本的操作
-        />
-        <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-      </div>
-      <div className="form-group">
-        <label htmlFor="inputAmount">Password</label>
-        <input type="number" className="form-control" id="inputAmount"
-          value={amount}
-          // onChange={(e)=>{setAmount(e.target.value.trim())}}
-          onChange={(e)=>{setAmount(e.target.value.trim()*1)}}//@@
-          // ref={(input) => {setAmount(input.current.value)}}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="inputDate">Password</label>
-        <input type="date" className="form-control" id="inputDate"
-          value={date}
-          onChange={(e)=>{setDate(e.target.value.trim())}}
-          // ref={(input) => {setDate(input.current.value)}}
-        />
-      </div>
-      {/* <div className="form-group form-check">
-        <input type="checkbox" className="form-check-input" id="inputDate"/>
-        <label className="form-check-label" for="exampleCheck1">Check me out</label>
-      </div> */}
-      { !validatePass&&
-        <div className="alert alert-warning" role="alert">
-          {alertMessage}
+    <div className="container">
+
+      <form className="pt-5 px-2">
+        <div className="form-group">
+          <div className="row">
+            <div className="col-2 col-form-label">
+              <label htmlFor="inputTitle" className="text-nowrap">標題*: </label>
+            </div>
+            <div className="col-10">
+              <input type="text" className="form-control" id="inputTitle" aria-describedby="emailHelp"
+                value={title}
+                onChange={(e)=>{setTitle(e.target.value.trim())}}
+                // ref={(input) => {setTitle(input.current.value)}}//@@原本的操作
+              />
+              <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+          </div>
         </div>
-      }
-      <button type="submit"
-        id="submit"
-        className="btn btn-primary"
-        onClick={(e)=>{submitForm(e)}}
-      >
-        Submit
-      </button>
-      <button type="button" id="cancel" className="btn btn-primary"
-        onClick={(e)=>{cancelSubmit(e)}}
-      >Submit</button>
-    </form>
+        <div className="form-group">
+          <div className="row">
+            <div className="col-2 col-form-label">
+              <label htmlFor="inputAmount" className="text-nowrap">金額*:</label>
+            </div>
+            <div className="col-10">
+              <input type="number" className="form-control" id="inputAmount"
+                value={amount}
+                // onChange={(e)=>{setAmount(e.target.value.trim())}}
+                onChange={(e)=>{setAmount(e.target.value.trim()*1)}}//@@
+                // ref={(input) => {setAmount(input.current.value)}}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="form-group">
+          <div className="row">
+            <div className="col-2 col-form-label">
+              <label htmlFor="inputDate" className="text-nowrap">日期*:</label>
+            </div>
+            <div className="col-10">
+              <input type="date" className="form-control" id="inputDate"
+                value={date}
+                onChange={(e)=>{setDate(e.target.value.trim())}}
+                // ref={(input) => {setDate(input.current.value)}}
+              />
+            </div>
+          </div>
+        </div>
+        {/* <div className="form-group form-check">
+          <input type="checkbox" className="form-check-input" id="inputDate"/>
+          <label className="form-check-label" for="exampleCheck1">Check me out</label>
+        </div> */}
+        { !validatePass&&alertMessage&&
+          <div className="alert alert-warning" role="alert">
+            {alertMessage}
+          </div>
+        }
+        <button type="submit"
+          id="submit"
+          className="btn btn-primary mx-3"
+          onClick={(e)=>{submitForm(e)}}
+        >
+          提交
+        </button>
+        <button type="button" id="cancel" 
+          className="btn btn-primary mx-3"
+          onClick={(e)=>{cancelSubmit(e)}}
+        >取消</button>
+      </form>
+    </div>
   )
 }
 

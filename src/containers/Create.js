@@ -2,9 +2,11 @@ import React,{ useState,useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
 import { Tabs, Tab } from '../components/Tabs';
-import CategorySelect from '../components/CategorySelect';
 import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
+import CategorySelect from '../components/CategorySelect';
+import LedgerForm from '../components/LedgerForm';
 // import { categories } from '../components/__test__/CategorySelect2.test';
+import { testItems } from '../testData';
 
 const categories = [
   {
@@ -37,7 +39,7 @@ const props_with_category = {
     "type": "outcome",
     "iconName": "IosPlane",
   },
-  onSelectCategory: jest.fn(),
+  onSelectCategory: ()=>{},
 }
 
 const tabs = [
@@ -100,6 +102,7 @@ const Create = ({ match }) => {
       {/* //@@要怎麼整個傳進去 */}
       {/* <CategorySelect {...categories} /> */}
       <CategorySelect {...props_with_category} />
+      <LedgerForm ledgerItem={testItems[0]}/>
     </div>
   )
 }
