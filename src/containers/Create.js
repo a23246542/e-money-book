@@ -6,7 +6,7 @@ import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
 import CategorySelect from '../components/CategorySelect';
 import LedgerForm from '../components/LedgerForm';
 // import { categories } from '../components/__test__/CategorySelect2.test';
-import { testItems } from '../testData';
+import { testItems, testCategories } from '../testData';
 
 const categories = [
   {

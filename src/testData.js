@@ -1,3 +1,48 @@
+export const testCategories = [
+  {
+    "name": "旅行",
+    "iconName": "IosPlane",
+    "id": "1",
+    "type": "outcome"
+  },
+  {
+    "name": "餐饮",
+    "iconName": "IosRestaurant",
+    "id": "2",
+    "type": "outcome"
+  },
+  {
+    "name": "购物",
+    "iconName": "IosBasket",
+    "id": "3",
+    "type": "outcome"
+  },
+  {
+    "name": "数码",
+    "iconName": "IosPhonePortrait",
+    "id": "4",
+    "type": "outcome"
+  },
+  {
+    "name": "工资",
+    "iconName": "IosCard",
+    "id": "10",
+    "type": "income"
+  },
+  {
+    "name": "兼职",
+    "iconName": "IosCash",
+    "id": "11",
+    "type": "income"
+  },
+  {
+    "name": "理财",
+    "iconName": "LogoYen",
+    "id": "12",
+    "type": "income"
+  },
+]
+
 export const testItems = [
   {
     "title": "这是我的工资",
