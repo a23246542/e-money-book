@@ -11,23 +11,34 @@ const categories = [
    "id": "1",
    "name": "旅行",
    "type": "outcome",
-   "iconName": "IosPlane",    
+   "iconName": "IosPlane",
  },
   {
    "id": "2",
    "name": "理财",
    "type": "income",
-  //  "iconName": "logo-yen", 
-  //  "iconName": "ios-plane", 
-   "iconName": "IosPaper", 
+  //  "iconName": "logo-yen",
+  //  "iconName": "ios-plane",
+   "iconName": "IosPaper",
  },
  {
    "id": "3",
    "name": "理财",
    "type": "income",
-   "iconName": "IosPlane", 
+   "iconName": "IosPlane",
  },
 ]
+
+const props_with_category = {
+  categories,
+  selectedCategory: {
+    "id": "1",
+    "name": "旅行",
+    "type": "outcome",
+    "iconName": "IosPlane",
+  },
+  onSelectCategory: jest.fn(),
+}
 
 const tabs = [
   {
@@ -59,7 +70,7 @@ const Create = ({ match }) => {
   // const [activeIndex,setIndex] = useState(0);
   const selectedTabIndex = useMemo(()=>{
     return tabs.findIndex(item=>item.value === selectedTab);//!!!
-  },[selectedTab]) 
+  },[selectedTab])
 
   const tabChange = (index) => {
     setTab(tabs[index].value)
@@ -88,8 +99,7 @@ const Create = ({ match }) => {
       </Tabs>
       {/* //@@要怎麼整個傳進去 */}
       {/* <CategorySelect {...categories} /> */}
-      <CategorySelect categories={categories} 
-        onSelectCategory={()=>{}} />
+      <CategorySelect {...props_with_category} />
     </div>
   )
 }
