@@ -81,12 +81,17 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免�
               <label htmlFor="inputAmount" className="text-nowrap">金額*:</label>
             </div>
             <div className="col-10">
-              <input type="number" className="form-control" id="inputAmount"
-                value={amount}
-                // onChange={(e)=>{setAmount(e.target.value.trim())}}
-                onChange={(e)=>{setAmount(e.target.value.trim()*1)}}//@@
-                // ref={(input) => {setAmount(input.current.value)}}
-              />
+              <div className="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
+                </div>
+                <input type="number" className="form-control" id="inputAmount"
+                  value={amount}
+                  // onChange={(e)=>{setAmount(e.target.value.trim())}}
+                  onChange={(e)=>{setAmount(e.target.value.trim()*1)}}//@@
+                  // ref={(input) => {setAmount(input.current.value)}}
+                />
+              </div>
             </div>
           </div>
         </div>

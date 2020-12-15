@@ -33,7 +33,10 @@ const CategorySelect = ({categories, selectedCategory, onSelectCategory}) => {
                   style={{backgroundColor:`${backColor}`,padding:'6px'}}
                   fontSize="40px"
                   color={iconColor}
-                />}{item.name}
+                />}
+                <div className="mt-1">
+                  {item.name}
+                </div>
               </div>
             )
           })}

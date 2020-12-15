@@ -27,6 +27,10 @@ const Create = ({ match }) => {
     setTab(testTabs[index].value)
   }
 
+  const filterCategories = useMemo(()=>{
+    return testCategories.filter((item) =>item.type === selectedTab);
+  },[testCategories.length,selectedTab])
+
   return (
     <div>
       {/* <Tabs tabIndex="0"> 跟vue不一樣 %%%*/}
@@ -47,7 +51,7 @@ const Create = ({ match }) => {
       {/* //@@要怎麼整個傳進去 */}
       {/* <CategorySelect {...categories} /> */}
       <CategorySelect
-        categories={testCategories}
+        categories={filterCategories}
         // selectedCategory={} //%%%不能传入空 所以没传老师干脆没写
         selectedCategory={testCategories[2]}
         onSelectCategory={()=>{}}
