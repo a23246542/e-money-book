@@ -67,7 +67,7 @@ export const testCategories = [
 export const testItems = [
   {
     "title": "这是我的工资",
-    "price": 20000,
+    "amount": 20000,
     "date": "2018-08-18",
     "monthCategory": "2018-8",
     "id": "_bd16bjeen",
@@ -76,7 +76,7 @@ export const testItems = [
   },
   {
     "title": "和哥们一起喝酒",
-    "price": 300,
+    "amount": 300,
     "date": "2018-08-20",
     "monthCategory": "2018-8",
     "id": "_jjfice21k",
@@ -85,7 +85,7 @@ export const testItems = [
   },
   {
     "title": "理财收入",
-    "price": 1000,
+    "amount": 1000,
     "date": "2018-08-11",
     "monthCategory": "2018-8",
     "id": "_1fg1wme63",
@@ -94,7 +94,7 @@ export const testItems = [
   },
   {
     "title": "理财收入",
-    "price": 300,
+    "amount": 300,
     "date": "2018-11-15",
     "monthCategory": "2018-11",
     "id": "_qryggm5y8",
@@ -103,7 +103,7 @@ export const testItems = [
   },
   {
     "title": "请别人吃饭",
-    "price": 300,
+    "amount": 300,
     "date": "2018-11-15",
     "monthCategory": "2018-11",
     "id": "_qryggm511",

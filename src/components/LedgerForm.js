@@ -5,10 +5,10 @@ import PropTypes from 'prop-types'
 const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免無傳入報錯
   //畫面表單
   const [ title, setTitle ] = useState(ledgerItem&&ledgerItem.title||'');
-  const [ amount, setAmount ] = useState(ledgerItem&&ledgerItem.price||'');//@但其實是數字
+  const [ amount, setAmount ] = useState(ledgerItem&&ledgerItem.amount||'');//@但其實是數字
   const [ date, setDate ] = useState(ledgerItem&&ledgerItem.date||'');
   //畫面資料狀態
-  const [ validatePass, setValidatePass ] = useState(false);
+  const [ validatePass, setValidatePass ] = useState(true);
   const [ alertMessage, setAlertMessage ] = useState('');
 
   const isValidDate = (inputDate) => {
@@ -22,7 +22,8 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免�
     e.preventDefault();
     // if(title.trim()==='') {
     // }
-    console.log('submitForm的值',title,amount,date);
+    const editMode = ledgerItem && !!ledgerItem.id;
+    // console.log('submitForm的值',title,amount,date);
     if( title && amount && date ) {
       if(amount<0) {
         setValidatePass(false);
@@ -31,10 +32,17 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免�
         setValidatePass(false);
         setAlertMessage('不能選擇未來的日期');
       } else {
+
         setAlertMessage('');
         setValidatePass(true);
-        onFormSubmit();
         console.log('通過');
+        if(editMode) {
+          console.log(title,amount,date);//%%%旧资料
+          // onFormSubmit(...ledgerItem,title,amount,date);//%% @@TypeError: ledgerItem is not iterable
+          onFormSubmit({...ledgerItem,title,amount,date})
+        } else {
+          onFormSubmit();
+        }
       }
     } else {
       setValidatePass(false);

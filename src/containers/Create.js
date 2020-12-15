@@ -49,9 +49,11 @@ const Create = ({ match }) => {
       <CategorySelect
         categories={testCategories}
         // selectedCategory={} //%%%不能传入空 所以没传老师干脆没写
+        selectedCategory={testCategories[2]}
         onSelectCategory={()=>{}}
       />
       <LedgerForm
+        // ledgerItem={}
         onFormSubmit={()=>{}}
         onCancelSubmit={()=>{}}
       />
