@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 // const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
-const LedgerForm = ({ledgerItem={}, onFormSubmit, onCancelSubmit}) => { //%%避免無傳入報錯
+const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免無傳入報錯
   //畫面表單
-  const [ title, setTitle ] = useState(()=>ledgerItem.title||'');
-  const [ amount, setAmount ] = useState(()=>ledgerItem.price||'');//@但其實是數字
-  const [ date, setDate ] = useState(()=>ledgerItem.date||'');
+  const [ title, setTitle ] = useState(ledgerItem&&ledgerItem.title||'');
+  const [ amount, setAmount ] = useState(ledgerItem&&ledgerItem.price||'');//@但其實是數字
+  const [ date, setDate ] = useState(ledgerItem&&ledgerItem.date||'');
   //畫面資料狀態
   const [ validatePass, setValidatePass ] = useState(false);
   const [ alertMessage, setAlertMessage ] = useState('');
@@ -113,7 +113,7 @@ const LedgerForm = ({ledgerItem={}, onFormSubmit, onCancelSubmit}) => { //%%避�
         >
           提交
         </button>
-        <button type="button" id="cancel" 
+        <button type="button" id="cancel"
           className="btn btn-primary mx-3"
           onClick={(e)=>{cancelSubmit(e)}}
         >取消</button>

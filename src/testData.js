@@ -1,3 +1,24 @@
+import { TYPE_OUTCOME, TYPE_INCOME } from './constants';
+
+
+export const testTabs = [
+  {
+    text:'支出',
+    value: TYPE_OUTCOME,
+    iconName:'IosCard'
+  },
+  {
+    text:'收入',
+    value:TYPE_INCOME,
+    iconName:'IosCash'
+  },
+  // {
+  //   text:'其他',
+  //   value:'other',
+  //   iconName:'IosCash'
+  // },
+]
+
 export const testCategories = [
   {
     "name": "旅行",
