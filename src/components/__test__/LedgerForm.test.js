@@ -158,15 +158,15 @@ describe('test LedgerForm component', () => {
         // wrapper2.find('#inputTitle').prop('onChange')({ target:{value:'工資'}});
         // wrapper2.find('#inputAmount').props().onChange({ target:{value:'2000'}});
         // wrapper2.find('#inputDate').props().onChange({ target:{value:'2020-12-13'}});
-        wrapper2.find('#submit').simulate('click');
+        wrapper2.find('#submit').simulate('click',{preventDefault(){}});
         // const newItem = {...testItems[0],title:'工資',amount:2000,date:'2020-12-13'};
         // expect(props.onFormSubmit).toHaveBeenCalledWith(newItem);//%%Number of calls: 0
       })
       wrapper2.update();
       // wrapper2 =  wrapper2.update();
       const newItem = {...props_with_item.ledgerItem,title:'工資',amount:2000,date:'2020-12-13'};
-      // expect(props_with_item.onFormSubmit).toHaveBeenCalledWith(newItem);//@@哪個好
-      expect(wrapper2.props().onFormSubmit).toHaveBeenCalledWith(newItem);
+      expect(props_with_item.onFormSubmit).toHaveBeenCalledWith(newItem);//@@哪個好
+      // expect(wrapper2.props().onFormSubmit).toHaveBeenCalledWith(newItem);
       expect(mockSetState).toHaveBeenCalledWith('2020-12-13');
     })
   })
