@@ -71,17 +71,17 @@ describe('test MonthPicker component', () => {
     wrapper.find('.dropdown-toggle').simulate('click');
 
     // 模拟点位置，click()=docHandleClick()
-    act(()=>{
+    // act(()=>{
       eventMap.click({
         target:ReactDOM.findDOMNode(wrapper.instance()),//!!!@@
       })
-    })
+    // })
     expect(wrapper.find('.dropdown-menu').length).toEqual(1);
-    act(()=>{
+    // act(()=>{
       eventMap.click({
         target:document,
       })
-    })
+    // })
     expect(wrapper.find('.dropdown-menu').length).toEqual(0);
 
   })

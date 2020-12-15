@@ -8,6 +8,8 @@ import ViewTab from '../components/ViewTab';
 import TotalNumber from '../components/TotalNumber';
 import CreateBtn from '../components/CreateBtn';
 import MonthPicker from '../components/MonthPicker';
+import {Tabs, Tab} from '../components/Tabs(bad)';
+// import {Tabs, Tab} from '../components/Tabs';
 
 
 const category = {
@@ -218,6 +220,20 @@ const Home = () => {
         </div>
       </header>
       <div className="content-area py-3 px-3">
+        <Tabs selectedTab={tabView} onTabChange={changeView}>
+          {/* <li className="nav-item">
+            <div className="nav-link active">
+              列表
+            </div>
+          </li>
+          <li className="nav-item">
+            <div className="nav-link">
+              圖表
+            </div>
+          </li> */}
+          <Tab>列表</Tab>
+          <Tab>圖表</Tab>
+        </Tabs>
         <ViewTab
           activeTab={ tabView }
           onTabChange={ changeView }

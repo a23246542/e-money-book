@@ -28,7 +28,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
     // toggleDropdown();
     console.log(isOpen);
     // setOpen((!isOpen));    
-    setOpen(false);//%%%
+    setOpen(()=>false);//%%%
   }
 
   const toggleDropdown = () => {
@@ -38,7 +38,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
     // } else {
     //   setOpen(true);
     // }
-    setOpen((!isOpen));    
+    setOpen((isOpen)=>!isOpen);    
   }
 
   const selectYear = (e,yearNum) => {
