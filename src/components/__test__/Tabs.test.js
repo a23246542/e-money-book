@@ -44,7 +44,7 @@ describe('test Tabs and Tab component', ()=>{
     expect(wrapper.find(Tab).length).toEqual(2);
     expect(wrapper.find('[data-test="navItem"]').length).toBe(2);
     // expect(wrapper.find('[data-test="navItem"]').first().childAt(0).hasClass('active')).toEqual(true)
-    console.log(wrapper.debug());
+    // console.log(wrapper.debug());
     expect(wrapper.find('.nav-link').first().hasClass('active')).toEqual(true);
     
   })

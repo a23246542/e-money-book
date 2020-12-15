@@ -23,8 +23,8 @@ const MonthPicker = ({year, month, choiceDate}) => {
     if (nodeMonthPicker.current.contains(e.target)) {// 要小抓大&!!contains可以Dom(字串)
       return;
     }  
-    console.log(nodeMonthPicker.current);
-    console.log(e.target);
+    // console.log(nodeMonthPicker.current);
+    // console.log(e.target);
     // toggleDropdown();
     console.log(isOpen);
     // setOpen((!isOpen));    
@@ -54,7 +54,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
     choiceDate(selectedYear,monthNum);
   }
   
-  console.log('渲染');
+  // console.log('渲染');
 
   return (
     // <div className="dropdown" ref={ref=>{ this.node = ref}}>

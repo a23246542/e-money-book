@@ -6,5 +6,12 @@ import IosPie from 'react-ionicons/lib/IosPie';
 import IosAddCircle from 'react-ionicons/lib/IosAddCircle';
 import IosCard from 'react-ionicons/lib/IosCard';
 import IosCash from 'react-ionicons/lib/IosCash';
+import IosRestaurant from 'react-ionicons/lib/IosRestaurant';
+import IosBasket from 'react-ionicons/lib/IosBasket';
+import IosPhonePortrait from 'react-ionicons/lib/IosPhonePortrait';
+import LogoYen from 'react-ionicons/lib/LogoYen';
 
-export default { IosCreate, IosCloseCircle, IosPlane, IosPaper, IosPie, IosAddCircle, IosCard, IosCash};
+export default { IosCreate, IosCloseCircle, 
+  IosPlane, IosPaper, IosPie, IosAddCircle, 
+  IosCard, IosCash, IosRestaurant, IosBasket, 
+  IosPhonePortrait, LogoYen};

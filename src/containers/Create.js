@@ -3,24 +3,11 @@ import PropTypes from 'prop-types'
 import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
 import { Tabs, Tab } from '../components/Tabs';
 import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
+import CategorySelect from '../components/CategorySelect';
+import LedgerForm from '../components/LedgerForm';
+// import { categories } from '../components/__test__/CategorySelect2.test';
+import { testTabs, testCategories, testItems} from '../testData';
 
-const tabs = [
-  {
-    text:'支出',
-    value: TYPE_OUTCOME,
-    iconName:'IosCard'
-  },
-  {
-    text:'收入',
-    value:TYPE_INCOME,
-    iconName:'IosCash'
-  },
-  {
-    text:'其他',
-    value:'other',
-    iconName:'IosCash'
-  },
-]
 
 const Create = ({ match }) => {
   //@parmas
@@ -29,31 +16,31 @@ const Create = ({ match }) => {
   //展示表單 空或是item
 
   // const [selectedTab,setTab] = useState('支出');
-  const [selectedTab,setTab] = useState(TYPE_OUTCOME);
+  const [selectedTab,setTab] = useState(TYPE_OUTCOME);//字串
 
   // const [activeIndex,setIndex] = useState(0);
   const selectedTabIndex = useMemo(()=>{
-    return tabs.findIndex(item=>item.value === selectedTab);//!!!
-  },[selectedTab]) 
+    return testTabs.findIndex(item=>item.value === selectedTab);//!!!
+  },[selectedTab])
 
   const tabChange = (index) => {
-    setTab(tabs[index].value)
+    setTab(testTabs[index].value)
   }
+
+  const filterCategories = useMemo(()=>{
+    return testCategories.filter((item) =>item.type === selectedTab);
+  },[testCategories.length,selectedTab])
 
   return (
     <div>
-      {match.params.id}頁
       {/* <Tabs tabIndex="0"> 跟vue不一樣 %%%*/}
       {/* <Tabs tabIndex={0} onTabChange={tabChange}> */}
-      <Tabs activeIndex1={selectedTabIndex} onTabChange={tabChange}>
-        {/* <Tab>支出</Tab>
-        <Tab>收入</Tab>
-        <Tab>其他</Tab> */}
+      <Tabs activeIndex={selectedTabIndex} onTabChange={tabChange}>
         {
-          tabs.map((item,index)=>{
+          testTabs.map((item,index)=>{
           const Icon = Ionicons[item.iconName];
             return(
-              <Tab>
+              <Tab key={index}>
                 {/* {Ionicons[item.iconName]}{item.title} //@@無效 */}
                 {<Icon/>}{item.text}
               </Tab>
@@ -61,6 +48,19 @@ const Create = ({ match }) => {
           })
         }
       </Tabs>
+      {/* //@@要怎麼整個傳進去 */}
+      {/* <CategorySelect {...categories} /> */}
+      <CategorySelect
+        categories={filterCategories}
+        // selectedCategory={} //%%%不能传入空 所以没传老师干脆没写
+        selectedCategory={testCategories[2]}
+        onSelectCategory={()=>{}}
+      />
+      <LedgerForm
+        // ledgerItem={}
+        onFormSubmit={()=>{}}
+        onCancelSubmit={()=>{}}
+      />
     </div>
   )
 }

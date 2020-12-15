@@ -23,7 +23,7 @@ describe('test MonthPicker component', () => {
     const btnText = wrapper.find('.dropdown-toggle').first().text();
     expect(btnText).toEqual('2020年 12月');
   })
-  
+
   //@@目前查非class組件無法檢測狀態
   it('show correct dropdown status',()=>{
     //下拉菜單一開始不會顯示
@@ -71,17 +71,20 @@ describe('test MonthPicker component', () => {
     wrapper.find('.dropdown-toggle').simulate('click');
 
     // 模拟点位置，click()=docHandleClick()
-    // act(()=>{
+    act(()=>{
       eventMap.click({
-        target:ReactDOM.findDOMNode(wrapper.instance()),//!!!@@
+        // target:ReactDOM.findDOMNode(wrapper.instance()),//!!!@@wrapper.instance()被废弃
+        target:wrapper.getDOMNode(),//!!!@@
       })
-    // })
+    })
+    wrapper.update();
     expect(wrapper.find('.dropdown-menu').length).toEqual(1);
-    // act(()=>{
+    act(()=>{
       eventMap.click({
         target:document,
       })
-    // })
+    })
+    wrapper.update();
     expect(wrapper.find('.dropdown-menu').length).toEqual(0);
 
   })
