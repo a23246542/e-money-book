@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Ionicons from '../plugin/ionicons';
 
-const PriceList = ({items, onModifyItem, onDeleteItem}) => {
+const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
 
   const { IosCreate, IosCloseCircle } = Ionicons;
 
@@ -17,7 +17,9 @@ const PriceList = ({items, onModifyItem, onDeleteItem}) => {
               key={item.id}
             >
               <span className="col-1 badge badge-primary">
-                <CategoryIcon/>
+                <CategoryIcon
+                  iconTitle={item.category.iconName}
+                />
               </span>
               {/* <span className="col-11 bg-primary"></span> */}
               <span className="col-5">{item.title}</span>
@@ -64,7 +66,7 @@ const PriceList = ({items, onModifyItem, onDeleteItem}) => {
 
 }
 
-PriceList.propTypes = {
+LedgerList.propTypes = {
   items:PropTypes.array.isRequired,
   onModifyItem:PropTypes.func.isRequired,
   onDeleteItem:PropTypes.func.isRequired
@@ -74,4 +76,4 @@ PriceList.propTypes = {
 
 // }
 
-export default PriceList;
+export default LedgerList;
