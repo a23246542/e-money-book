@@ -1,4 +1,4 @@
-import React,{ useState,useMemo } from 'react'
+import React,{ useState,useMemo, useContext } from 'react'
 import PropTypes from 'prop-types'
 import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
 import { Tabs, Tab } from '../components/Tabs';
@@ -7,6 +7,8 @@ import CategorySelect from '../components/CategorySelect';
 import LedgerForm from '../components/LedgerForm';
 // import { categories } from '../components/__test__/CategorySelect2.test';
 import { testTabs, testCategories, testItems} from '../testData';
+import AppContext from '../AppContext';
+
 
 
 const Create = ({ match }) => {
@@ -14,6 +16,9 @@ const Create = ({ match }) => {
   //收入還是支出 tab切換 selectedTab
   //收入還是支出 分類切換 selectedCategory
   //展示表單 空或是item
+
+  const { categories } = useContext(AppContext);
+  console.log(categories);
 
   // const [selectedTab,setTab] = useState('支出');
   const [selectedTab,setTab] = useState(TYPE_OUTCOME);//字串
@@ -28,8 +33,8 @@ const Create = ({ match }) => {
   }
 
   const filterCategories = useMemo(()=>{
-    return testCategories.filter((item) =>item.type === selectedTab);
-  },[testCategories.length,selectedTab])
+    return categories.filter((item) =>item.type === selectedTab);
+  },[categories.length,selectedTab])
 
   return (
     <div>
@@ -53,7 +58,7 @@ const Create = ({ match }) => {
       <CategorySelect
         categories={filterCategories}
         // selectedCategory={} //%%%不能传入空 所以没传老师干脆没写
-        selectedCategory={testCategories[2]}
+        selectedCategory={categories[2]}
         onSelectCategory={()=>{}}
       />
       <LedgerForm

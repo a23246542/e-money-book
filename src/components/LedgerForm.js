@@ -83,7 +83,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免�
             <div className="col-10">
               <div className="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text">$</span>
+                  <span className="input-group-text">$</span>
                 </div>
                 <input type="number" className="form-control" id="inputAmount"
                   value={amount}
