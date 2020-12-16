@@ -1,4 +1,4 @@
-import { useState, Fragment, useMemo, useEffect } from 'react';
+import { useState, Fragment, useMemo, useEffect, useContext } from 'react';
 import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW } from '../constants';
@@ -9,6 +9,7 @@ import TotalNumber from '../components/TotalNumber';
 import CreateBtn from '../components/CreateBtn';
 import MonthPicker from '../components/MonthPicker';
 import {Tabs, Tab} from '../components/Tabs(bad)';
+import AppContext from '../AppContext';
 // import {Tabs, Tab} from '../components/Tabs';
 
 
@@ -36,7 +37,7 @@ const items = [
     title: '去雲南旅遊',
     price: 200,
     date: '2020-11-26',
-    categoryId: 1, 
+    categoryId: 1,
   },
   {
     id: 2,
@@ -61,7 +62,7 @@ const items = [
 // })
 
 
-/* @param 
+/* @param
   ledgerList //帳目列表
   currentDate //當前年月
   totalIncome,totalOutcome //收入支出總和
@@ -81,7 +82,7 @@ const Home = () => {
   //   })
   // }, [''])
 
-  
+
   // const itemsWithCategory = useMemo(() => { //@@不適用這個!! 因為修改外部items 不會讓home重新執行
   //   console.log('跑itemsWithCategory');
   //   return items.map(item => {
@@ -97,7 +98,9 @@ const Home = () => {
   //     return item
   //   })
   // }
-  
+
+  const { categories, ledgerItems } = useContext(AppContext);
+
   // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));//@@不需 會自動深拷貝
   const [ list, setList ] = useState(items);
   // const [ list, setList ] = useState(itemsWithCategory);//%%%初始值不能變化
@@ -105,13 +108,26 @@ const Home = () => {
   //@@ 是否應該改用ref 因為update情況下 useState不會重取
   const [ tabView, setTabView ] = useState(CHART_VIEW);
 
-  const listWithCategory  = useMemo(()=>{ //切換tabView不會重新來
-    console.log('執行listWithCategory');
-    return list.map(item=>{
-      item.category = category[item.categoryId];
-      return item;
+  // const listWithCategory  = useMemo(()=>{ //切換tabView不會重新來
+  //   console.log('執行listWithCategory');
+  //   return list.map(item=>{
+  //     item.category = categories[item.cid];
+  //     return item;
+  //   })
+  // },[list.length])
+
+  const ledgerIdList = Object.keys(ledgerItems)
+
+  const listWithCategory = useMemo(()=>{
+    return ledgerIdList
+    // .map(id=>ledgerItems[id])
+    // // .map(item=>({...item,}))
+    .map(id => {
+      // item[category] = categories[item.cid]
+      ledgerItems[id].category = categories[ledgerItems[id].cid];//@@是否會改到
+      return ledgerItems[id]
     })
-  },[list.length])
+  },[ledgerIdList.length])
 
   // const listWithCategory = list.map(item=>{ //切換tabView會重新來
   //   console.log('執行listWithCategory');
@@ -141,9 +157,9 @@ const Home = () => {
       month:monthNum
     })
 
-    
+
     // Object.values(currentDate).join('-')
-    
+
   };
 
   const changeView = (view) => {
@@ -173,7 +189,7 @@ const Home = () => {
     };
     // setList(parseItemWithCategory(items))
     setList([...list,newItem]);
-    
+
   };
 
   const deleteItem = (clickedItem) => {
@@ -205,7 +221,7 @@ const Home = () => {
               <MonthPicker
                 year={currentDate.year}
                 month={currentDate.month}
-                choiceDate={(yearNum,monthNum)=>{ 
+                choiceDate={(yearNum,monthNum)=>{
                   changeDate(yearNum,monthNum);
                 }}
               />
@@ -242,7 +258,7 @@ const Home = () => {
           onCreateItem={ createItem }
         />
         { tabView === LIST_VIEW &&
-          <LedgerList 
+          <LedgerList
             // items={list} //!
             items={listWithCategory.filter(item=>{
               const currentDateStr =  Object.values(currentDate).join('-');

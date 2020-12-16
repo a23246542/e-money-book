@@ -19,6 +19,13 @@ export const makeArrByRange = (size, startAt) => {
   return arr;
 }
 
+export const flattenArr = (arr) => {
+  return arr.reduce((map, item)=>{
+    map[item.id] = item;
+    return map;
+  },{})
+}
+
 export const Color = {
   blue: '#347eff',
   deepBlue: '#61dafb',

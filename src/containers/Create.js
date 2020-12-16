@@ -32,9 +32,14 @@ const Create = ({ match }) => {
     setTab(testTabs[index].value)
   }
 
+
+  const categoryIdList = Object.keys(categories);
+
   const filterCategories = useMemo(()=>{
-    return categories.filter((item) =>item.type === selectedTab);
-  },[categories.length,selectedTab])
+    return categoryIdList.filter(id =>categories[id].type === selectedTab)
+    .map(id =>categories[id]);
+  },[categoryIdList.length,selectedTab])
+
 
   return (
     <div>

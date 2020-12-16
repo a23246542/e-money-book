@@ -7,26 +7,27 @@ import Home from './containers/Home';
 import Create from './containers/Create';
 import { testCategories, testItems } from './testData';
 import { Provider } from './AppContext';
+import { flattenArr } from './utility';
 
 
 function App() {
 
   const defaultState = {
-    ledgerItems: testItems,
-    categories: testCategories,
+    ledgerItems: flattenArr(testItems),
+    categories: flattenArr(testCategories),
   }
 
   const ledgerReducer = (state,action) => {
     return state;
   }
 
-  const [ ledgerItems, ledgerDispatch ] = useReducer(ledgerReducer,defaultState.ledgerItems)
+  const [ ledgerItems, dispatchLedger ] = useReducer(ledgerReducer,defaultState.ledgerItems)
 
   return (
     <Provider value={{
       categories:defaultState.categories,
       ledgerItems,
-      ledgerDispatch
+      dispatchLedger
     }}>
       <Router>
         <ul>
