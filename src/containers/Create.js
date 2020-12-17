@@ -1,5 +1,6 @@
 import React,{ useState,useMemo, useContext } from 'react'
-import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
 import { Tabs, Tab } from '../components/Tabs';
 import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
@@ -11,7 +12,7 @@ import AppContext from '../AppContext';
 
 
 
-const Create = ({ match }) => {
+const Create = ({ match, history }) => {
   //@parmas
   //收入還是支出 tab切換 selectedTab
   //收入還是支出 分類切換 selectedCategory
@@ -38,6 +39,13 @@ const Create = ({ match }) => {
     .map(id =>categories[id]);
   },[categoryIdList.length,selectedTab])
 
+  const cancelSubmit = () => {
+    history.push('/');
+  }
+
+  const submitForm = () => {
+    
+  }
 
   return (
     <div>
@@ -66,8 +74,8 @@ const Create = ({ match }) => {
       />
       <LedgerForm
         // ledgerItem={}
-        onFormSubmit={()=>{}}
-        onCancelSubmit={()=>{}}
+        onFormSubmit={submitForm}
+        onCancelSubmit={cancelSubmit}
       />
     </div>
   )
@@ -77,4 +85,4 @@ Create.propTypes = {
 
 }
 
-export default Create
+export default withRouter(Create)

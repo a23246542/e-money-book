@@ -19,7 +19,19 @@ function App() {
   // const node = useRef(null);
 
   const ledgerReducer = (state,action) => {
-    return state;
+    const { type, payload } = action
+
+    switch (type) {
+      case 'deleteItem':
+        // delete state[payload.id];
+        // let clone = {...ledgerItems};//@@ ReferenceError: Cannot access 'ledgerItems' before initialization
+        let clone = { ...state }
+        delete clone[payload.id];
+        return clone;
+      default:
+        return state;
+    }
+
   }
 
   const [ ledgerItems, dispatchLedger ] = useReducer(ledgerReducer,defaultState.ledgerItems)

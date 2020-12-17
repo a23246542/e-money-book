@@ -29,7 +29,7 @@ import AppContext from '../AppContext';
   帳目表的分類資訊跟月份資訊
 
 */
-const Home = ({history,match}) => {
+const Home = ({history, match}) => {
 
   // let initItemsWithCategory = []
   // useEffect(() => { //%%% useState會沒有資料 mounted才執行
@@ -58,7 +58,7 @@ const Home = ({history,match}) => {
   //   })
   // }
 
-  const { categories, ledgerItems } = useContext(AppContext);
+  const { categories, ledgerItems, dispatchLedger} = useContext(AppContext);
 
   // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));//@@不需 會自動深拷貝
   // const [ list, setList ] = useState(items);
@@ -140,15 +140,16 @@ const Home = ({history,match}) => {
   };
 
   const modifyItem = (clickedItem) => {
-    let newList = [];
-    newList = list.map((item) => {
-      if(item.id === clickedItem.id) {
-        return {...item, title:'this is new Title'}
-      } else {
-        return item;
-      }
-    })
-    setList(newList);
+    // let newList = [];
+    // newList = list.map((item) => {
+    //   if(item.id === clickedItem.id) {
+    //     return {...item, title:'this is new Title'}
+    //   } else {
+    //     return item;
+    //   }
+    // })
+    // setList(newList);
+    history.push(`edit/${clickedItem.id}`);
   };
 
   const createItem = () => {
@@ -167,11 +168,16 @@ const Home = ({history,match}) => {
   };
 
   const deleteItem = (clickedItem) => {
-    let newList = [];
-    newList = list.filter(item => {
-      return item.id !== clickedItem.id
-    })
-    setList(newList);
+    // let newList = [];
+    // newList = list.filter(item => {
+    //   return item.id !== clickedItem.id
+    // })
+    // setList(newList);
+    dispatchLedger({
+      type:'deleteItem',
+      payload: clickedItem
+    });
+    
   };
 
   return (
