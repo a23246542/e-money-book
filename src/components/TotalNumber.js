@@ -2,10 +2,12 @@
 
 const TotalNumber = ({income,outcome}) => {
   return (
-    <ul className="row">
-      <li className="col">收入:{income}</li>
-      <li className="col">支出:{outcome}</li>
-    </ul>
+    <div className="container">
+      <ul className="row justify-content-center">
+        <li className="col-3">收入:{income}</li>
+        <li className="col-3">支出:{outcome}</li>
+      </ul>
+    </div>
   )
 }
 

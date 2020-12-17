@@ -6,10 +6,10 @@ const MonthPicker = ({year, month, choiceDate}) => {
   const [isOpen, setOpen] = useState(false);
   const [selectedYear, setYear] = useState(year);
   const [selectedMonth, setMonth] = useState(month);
-  let nodeMonthPicker = useRef(null);
+  const nodeMonthPicker = useRef(null);
   const monthRange = makeArrByRange(12,1);
   const yearRange = makeArrByRange(9,-4).map(number=>number + year);
-
+  console.log('渲染');
   useEffect(() => {
     document.addEventListener('click',docHandleClick,false)
     return () => {
@@ -18,12 +18,14 @@ const MonthPicker = ({year, month, choiceDate}) => {
     }
   }, [''])
 
-  // useEffect(()=>{
-  //   choiceDate(selectedYear,selectedMonth);
-  // },[selectedMonth])
+  useEffect(()=>{
+    choiceDate(selectedYear,selectedMonth);
+    console.log('useEffect');
+  },[selectedMonth])
 
   const docHandleClick = (e) => {
     // if (this.node.current.contains(e.target)) {
+      console.log(nodeMonthPicker);
     if (nodeMonthPicker.current.contains(e.target)) {// 要小抓大&!!contains可以Dom(字串)
       return;
     }
@@ -54,10 +56,10 @@ const MonthPicker = ({year, month, choiceDate}) => {
   const selectMonth = (e,monthNum) => {
     e.preventDefault();
     // setMonth(monthNum);
-    setMonth(()=> (monthNum),(selectedMonth)=>{choiceDate(selectedYear,selectedMonth);});//!!后面函式同样有影响
+    setMonth(()=> (monthNum));//!!后面函式同样有影响
     toggleDropdown();
     console.log('choiceDate',selectedYear,selectedMonth);
-    // choiceDate(selectedYear,selectedMonth);
+    choiceDate(selectedYear,selectedMonth);
     // choiceDate(selectedYear,monthNum);
     // console.log(Number(padLeft(monthNum)));
 
@@ -76,8 +78,8 @@ const MonthPicker = ({year, month, choiceDate}) => {
         {`${selectedYear}年 ${padLeft(selectedMonth)}月`}
       </button>
       { isOpen &&
-        <div className="dropdown-menu dropdown-menu-right"
-            style={{display: 'block'}} //!!!BS4默認隱藏
+        <div className="dropdown-menu dropdown-menu-left"
+            style={{display: 'block',left:'50%'}} //!!!BS4默認隱藏
         >
           <div className="row text-center">
             <div className="col years-range border-right">

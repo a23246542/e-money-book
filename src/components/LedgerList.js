@@ -19,6 +19,7 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
               <span className="col-1 badge badge-primary">
                 <CategoryIcon
                   iconTitle={item.category.iconName}
+                  color="#fff"
                 />
               </span>
               {/* <span className="col-11 bg-primary"></span> */}
@@ -29,7 +30,7 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
                   `-${item.price}元`
                 } */}
                 {(item.category.type === 'income') ? '+' : '-'}
-                {item.price}元
+                {item.amount}元
               </span>
               <span className="col-2">{item.date}</span>
               <a className="col-1 d-flex justify-content-center align-items-center"

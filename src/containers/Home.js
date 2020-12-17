@@ -114,14 +114,15 @@ const Home = () => {
     // list.forEach(item => {
     listWithCategory.forEach(item => {
       if(item.category.type === 'outcome') {
-        totalOutcome += item.price;
+        totalOutcome += item.amount;
       } else {
-        totalIncome += item.price
+        totalIncome += item.amount;
       }
     })
     console.log('count total');
     return { totalIncome, totalOutcome }
-  },[ledgerIdList.length])
+  // },[ledgerIdList.length])
+  },[filteredListWithCategory.length])
 
 
   const changeDate = (yearNum,monthNum) => {
@@ -189,7 +190,7 @@ const Home = () => {
         <div className="headerWrap">
           <div className="container">
             <div className="row">
-              <div className="col">
+              <div className="col-12 col-sm-6">
                 <MonthPicker
                   year={currentDate.year}
                   month={currentDate.month}
@@ -198,7 +199,7 @@ const Home = () => {
                   }}
                 />
               </div>
-              <div className="col">
+              <div className="col-12 col-sm-6">
                 <TotalNumber
                   income={totalIncome}
                   outcome={totalOutcome}
