@@ -1,4 +1,4 @@
-import { useState, createContext, useReducer } from 'react';
+import { useState, createContext, useReducer, useRef } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
@@ -16,6 +16,7 @@ function App() {
     ledgerItems: flattenArr(testItems),
     categories: flattenArr(testCategories),
   }
+  // const node = useRef(null);
 
   const ledgerReducer = (state,action) => {
     return state;
@@ -27,7 +28,8 @@ function App() {
     <Provider value={{
       categories:defaultState.categories,
       ledgerItems,
-      dispatchLedger
+      dispatchLedger,
+      // node
     }}>
       <Router>
         <ul>

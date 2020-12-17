@@ -1,4 +1,5 @@
 import { useState, Fragment, useMemo, useEffect, useContext } from 'react';
+import { useRouteMatch, withRouter } from 'react-router-dom';
 import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW } from '../constants';
@@ -8,7 +9,7 @@ import ViewTab from '../components/ViewTab';
 import TotalNumber from '../components/TotalNumber';
 import CreateBtn from '../components/CreateBtn';
 import MonthPicker from '../components/MonthPicker';
-import {Tabs, Tab} from '../components/Tabs(bad)';
+import { Tabs, Tab } from '../components/Tabs(bad)';
 import AppContext from '../AppContext';
 // import {Tabs, Tab} from '../components/Tabs';
 
@@ -28,7 +29,7 @@ import AppContext from '../AppContext';
   帳目表的分類資訊跟月份資訊
 
 */
-const Home = () => {
+const Home = ({history,match}) => {
 
   // let initItemsWithCategory = []
   // useEffect(() => { //%%% useState會沒有資料 mounted才執行
@@ -151,16 +152,17 @@ const Home = () => {
   };
 
   const createItem = () => {
-    const lastId = list[list.length-1].id;
-    const newItem = {
-      id: lastId + 1,
-      title: '創富投資',
-      price: 400,
-      date: '2020-11-28',
-      categoryId: 3,
-    };
-    // setList(parseItemWithCategory(items))
-    setList([...list,newItem]);
+    // const lastId = list[list.length-1].id;
+    // const newItem = {
+    //   id: lastId + 1,
+    //   title: '創富投資',
+    //   price: 400,
+    //   date: '2020-11-28',
+    //   categoryId: 3,
+    // };
+    // // setList(parseItemWithCategory(items))
+    // setList([...list,newItem]);
+    history.push('./create');
 
   };
 
@@ -197,6 +199,7 @@ const Home = () => {
                   choiceDate={(yearNum,monthNum)=>{
                     changeDate(yearNum,monthNum);
                   }}
+                  path={match.path}
                 />
               </div>
               <div className="col-12 col-sm-6">
@@ -243,4 +246,4 @@ const Home = () => {
 }
 
 
-export default Home;
+export default withRouter(Home);

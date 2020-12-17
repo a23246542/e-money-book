@@ -1,20 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useConetxt } from 'react';
+import AppContext from '../AppContext';
 import PropTypes from 'prop-types'
 import { padLeft, makeArrByRange } from '../utility';
 
-const MonthPicker = ({year, month, choiceDate}) => {
+const MonthPicker = ({year, month, choiceDate,path}) => {
   const [isOpen, setOpen] = useState(false);
   const [selectedYear, setYear] = useState(year);
   const [selectedMonth, setMonth] = useState(month);
   const nodeMonthPicker = useRef(null);
+  // const { node } = useConetxt(AppContext);
+  // const node = useRef(null);
   const monthRange = makeArrByRange(12,1);
   const yearRange = makeArrByRange(9,-4).map(number=>number + year);
+
   console.log('渲染');
+  // console.log(path);
   useEffect(() => {
     document.addEventListener('click',docHandleClick,false)
+    // document.addEventListener('click',(e,nodeMonthPicker)=>{docHandleClick(e,nodeMonthPicker)},false)
+    // document.addEventListener('click',()=>{docHandleClick},false)//@@@這樣才成功 且不能傳入參數
     return () => {
       console.log('组件销毁');
-      document.removeEventListener('click',docHandleClick,false)
+      document.removeEventListener('click',docHandleClick,false)//@@跳創建頁點擊還是會觸發
+      // document.removeEventListener('click',()=>{docHandleClick()},false)
     }
   }, [''])
 
@@ -23,10 +31,15 @@ const MonthPicker = ({year, month, choiceDate}) => {
     console.log('useEffect');
   },[selectedMonth])
 
-  const docHandleClick = (e) => {
+  const docHandleClick = (e,node) => {
     // if (this.node.current.contains(e.target)) {
       console.log(nodeMonthPicker);
+      console.log(node);
+    if(!nodeMonthPicker.current) {
+      return
+    }
     if (nodeMonthPicker.current.contains(e.target)) {// 要小抓大&!!contains可以Dom(字串)
+    // if (node.current.contains(e.target)) {
       return;
     }
     // console.log(nodeMonthPicker.current);
@@ -69,7 +82,9 @@ const MonthPicker = ({year, month, choiceDate}) => {
 
   return (
     // <div className="dropdown" ref={ref=>{ this.node = ref}}>
-    <div className="dropdown" ref={nodeMonthPicker}>
+    // <div className="dropdown" ref={(ref) => {node = ref}}>
+    <div className="dropdown" ref={nodeMonthPicker}> 
+    {/* <div className="dropdown" ref={node}> */}
       <p>請選擇</p>
       <button
         className="btn btn-primary dropdown-toggle"
