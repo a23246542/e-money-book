@@ -17,9 +17,7 @@ const Create = ({ match }) => {
   //收入還是支出 分類切換 selectedCategory
   //展示表單 空或是item
 
-  const { categories } = useContext(AppContext);
-  console.log(categories);
-
+  const { categories} = useContext(AppContext);
   // const [selectedTab,setTab] = useState('支出');
   const [selectedTab,setTab] = useState(TYPE_OUTCOME);//字串
 

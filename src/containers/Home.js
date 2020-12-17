@@ -13,48 +13,6 @@ import AppContext from '../AppContext';
 // import {Tabs, Tab} from '../components/Tabs';
 
 
-const category = {
-  1: {
-    name: '旅行',
-    type: 'outcome',
-    iconName: 'IosPlane'
-  },
-  2: {
-    name: '領薪水',
-    type: 'income',
-    iconName: 'IosPlane'
-  },
-  3: {
-    name: '投資',
-    type: 'income',
-    iconName: 'IosPlane'
-  }
-}
-
-const items = [
-  {
-    id: 1,
-    title: '去雲南旅遊',
-    price: 200,
-    date: '2020-11-26',
-    categoryId: 1,
-  },
-  {
-    id: 2,
-    title: '領薪水',
-    price: 1000,
-    date: '2020-11-26',
-    categoryId: 2,
-  },
-  {
-    id: 3,
-    title: '去台灣旅遊',
-    price: 400,
-    date: '2020-11-27',
-    categoryId: 1,
-  },
-]
-
 // const initItemsWithCategory = items.map(item => { //!!@移到外面就不會切換時一直執行
 //   console.log('四次為一遍');
 //   item.category = category[item.categoryId];
@@ -102,7 +60,7 @@ const Home = () => {
   const { categories, ledgerItems } = useContext(AppContext);
 
   // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));//@@不需 會自動深拷貝
-  const [ list, setList ] = useState(items);
+  // const [ list, setList ] = useState(items);
   // const [ list, setList ] = useState(itemsWithCategory);//%%%初始值不能變化
   const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
   //@@ 是否應該改用ref 因為update情況下 useState不會重取
@@ -115,19 +73,24 @@ const Home = () => {
   //     return item;
   //   })
   // },[list.length])
-
   const ledgerIdList = Object.keys(ledgerItems)
 
   const listWithCategory = useMemo(()=>{
+    console.log(ledgerItems);
+
+    // let cloneObj = [...ledgerItems];//%%無法展開
+    let cloneObj = JSON.parse(JSON.stringify(ledgerItems));
     return ledgerIdList
-    // .map(id=>ledgerItems[id])
-    // // .map(item=>({...item,}))
-    .map(id => {
-      // item[category] = categories[item.cid]
-      ledgerItems[id].category = categories[ledgerItems[id].cid];//@@是否會改到
-      return ledgerItems[id]
+    .map((id) => {
+      console.log('====================================');
+      console.log('cloneObj',cloneObj);
+      console.log('====================================');
+      cloneObj[id].category = categories[ledgerItems[id].cid];//@@原本會改到
+      return cloneObj[id];
+    // },{...ledgerItems})//%%%回傳物件
     })
   },[ledgerIdList.length])
+  console.log(ledgerItems);
 
   // const listWithCategory = list.map(item=>{ //切換tabView會重新來
   //   console.log('執行listWithCategory');
@@ -148,7 +111,7 @@ const Home = () => {
     })
     console.log('count total');
     return { totalIncome, totalOutcome }
-  },[list.length])
+  },[ledgerIdList.length])
 
 
   const changeDate = (yearNum,monthNum) => {
