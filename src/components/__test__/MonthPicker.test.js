@@ -59,7 +59,16 @@ describe('test MonthPicker component', () => {
     .toEqual('01月');
   })
 
-  it('click the year&month item, should trigger the right status change',()=>{})
+  it('click the year&month item, should trigger the right status change',()=>{
+    // wrapper.find('.dropdown-toggle').simulate('click')
+    // wrapper.find('.years-range .dropdown-item').first().simulate('click')
+    // expect(wrapper.find('.years-range .dropdown-item').first().hasClass('active'))
+    // .toEqual(true)
+    // expect(wrapper.state('selectedYear')).toEqual(2014)
+    // wrapper.find('.months-range .dropdown-item').first().simulate('click')
+    // expect(wrapper.state('isOpen')).toEqual(false)
+    // expect(props.onChange).toHaveBeenCalledWith(2014, 1)
+  })
 
   it('after the dropdown is shown，click the document should close the dropdown',()=>{
     let eventMap = {};

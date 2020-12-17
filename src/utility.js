@@ -7,7 +7,8 @@ export const parseToYearsAndMonth = (str) => {
   const date = str ? new Date(str) : new Date();
   return {
     year: date.getFullYear(),
-    month: date.getMonth() + 1
+    // month: Number(padLeft(date.getMonth() + 1)) //%%%Number 05 變就了
+    month: date.getMonth() + 1,
   }
 }
 

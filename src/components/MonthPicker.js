@@ -18,16 +18,20 @@ const MonthPicker = ({year, month, choiceDate}) => {
     }
   }, [''])
 
+  // useEffect(()=>{
+  //   choiceDate(selectedYear,selectedMonth);
+  // },[selectedMonth])
+
   const docHandleClick = (e) => {
     // if (this.node.current.contains(e.target)) {
     if (nodeMonthPicker.current.contains(e.target)) {// 要小抓大&!!contains可以Dom(字串)
       return;
-    }  
+    }
     // console.log(nodeMonthPicker.current);
     // console.log(e.target);
     // toggleDropdown();
     console.log(isOpen);
-    // setOpen((!isOpen));    
+    // setOpen((!isOpen));
     setOpen(()=>false);//%%%
   }
 
@@ -38,7 +42,7 @@ const MonthPicker = ({year, month, choiceDate}) => {
     // } else {
     //   setOpen(true);
     // }
-    setOpen((isOpen)=>!isOpen);    
+    setOpen((isOpen)=>!isOpen);
   }
 
   const selectYear = (e,yearNum) => {
@@ -49,33 +53,38 @@ const MonthPicker = ({year, month, choiceDate}) => {
 
   const selectMonth = (e,monthNum) => {
     e.preventDefault();
-    setMonth(monthNum);
+    // setMonth(monthNum);
+    setMonth(()=> (monthNum),(selectedMonth)=>{choiceDate(selectedYear,selectedMonth);});//!!后面函式同样有影响
     toggleDropdown();
-    choiceDate(selectedYear,monthNum);
+    console.log('choiceDate',selectedYear,selectedMonth);
+    // choiceDate(selectedYear,selectedMonth);
+    // choiceDate(selectedYear,monthNum);
+    // console.log(Number(padLeft(monthNum)));
+
   }
-  
+
   // console.log('渲染');
 
   return (
     // <div className="dropdown" ref={ref=>{ this.node = ref}}>
     <div className="dropdown" ref={nodeMonthPicker}>
       <p>請選擇</p>
-      <button 
+      <button
         className="btn btn-primary dropdown-toggle"
         onClick={toggleDropdown}
       >
-        {`${year}年 ${padLeft(month)}月`}
+        {`${selectedYear}年 ${padLeft(selectedMonth)}月`}
       </button>
-      { isOpen && 
-        <div className="dropdown-menu dropdown-menu-right" 
+      { isOpen &&
+        <div className="dropdown-menu dropdown-menu-right"
             style={{display: 'block'}} //!!!BS4默認隱藏
         >
           <div className="row text-center">
             <div className="col years-range border-right">
-              { 
+              {
                 yearRange.map((yearNum,index) =>
                   (
-                    <a href="#" role="button" 
+                    <a href="#" role="button"
                       key={index}
                       //@@@參數括號沒辦法閉包參考到外部yearNum(變成undefined)
                       // onClick={(e,yearNum)=>{changeYear(e,yearNum)}}
@@ -90,9 +99,9 @@ const MonthPicker = ({year, month, choiceDate}) => {
             </div>
             <div className="col months-range">
               {
-                monthRange.map((monthNum,index) => 
+                monthRange.map((monthNum,index) =>
                   (
-                    <a href="#" role="button" 
+                    <a href="#" role="button"
                       key={index}
                       className={ monthNum === selectedMonth? `dropdown-item active`:`dropdown-item`}
                       onClick={(e) => {selectMonth(e,monthNum)}}
