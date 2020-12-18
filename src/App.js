@@ -7,7 +7,7 @@ import Home from './containers/Home';
 import Create from './containers/Create';
 import { testCategories, testItems } from './testData';
 import { Provider } from './AppContext';
-import { flattenArr } from './utility';
+import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
 
 
 function App() {
@@ -28,6 +28,22 @@ function App() {
         let clone = { ...state }
         delete clone[payload.id];
         return clone;
+      case 'createItem':
+        const { formData, selectedCategoryId } = payload;
+        // console.log(formData,selectedCategoryId);
+        const dateObj = parseToYearsAndMonth(formData.date);
+        const timestamp = new Date().getTime();
+        const newId = makeID();
+        const newItem = {
+          ...formData,
+          id: newId,
+          cid: selectedCategoryId,
+          monthCategory: `${dateObj.year}-${dateObj.month}`,
+          timestamp
+        }
+        console.log({...state, newId: newItem});
+        // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
+        return {...state, [newId]: newItem};
       default:
         return state;
     }

@@ -86,6 +86,7 @@ const Home = ({history, match}) => {
     // },{...ledgerItems})//%%%回傳物件
     })
   },[ledgerIdList.length])
+  // },[])
 
   // console.log(listWithCategory);
   // console.log(currentDate);
@@ -107,7 +108,8 @@ const Home = ({history, match}) => {
       // return item.date.includes(currentDateStr)
       return item.monthCategory.includes(currentDateStr)
     })
-  },[ledgerIdList.length, currentDate.month])
+  // },[ledgerIdList.length, currentDate.month, listWithCategory.length])
+  },[currentDate.month, listWithCategory.length])
 
   const {totalIncome, totalOutcome} = useMemo(()=>{ //用另一個computed來計算
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
@@ -177,7 +179,7 @@ const Home = ({history, match}) => {
       type:'deleteItem',
       payload: clickedItem
     });
-    
+
   };
 
   return (

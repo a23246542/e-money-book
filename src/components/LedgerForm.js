@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 // const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
-const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免無傳入報錯
+const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { //%%避免無傳入報錯
   //畫面表單
   const [ title, setTitle ] = React.useState(ledgerItem&&ledgerItem.title||'');
   const [ amount, setAmount ] = React.useState(ledgerItem&&ledgerItem.amount||'');//@但其實是數字
@@ -22,7 +22,9 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免�
     e.preventDefault();
     // if(title.trim()==='') {
     // }
-    const editMode = ledgerItem && !!ledgerItem.id;
+    // const editMode = ledgerItem && !!ledgerItem.id;//%%%ledgerItem為{} 為true 傳後面變undefined
+    const isEditMode = !!ledgerItem.id; //!!這樣就行
+
     // console.log('submitForm的值',title,amount,date);
     if( title && amount && date ) {
       if(amount<0) {
@@ -36,12 +38,14 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免�
         setAlertMessage('');
         setValidatePass(true);
         console.log('通過');
-        if(editMode) {
+        if(isEditMode) {
           console.log(title,amount,date);//%%%旧资料
           // onFormSubmit(...ledgerItem,title,amount,date);//%% @@TypeError: ledgerItem is not iterable
-          onFormSubmit({...ledgerItem,title,amount,date})
+          // setTimeout(()=>{
+            onFormSubmit({...ledgerItem,title,amount,date},editMode)
+          // },1000)
         } else {
-          onFormSubmit();
+          onFormSubmit({title,amount,date},editMode);
         }
       }
     } else {
@@ -118,6 +122,9 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => { //%%避免�
           <div className="alert alert-warning" role="alert">
             {alertMessage}
           </div>
+        }
+        {
+          children
         }
         <button type="submit"
           id="submit"
