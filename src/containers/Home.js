@@ -1,4 +1,4 @@
-import { useState, Fragment, useMemo, useEffect, useContext } from 'react';
+import { useState, Fragment, useMemo, useEffect, useContext, useCallback } from 'react';
 import { useRouteMatch, withRouter } from 'react-router-dom';
 import logo from '../logo.svg';
 
@@ -143,14 +143,13 @@ const Home = ({history, match}) => {
   },[listWithCategory])
 
 
-  const changeDate = (yearNum,monthNum) => {
+  const changeDate = useCallback((yearNum,monthNum) => {
     setCurrentDate({
       year:yearNum,
       month:monthNum
     })
     // Object.values(currentDate).join('-')
-
-  };
+  },[]);
 
   const changeView = (view) => {
     setTabView(view);
@@ -219,9 +218,9 @@ const Home = ({history, match}) => {
                 <MonthPicker
                   year={currentDate.year}
                   month={currentDate.month}
-                  choiceDate={(yearNum,monthNum)=>{
+                  choiceDate={useCallback((yearNum,monthNum)=>{
                     changeDate(yearNum,monthNum);
-                  }}
+                  },[changeDate])}
                   path={match.path}
                 />
               </div>

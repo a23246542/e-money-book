@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useConetxt } from 'react';
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import AppContext from '../AppContext';
 import PropTypes from 'prop-types'
 import { padLeft, makeArrByRange } from '../utility';
@@ -14,24 +14,7 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
   const yearRange = makeArrByRange(9,-4).map(number=>number + year);
 
   console.log('渲染');
-  // console.log(path);
-  useEffect(() => {
-    document.addEventListener('click',docHandleClick,false)
-    // document.addEventListener('click',(e,nodeMonthPicker)=>{docHandleClick(e,nodeMonthPicker)},false)
-    // document.addEventListener('click',()=>{docHandleClick},false)//@@@這樣才成功 且不能傳入參數
-    return () => {
-      console.log('组件销毁');
-      document.removeEventListener('click',docHandleClick,false)//@@跳創建頁點擊還是會觸發
-      // document.removeEventListener('click',()=>{docHandleClick()},false)
-    }
-  }, [''])
-
-  useEffect(()=>{
-    choiceDate(selectedYear,selectedMonth);
-    console.log('useEffect');
-  },[selectedMonth])
-
-  const docHandleClick = (e,node) => {
+  const docHandleClick = useCallback((e,node) => {
     // if (this.node.current.contains(e.target)) {
       console.log(nodeMonthPicker);
       console.log(node);
@@ -45,10 +28,28 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
     // console.log(nodeMonthPicker.current);
     // console.log(e.target);
     // toggleDropdown();
-    console.log(isOpen);
+    // console.log(isOpen);
     // setOpen((!isOpen));
-    setOpen(()=>false);//%%%
-  }
+    setOpen(()=>false);//%%%@@取得同步
+  },[])//@@不放isOpen
+  // console.log(path);
+  useEffect(() => {
+    document.addEventListener('click',docHandleClick,false)
+    // document.addEventListener('click',(e,nodeMonthPicker)=>{docHandleClick(e,nodeMonthPicker)},false)
+    // document.addEventListener('click',()=>{docHandleClick},false)//@@@這樣才成功 且不能傳入參數
+    return () => {
+      console.log('组件销毁');
+      document.removeEventListener('click',docHandleClick,false)//@@跳創建頁點擊還是會觸發
+      // document.removeEventListener('click',()=>{docHandleClick()},false)
+    }
+  // }, [''])
+  }, [docHandleClick])
+
+  useEffect(()=>{
+    choiceDate(selectedYear,selectedMonth);
+    console.log('useEffect');
+  },[selectedYear, selectedMonth,choiceDate])//@@變成choiceDate需要層層useCallback
+
 
   const toggleDropdown = () => {
     console.log('開或關',!isOpen);
@@ -83,7 +84,7 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
   return (
     // <div className="dropdown" ref={ref=>{ this.node = ref}}>
     // <div className="dropdown" ref={(ref) => {node = ref}}>
-    <div className="dropdown" ref={nodeMonthPicker}> 
+    <div className="dropdown" ref={nodeMonthPicker}>
     {/* <div className="dropdown" ref={node}> */}
       <p>請選擇</p>
       <button
@@ -101,7 +102,7 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
               {
                 yearRange.map((yearNum,index) =>
                   (
-                    <a href="#" role="button"
+                    <a href="/" role="button"
                       key={index}
                       //@@@參數括號沒辦法閉包參考到外部yearNum(變成undefined)
                       // onClick={(e,yearNum)=>{changeYear(e,yearNum)}}
@@ -118,7 +119,7 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
               {
                 monthRange.map((monthNum,index) =>
                   (
-                    <a href="#" role="button"
+                    <a href="/" role="button"
                       key={index}
                       className={ monthNum === selectedMonth? `dropdown-item active`:`dropdown-item`}
                       onClick={(e) => {selectMonth(e,monthNum)}}

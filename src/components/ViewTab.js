@@ -15,9 +15,8 @@ const ViewTab = ({ activeTab, onTabChange }) => {
     <ul className="nav nav-tabs nav-fill my-4">
       <li className="nav-item">
         {/* <a className="nav-link active" href="#"> */}
-        <a 
-          className={ generateLinkClass(LIST_VIEW,activeTab)} 
-          href="#"
+        <button
+          className={ generateLinkClass(LIST_VIEW,activeTab)}
           onClick={(e) => {e.preventDefault(); onTabChange(LIST_VIEW)}}
         >
           <IosPaper
@@ -25,12 +24,11 @@ const ViewTab = ({ activeTab, onTabChange }) => {
             fontSize="25px"
             color="#007bff"
           />列表模式
-        </a>
+        </button>
       </li>
       <li className="nav-item">
-        <a 
+        <button
           className={ generateLinkClass(CHART_VIEW,activeTab)}
-          href="#"
           onClick={(e)=>{e.preventDefault();onTabChange(CHART_VIEW)}}
           >
           <IosPie
@@ -38,10 +36,10 @@ const ViewTab = ({ activeTab, onTabChange }) => {
             fontSize="25px"
             color="#007bff"
           />圖表模式
-        </a>
+        </button>
       </li>
     </ul>
-  ) 
+  )
 }
 
 ViewTab.propTypes = {

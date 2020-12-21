@@ -38,14 +38,14 @@
     "rules": {
       "react-hooks/rules-of-hooks": "warn",
       "react-hooks/exhaustive-deps": "warn",
-      "no-undef": "off",
-      "no-restricted-globals": "off",
+      "no-undef": "warn",
+      "no-restricted-globals": "warn",
       "no-unused-vars": "off",
-      "no-case-declarations":"off",
+      "no-case-declarations":"warn",
       "react/react-in-jsx-scope":"off",
       "react/prop-types":"off",
-      "react/no-unescaped-entities":"off",
-      "react/display-name":"off"
+      "react/no-unescaped-entities":"warn",
+      "react/display-name":"warn"
 
     }
   },

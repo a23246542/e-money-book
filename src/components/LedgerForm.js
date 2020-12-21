@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 // const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
 const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { //%%避免無傳入報錯
   //畫面表單
-  const [ title, setTitle ] = React.useState(ledgerItem&&ledgerItem.title||'');
-  const [ amount, setAmount ] = React.useState(ledgerItem&&ledgerItem.amount||'');//@但其實是數字
-  const [ date, setDate ] = React.useState(ledgerItem&&ledgerItem.date||'');
+  const [ title, setTitle ] = React.useState( (ledgerItem&&ledgerItem.title)||'');
+  const [ amount, setAmount ] = React.useState((ledgerItem&&ledgerItem.amount)||'');//@但其實是數字
+  const [ date, setDate ] = React.useState((ledgerItem&&ledgerItem.date)||'');
   //畫面資料狀態
   const [ validatePass, setValidatePass ] = React.useState(true);
   const [ alertMessage, setAlertMessage ] = React.useState('');
