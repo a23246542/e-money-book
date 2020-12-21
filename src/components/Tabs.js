@@ -11,7 +11,7 @@ const Tabs = ({children,activeIndex,onTabChange}) => {
       }
       console.log('tabs渲染');
       return (
-        <ul className="nav nav-tabs nav-fill"
+        <ul className="nav nav-tabs nav-pills nav-justified"
           data-testid="navTabs"
         >
           {React.Children.map(children,(item,index)=>{

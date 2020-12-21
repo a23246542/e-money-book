@@ -212,7 +212,7 @@ const Home = ({history, match}) => {
           Learn Code
         </a>
         <div className="headerWrap">
-          <div className="container">
+          <div className="container-fluid">
             <div className="row">
               <div className="col-12 col-sm-6">
                 <MonthPicker

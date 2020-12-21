@@ -21,16 +21,17 @@ function App() {
   const ledgerReducer = (state,action) => {
     const { type, payload } = action
     let dateObj, timestamp;//%%
-    const { formData } = payload;
+    // const { formData } = payload;
     switch (type) {
-      case 'deleteItem':
+      case 'deleteItem':{
         // delete state[payload.id];
         // let clone = {...ledgerItems};//@@ ReferenceError: Cannot access 'ledgerItems' before initialization
         let clone = { ...state }
         delete clone[payload.id];
         return clone;
-      case 'createItem':
-        const { selectedCategoryId } = payload;
+      }
+      case 'createItem':{
+        const { selectedCategoryId, formData } = payload;
         // console.log(formData,selectedCategoryId);
         dateObj = parseToYearsAndMonth(formData.date);
         timestamp = new Date().getTime();
@@ -45,10 +46,11 @@ function App() {
         console.log({...state, [newId]: newItem});
         // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
         return {...state, [newId]: newItem};
-      case 'updateItem':
+      }
+      case 'updateItem':{
         // const { id, formData1, updatedCategoryId} = payload;//%%% const會重複
         // const dateObj = parseToYearsAndMonth(formData1.date);
-        const { updatedCategoryId } = payload;
+        const { updatedCategoryId, formData } = payload;
         dateObj = parseToYearsAndMonth(formData.date);
         timestamp = new Date(formData.date).getTime();
         const modifiedItem = {
@@ -61,6 +63,7 @@ function App() {
         // return {...state, state[id]: updatedItem}/ %%用modifiedItem
         // return {...state, modifiedItem[id]: modifiedItem} %% 屬性 Failed to compile Unexpected token, expected ","
         return {...state, [modifiedItem.id]: modifiedItem};
+      }
       default:
         return state;
     }

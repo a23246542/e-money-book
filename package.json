@@ -41,12 +41,12 @@
       "no-undef": "warn",
       "no-restricted-globals": "warn",
       "no-unused-vars": "off",
-      "no-case-declarations":"warn",
-      "react/react-in-jsx-scope":"off",
-      "react/prop-types":"off",
-      "react/no-unescaped-entities":"warn",
-      "react/display-name":"warn"
-
+      "no-case-declarations": "warn",
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "react/no-unescaped-entities": "warn",
+      "react/display-name": "warn",
+      "jsx-a11y/anchor-is-valid":"off"
     }
   },
   "browserslist": {
