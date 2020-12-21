@@ -12,19 +12,21 @@ import AppContext from '../AppContext';
 
 
 
-const Create = ({ match, history, dis }) => {
+const Create = ({ match, history }) => {
   //@parmas
   //收入還是支出 tab切換 selectedTab
   //收入還是支出 分類切換 selectedCategory
   //展示表單 空或是item
 
-  const { categories, dispatchLedger, ledgerItems} = useContext(AppContext);
-  // const [selectedTab,setTab] = useState('支出');
-  const [ selectedTab, setTab ] = useState(TYPE_OUTCOME);//字串
-  const [ selectedCategory, setCategory ] = useState(null);
-  const [ validationPassed, setValidation ] = useState(true);
   const { id } = match.params;
-  const editItem = id && ledgerItems[id] ? ledgerItems[id] : {};
+  const { categories, dispatchLedger, ledgerStore} = useContext(AppContext);
+  // const [selectedTab,setTab] = useState('支出');
+  // const [ selectedTab, setTab ] = useState(TYPE_OUTCOME);//字串
+  console.log(id,ledgerStore);
+  const [ selectedTab, setTab ] = useState( id && ledgerStore[id] ? categories[ledgerStore[id].cid].type:TYPE_OUTCOME );// !每次重新執行
+  const [ selectedCategory, setCategory ] = useState( id && ledgerStore[id]? categories[ledgerStore[id].cid]: null);
+  const [ validationPassed, setValidation ] = useState(true);
+  const editItem = id && ledgerStore[id] ? ledgerStore[id] : {};
   // const [activeIndex,setIndex] = useState(0);
   const selectedTabIndex = useMemo(()=>{
     return testTabs.findIndex(item=>item.value === selectedTab);//!!!
@@ -37,7 +39,8 @@ const Create = ({ match, history, dis }) => {
   const filterCategories = useMemo(()=>{
     return categoryIdList.filter(id =>categories[id].type === selectedTab)
     .map(id =>categories[id]);
-  },[categoryIdList.length,selectedTab])
+  // },[categoryIdList.length,selectedTab])
+  },[categoryIdList,selectedTab,categories])
 
   const tabChange = (index) => {
     setTab(testTabs[index].value)
@@ -52,7 +55,8 @@ const Create = ({ match, history, dis }) => {
   }
 
   const submitForm = (formData, isEditMode) => {
-    if(!selectedCategory.id) {
+    // if(!selectedCategory.id) {//@@@ null.id不行
+    if(!selectedCategory) {
       setValidation(false);
       return;
     }
@@ -63,7 +67,7 @@ const Create = ({ match, history, dis }) => {
         payload: {
           formData,
           // isEditMode %%%造成cid為undefined
-          selectedCategoryId:selectCategory.id
+          selectedCategoryId:selectedCategory.id
         }
       });
       setTimeout(()=>{
@@ -71,7 +75,18 @@ const Create = ({ match, history, dis }) => {
       },0)
     //edit
     } else {
-
+      dispatchLedger({
+        type: 'updateItem',
+        payload: {
+          formData,
+          // updatedCategoryId: selectedCategory,/%%% bug半天
+          updatedCategoryId: selectedCategory.id,
+        }
+      })
+      setTimeout(()=>{
+        console.log(ledgerStore);
+        history.push('/');
+      },0)
     }
   }
 

@@ -20,7 +20,8 @@ function App() {
 
   const ledgerReducer = (state,action) => {
     const { type, payload } = action
-
+    let dateObj, timestamp;//%%
+    const { formData } = payload;
     switch (type) {
       case 'deleteItem':
         // delete state[payload.id];
@@ -29,10 +30,10 @@ function App() {
         delete clone[payload.id];
         return clone;
       case 'createItem':
-        const { formData, selectedCategoryId } = payload;
+        const { selectedCategoryId } = payload;
         // console.log(formData,selectedCategoryId);
-        const dateObj = parseToYearsAndMonth(formData.date);
-        const timestamp = new Date().getTime();
+        dateObj = parseToYearsAndMonth(formData.date);
+        timestamp = new Date().getTime();
         const newId = makeID();
         const newItem = {
           ...formData,
@@ -41,21 +42,37 @@ function App() {
           monthCategory: `${dateObj.year}-${dateObj.month}`,
           timestamp
         }
-        console.log({...state, newId: newItem});
+        console.log({...state, [newId]: newItem});
         // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
         return {...state, [newId]: newItem};
+      case 'updateItem':
+        // const { id, formData1, updatedCategoryId} = payload;//%%% const會重複
+        // const dateObj = parseToYearsAndMonth(formData1.date);
+        const { updatedCategoryId } = payload;
+        dateObj = parseToYearsAndMonth(formData.date);
+        timestamp = new Date(formData.date).getTime();
+        const modifiedItem = {
+          // ...state[id],//%%ledgerForm已經帶上id等等
+          ...formData,
+          cid: updatedCategoryId,
+          timestamp,
+          monthCategory: `${dateObj.year}-${dateObj.month}`,
+        }
+        // return {...state, state[id]: updatedItem}/ %%用modifiedItem
+        // return {...state, modifiedItem[id]: modifiedItem} %% 屬性 Failed to compile Unexpected token, expected ","
+        return {...state, [modifiedItem.id]: modifiedItem};
       default:
         return state;
     }
 
   }
 
-  const [ ledgerItems, dispatchLedger ] = useReducer(ledgerReducer,defaultState.ledgerItems)
+  const [ ledgerStore, dispatchLedger ] = useReducer(ledgerReducer,defaultState.ledgerItems)
 
   return (
     <Provider value={{
       categories:defaultState.categories,
-      ledgerItems,
+      ledgerStore,
       dispatchLedger,
       // node
     }}>

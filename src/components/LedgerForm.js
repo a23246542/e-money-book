@@ -42,10 +42,10 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
           console.log(title,amount,date);//%%%旧资料
           // onFormSubmit(...ledgerItem,title,amount,date);//%% @@TypeError: ledgerItem is not iterable
           // setTimeout(()=>{
-            onFormSubmit({...ledgerItem,title,amount,date},editMode)
+            onFormSubmit({...ledgerItem,title,amount,date}, isEditMode)
           // },1000)
         } else {
-          onFormSubmit({title,amount,date},editMode);
+          onFormSubmit({title,amount,date}, isEditMode);
         }
       }
     } else {
@@ -75,7 +75,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
                 onChange={(e)=>{setTitle(e.target.value.trim())}}
                 // ref={(input) => {setTitle(input.current.value)}}//@@原本的操作
               />
-              <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+              <small id="emailHelp" className="form-text text-muted">W'ell never share your email with anyone else.</small>
             </div>
           </div>
         </div>
@@ -143,7 +143,9 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
 }
 
 LedgerForm.propTypes = {
-
+  ledgerItem: PropTypes.object.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
+  onCancelSubmit: PropTypes.func.isRequired
 }
 
 export default LedgerForm

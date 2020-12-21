@@ -58,7 +58,7 @@ const Home = ({history, match}) => {
   //   })
   // }
 
-  const { categories, ledgerItems, dispatchLedger} = useContext(AppContext);
+  const { categories, ledgerStore, dispatchLedger} = useContext(AppContext);
 
   // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));//@@不需 會自動深拷貝
   // const [ list, setList ] = useState(items);
@@ -74,22 +74,34 @@ const Home = ({history, match}) => {
   //     return item;
   //   })
   // },[list.length])
-  const ledgerIdList = Object.keys(ledgerItems)
+  // const ledgerIdList = Object.keys(ledgerStore)// @@移到下面避免重新渲染
 
   const listWithCategory = useMemo(()=>{
     // let cloneObj = [...ledgerItems];//%%無法展開
-    let cloneObj = JSON.parse(JSON.stringify(ledgerItems));
+    console.log('計算listWithCategory');
+    const ledgerIdList = Object.keys(ledgerStore)
+    let cloneObj = JSON.parse(JSON.stringify(ledgerStore));
     return ledgerIdList
     .map((id) => {
-      cloneObj[id].category = categories[ledgerItems[id].cid];//@@原本會改到
+      cloneObj[id].category = categories[ledgerStore[id].cid];//@@原本會改到
       return cloneObj[id];
     // },{...ledgerItems})//%%%回傳物件
     })
-  },[ledgerIdList.length])
+  // },[ledgerIdList.length])
+  },[categories,ledgerStore])//!!!換掉物件 不需ledgerStore.length可重新計算
   // },[])
 
-  // console.log(listWithCategory);
-  // console.log(currentDate);
+  // ----------------------------------------------------
+  // let cloneObj = JSON.parse(JSON.stringify(ledgerStore));
+  // //@@可否箭頭立即函是
+  // console.log('home',ledgerStore,ledgerIdList);
+
+  // const listWithCategory = ledgerIdList
+  // .map((id) => {
+  //   cloneObj[id].category = categories[ledgerStore[id].cid];//@@原本會改到
+  //   return cloneObj[id];
+  // })
+// ---------------------------------------------------------
 
   // const listWithCategory = list.map(item=>{ //切換tabView會重新來
   //   console.log('執行listWithCategory');
@@ -98,23 +110,25 @@ const Home = ({history, match}) => {
   // })
 
   const filteredListWithCategory = useMemo(()=>{
+    console.log('計算filteredListWithCategory');
 
     const currentDateArr = Object.values(currentDate);
     // currentDateArr[1] = padLeft(currentDateArr[1]);
     const currentDateStr = currentDateArr.join('-');
-    console.log(currentDateStr);
 
     return listWithCategory.filter((item)=>{
       // return item.date.includes(currentDateStr)
       return item.monthCategory.includes(currentDateStr)
     })
   // },[ledgerIdList.length, currentDate.month, listWithCategory.length])
-  },[currentDate.month, listWithCategory.length])
+  // },[currentDate.month, listWithCategory.length])
+  },[currentDate,listWithCategory])
 
   const {totalIncome, totalOutcome} = useMemo(()=>{ //用另一個computed來計算
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
     let totalIncome = 0,totalOutcome = 0;
     // list.forEach(item => {
+      console.log(listWithCategory);
     listWithCategory.forEach(item => {
       if(item.category.type === 'outcome') {
         totalOutcome += item.amount;
@@ -122,10 +136,11 @@ const Home = ({history, match}) => {
         totalIncome += item.amount;
       }
     })
-    console.log('count total');
+    console.log('計算total');
     return { totalIncome, totalOutcome }
   // },[ledgerIdList.length])
-  },[filteredListWithCategory.length])
+  // },[filteredListWithCategory.length])
+  },[listWithCategory])
 
 
   const changeDate = (yearNum,monthNum) => {
