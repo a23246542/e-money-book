@@ -11,7 +11,13 @@ import IosBasket from 'react-ionicons/lib/IosBasket';
 import IosPhonePortrait from 'react-ionicons/lib/IosPhonePortrait';
 import LogoYen from 'react-ionicons/lib/LogoYen';
 
-export default { IosCreate, IosCloseCircle, 
-  IosPlane, IosPaper, IosPie, IosAddCircle, 
-  IosCard, IosCash, IosRestaurant, IosBasket, 
+const ionicons =  { IosCreate, IosCloseCircle,
+  IosPlane, IosPaper, IosPie, IosAddCircle,
+  IosCard, IosCash, IosRestaurant, IosBasket,
   IosPhonePortrait, LogoYen};
+
+export default ionicons;
+// export default { IosCreate, IosCloseCircle,
+//   IosPlane, IosPaper, IosPie, IosAddCircle,
+//   IosCard, IosCash, IosRestaurant, IosBasket,
+//   IosPhonePortrait, LogoYen}; //%%% Assign object to a variable before exporting as module default  import/no-anonymous-default-export
