@@ -10,11 +10,20 @@ import IosRestaurant from 'react-ionicons/lib/IosRestaurant';
 import IosBasket from 'react-ionicons/lib/IosBasket';
 import IosPhonePortrait from 'react-ionicons/lib/IosPhonePortrait';
 import LogoYen from 'react-ionicons/lib/LogoYen';
+import IosTrain from 'react-ionicons/lib/IosTrain';
+import IosBeer from 'react-ionicons/lib/IosBeer';
+import IosCar from 'react-ionicons/lib/IosCar';
+import IosMedkit from 'react-ionicons/lib/IosMedkit';
+import IosFootball from 'react-ionicons/lib/IosFootball';
+import IosPaw from 'react-ionicons/lib/IosPaw';
+import IosApps from 'react-ionicons/lib/IosApps';
 
 const ionicons =  { IosCreate, IosCloseCircle,
   IosPlane, IosPaper, IosPie, IosAddCircle,
   IosCard, IosCash, IosRestaurant, IosBasket,
-  IosPhonePortrait, LogoYen};
+  IosPhonePortrait, LogoYen, IosTrain, IosBeer,
+  IosCar, IosMedkit, IosFootball, IosPaw, IosApps,
+};
 
 export default ionicons;
 // export default { IosCreate, IosCloseCircle,

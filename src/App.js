@@ -1,4 +1,4 @@
-import { useState, createContext, useReducer, useRef } from 'react';
+import { useState, createContext, useReducer, useRef, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
@@ -8,6 +8,8 @@ import Create from './containers/Create';
 import { testCategories, testItems } from './testData';
 import { Provider } from './AppContext';
 import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
+import api from './api';
+// import axios from 'axios';
 
 
 function App() {
@@ -17,6 +19,26 @@ function App() {
     categories: flattenArr(testCategories),
   }
   // const node = useRef(null);
+
+  // const action = {
+  //   getInitData(){
+  //     // let promiseArr = [axios.get('/category'),axios.get('/ledger')];
+  //     let ledgerItems,categories;
+  //     // Promise.all(promiseArr).then((data)=>{
+  //     //   console.log(data);
+  //     // })
+  //     // axios.get('/category').then((data)=>{
+  //     api.get('category').then((data)=>{
+  //       console.log(data);
+
+  //     })
+
+  //   }
+  // }
+
+  // useEffect(()=>{
+  //   action.getInitData();
+  // },[''])
 
   const ledgerReducer = (state,action) => {
     const { type, payload } = action
