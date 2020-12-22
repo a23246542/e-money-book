@@ -117,8 +117,8 @@ const Home = ({history, match}) => {
     const currentDateStr = currentDateArr.join('-');
 
     return listWithCategory.filter((item)=>{
-      // return item.date.includes(currentDateStr)
       return item.monthCategory.includes(currentDateStr)
+      // return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`);//!!更简易
     })
   // },[ledgerIdList.length, currentDate.month, listWithCategory.length])
   // },[currentDate.month, listWithCategory.length])

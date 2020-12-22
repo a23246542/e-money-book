@@ -7,7 +7,7 @@ import MonthPicker from '../MonthPicker'
 let props = {
   year: 2020,
   month: 12,
-  onChange: jest.fn()
+  choiceDate: jest.fn()
 }
 
 let wrapper
@@ -60,14 +60,24 @@ describe('test MonthPicker component', () => {
   })
 
   it('click the year&month item, should trigger the right status change',()=>{
-    // wrapper.find('.dropdown-toggle').simulate('click')
-    // wrapper.find('.years-range .dropdown-item').first().simulate('click')
+    wrapper.find('.dropdown-toggle').simulate('click')
+    wrapper.find('.years-range .dropdown-item').first().simulate('click');
+    wrapper.find('.months-range .dropdown-item').first().simulate('click');
+    // expect(props.choiceDate).toHaveBeenCalled();
     // expect(wrapper.find('.years-range .dropdown-item').first().hasClass('active'))
     // .toEqual(true)
-    // expect(wrapper.state('selectedYear')).toEqual(2014)
+    // wrapper.invoke()
+    expect(wrapper.props().choiceDate).toHaveBeenCalledWith(2016,1)
+    // -----------------------------------------
+    // wrapper.setProps({year:2016,month:1});//@@!!setYear setMonth有自动触发
+    // wrapper.update();//@@没添加
+    // console.log(wrapper.debug());
+    expect(wrapper.find('.dropdown-toggle').first().text()).toEqual('2016年 01月');
+    expect(wrapper.find('.dropdown-menu').length).toEqual(0);
+    // expect(wrapper.state('selectedYear')).toEqual(2016)
     // wrapper.find('.months-range .dropdown-item').first().simulate('click')
     // expect(wrapper.state('isOpen')).toEqual(false)
-    // expect(props.onChange).toHaveBeenCalledWith(2014, 1)
+    // expect(props.onChange).toHaveBeenCalledWith(2016, 1)
   })
 
   it('after the dropdown is shown，click the document should close the dropdown',()=>{

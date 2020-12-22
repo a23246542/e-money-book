@@ -48,7 +48,8 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
   useEffect(()=>{
     choiceDate(selectedYear,selectedMonth);
     console.log('useEffect');
-  },[selectedYear, selectedMonth,choiceDate])//@@變成choiceDate需要層層useCallback
+  },[selectedYear,selectedMonth,choiceDate])//@@變成choiceDate需要層層useCallback
+  // },[selectedMonth,choiceDate])//@@變成choiceDate需要層層useCallback
 
 
   const toggleDropdown = () => {

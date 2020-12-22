@@ -20,7 +20,7 @@ function App() {
 
   const ledgerReducer = (state,action) => {
     const { type, payload } = action
-    let dateObj, timestamp;//%%
+    let dateObj = {}, timestamp = 0;//%%
     // const { formData } = payload;
     switch (type) {
       case 'deleteItem':{
@@ -52,7 +52,7 @@ function App() {
         // const dateObj = parseToYearsAndMonth(formData1.date);
         const { updatedCategoryId, formData } = payload;
         dateObj = parseToYearsAndMonth(formData.date);
-        timestamp = new Date(formData.date).getTime();
+        timestamp = new Date(formData.date).getTime();//@年月日轉排序
         const modifiedItem = {
           // ...state[id],//%%ledgerForm已經帶上id等等
           ...formData,
