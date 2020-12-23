@@ -109,20 +109,20 @@ const Home = ({history, match}) => {
   //   return item;
   // })
 
-  const filteredListWithCategory = useMemo(()=>{
-    console.log('計算filteredListWithCategory');
+  // const filteredListWithCategory = useMemo(()=>{
+  //   console.log('計算filteredListWithCategory');
 
-    const currentDateArr = Object.values(currentDate);
-    // currentDateArr[1] = padLeft(currentDateArr[1]);
-    const currentDateStr = currentDateArr.join('-');
+  //   const currentDateArr = Object.values(currentDate);
+  //   // currentDateArr[1] = padLeft(currentDateArr[1]);
+  //   const currentDateStr = currentDateArr.join('-');
 
-    return listWithCategory.filter((item)=>{
-      return item.monthCategory.includes(currentDateStr)
-      // return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`);//!!更简易
-    })
-  // },[ledgerIdList.length, currentDate.month, listWithCategory.length])
-  // },[currentDate.month, listWithCategory.length])
-  },[currentDate,listWithCategory])
+  //   return listWithCategory.filter((item)=>{
+  //     return item.monthCategory.includes(currentDateStr)
+  //     // return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`);//!!更简易
+  //   })
+  // // },[ledgerIdList.length, currentDate.month, listWithCategory.length])
+  // // },[currentDate.month, listWithCategory.length])
+  // },[currentDate,listWithCategory])
 
   const {totalIncome, totalOutcome} = useMemo(()=>{ //用另一個computed來計算
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
@@ -130,7 +130,8 @@ const Home = ({history, match}) => {
     // list.forEach(item => {
       console.log(listWithCategory);
     listWithCategory.forEach(item => {
-      if(item.category.type === 'outcome') {
+      // if(item.category.type === 'outcome') {
+      if(categories[item.cid] === 'outcome') {
         totalOutcome += item.amount;
       } else {
         totalIncome += item.amount;
@@ -253,7 +254,7 @@ const Home = ({history, match}) => {
             //   const currentDateStr =  Object.values(currentDate).join('-');
             //   return item.date.includes(currentDateStr);
             // })}// 改放入計算後的值!!
-            items = { filteredListWithCategory }
+            items = { listWithCategory }
             onModifyItem={modifyItem}
             onDeleteItem={deleteItem}
             ></LedgerList>

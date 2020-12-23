@@ -14,37 +14,54 @@ import api from './api';
 
 function App() {
 
-  const defaultState = {
-    ledgerItems: flattenArr(testItems),
-    categories: flattenArr(testCategories),
-  }
+  // const state = {//%%!!用這個state reducer不會更新後
+  //   // ledgerItems: flattenArr(testItems),
+  //   // categories: flattenArr(testCategories),
+  //   ledgerItems: {},
+  //   categories: {},
+  //   currentDate: parseToYearsAndMonth(),
+  // }
   // const node = useRef(null);
 
-  // const action = {
-  //   getInitData(){
-  //     // let promiseArr = [axios.get('/category'),axios.get('/ledger')];
-  //     let ledgerItems,categories;
-  //     // Promise.all(promiseArr).then((data)=>{
-  //     //   console.log(data);
-  //     // })
-  //     // axios.get('/category').then((data)=>{
-  //     api.get('category').then((data)=>{
-  //       console.log(data);
+  // const [ state, setState ] = useState({
+  //   ledgerItems: {},
+  //   categories: {},
+  //   currentDate: parseToYearsAndMonth(),
+  // })
 
-  //     })
+  const [ ledgerItems, setLedgerItems ] = useState({})
+  const [ categories, setCategories] = useState({})
+  const [ currentDate, setCurrentDate ] = useState(()=>parseToYearsAndMonth());//@@保留
 
-  //   }
-  // }
+  const action = {
+    getInitData: async () => {
+      // const getUrlWithData = `/ledger/monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
+      const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}`;
+      const promiseArr = [api.get('/category'),api.get(getUrlWithData)];
+      const resultArr = await Promise.all(promiseArr);//@@改then試同步?
+      const [ resLedger,resCategory ] = resultArr;
+      // setLedgerItems(flattenArr(resLedger.data));//%%@@
+      dispatchLedger({
+        type:'initialItem',
+        payload:flattenArr(resLedger.data)
+      })
+      setCategories(flattenArr(resCategory.data));
+    }
+  }
 
-  // useEffect(()=>{
-  //   action.getInitData();
-  // },[''])
+  useEffect(()=>{
+    action.getInitData();
+  },[])
 
   const ledgerReducer = (state,action) => {
     const { type, payload } = action
     let dateObj = {}, timestamp = 0;//%%
     // const { formData } = payload;
     switch (type) {
+      case 'initialItem': {
+
+        return payload;
+      }
       case 'deleteItem':{
         // delete state[payload.id];
         // let clone = {...ledgerItems};//@@ ReferenceError: Cannot access 'ledgerItems' before initialization
@@ -92,11 +109,11 @@ function App() {
 
   }
 
-  const [ ledgerStore, dispatchLedger ] = useReducer(ledgerReducer,defaultState.ledgerItems)
+  const [ ledgerStore, dispatchLedger ] = useReducer(ledgerReducer,ledgerItems)
 
   return (
     <Provider value={{
-      categories:defaultState.categories,
+      categories:categories,
       ledgerStore,
       dispatchLedger,
       // node
