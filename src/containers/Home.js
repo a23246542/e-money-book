@@ -12,6 +12,7 @@ import MonthPicker from '../components/MonthPicker';
 import { Tabs, Tab } from '../components/Tabs(bad)';
 import AppContext from '../AppContext';
 // import {Tabs, Tab} from '../components/Tabs';
+import Loader from '../components/Loader';
 
 
 // const initItemsWithCategory = items.map(item => { //!!@移到外面就不會切換時一直執行
@@ -62,8 +63,9 @@ const Home = ({history, match}) => {
     categories, 
     ledgerStore, 
     // dispatchLedger, 
+    currentDate,
+    isLoading,
     actions,
-    currentDate
   } = useContext(AppContext);
 
   // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));//@@不需 會自動深拷貝
@@ -263,29 +265,36 @@ const Home = ({history, match}) => {
           <Tab>列表</Tab>
           <Tab>圖表</Tab>
         </Tabs> */}
-        <ViewTab
-          activeTab={ tabView }
-          onTabChange={ changeView }
-        />
-        <CreateBtn
-          onCreateItem={ createItem }
-        />
-        { tabView === LIST_VIEW && listWithCategory.length > 0 &&
-          <LedgerList
-            // items={list} //!
-            // items={listWithCategory.filter(item=>{
-            //   const currentDateStr =  Object.values(currentDate).join('-');
-            //   return item.date.includes(currentDateStr);
-            // })}// 改放入計算後的值!!
-            items = { listWithCategory }
-            onModifyItem={modifyItem}
-            onDeleteItem={deleteItem}
-            // categories={categories}
-            ></LedgerList>
+        { isLoading &&
+          <Loader/>
         }
-        {
-          tabView === CHART_VIEW &&
-          "這裡是圖表模式"
+        { !isLoading &&
+          <Fragment>
+              <ViewTab
+                activeTab={ tabView }
+                onTabChange={ changeView }
+              />
+              <CreateBtn
+                onCreateItem={ createItem }
+              />
+              { tabView === LIST_VIEW && listWithCategory.length > 0 &&
+                <LedgerList
+                  // items={list} //!
+                  // items={listWithCategory.filter(item=>{
+                  //   const currentDateStr =  Object.values(currentDate).join('-');
+                  //   return item.date.includes(currentDateStr);
+                  // })}// 改放入計算後的值!!
+                  items = { listWithCategory }
+                  onModifyItem={modifyItem}
+                  onDeleteItem={deleteItem}
+                  // categories={categories}
+                  ></LedgerList>
+              }
+              {
+                tabView === CHART_VIEW &&
+                "這裡是圖表模式"
+              }
+          </Fragment>
         }
       </div>
     </Fragment>

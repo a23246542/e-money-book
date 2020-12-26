@@ -32,9 +32,11 @@ function App() {
   // const [ ledgerItems, setLedgerItems ] = useState({})
   const [ categories, setCategories] = useState({})
   const [ currentDate, setCurrentDate ] = useState(()=>parseToYearsAndMonth());//@@保留
+  const [ isLoading, setIsLoading ] = useState(false);
 
   const actions = {
     getInitData: async () => {
+      setIsLoading(true);
       // const getUrlWithData = `/ledger/monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'),api.get(getUrlWithData)];
@@ -47,8 +49,10 @@ function App() {
         payload:flattenArr(resLedger.data)
       })
       setCategories(flattenArr(resCategory.data));
+      setIsLoading(false);
     },
     selectNewMonth: async (year, month) => {
+      setIsLoading(true);
       const getUrlWithData = `/ledger?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
       const res = await api.get(getUrlWithData);
       dispatchLedger({
@@ -58,14 +62,17 @@ function App() {
       setCurrentDate({
         year, month
       })
+      setIsLoading(false);
     },
     deleteData: async (item) => {
+      setIsLoading(true);
       await api.delete(`/ledger/${item.id}`).then(() =>{
         console.log('順序1');
         dispatchLedger({
           type:'deleteItem',
           payload: item
         });
+        setIsLoading(false);
       })
       console.log('順序2');
     }
@@ -140,6 +147,7 @@ function App() {
       ledgerStore,
       // dispatchLedger,//~~因為在父層做幾乎不用 資料狀態在父層改變傳下去就好
       currentDate,
+      isLoading,
       actions,
       // node
     }}>

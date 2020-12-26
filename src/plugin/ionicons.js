@@ -17,12 +17,17 @@ import IosMedkit from 'react-ionicons/lib/IosMedkit';
 import IosFootball from 'react-ionicons/lib/IosFootball';
 import IosPaw from 'react-ionicons/lib/IosPaw';
 import IosApps from 'react-ionicons/lib/IosApps';
+// import IosRefresh from 'react-ionicons/lib/IosApps';//%%忘記改道後面 難怪出來都錯的
+import IosRefresh from 'react-ionicons/lib/IosRefresh';
+import MdRefresh from 'react-ionicons/lib/MdRefresh';
+
 
 const ionicons =  { IosCreate, IosCloseCircle,
   IosPlane, IosPaper, IosPie, IosAddCircle,
   IosCard, IosCash, IosRestaurant, IosBasket,
   IosPhonePortrait, LogoYen, IosTrain, IosBeer,
   IosCar, IosMedkit, IosFootball, IosPaw, IosApps,
+  IosRefresh, MdRefresh
 };
 
 export default ionicons;
