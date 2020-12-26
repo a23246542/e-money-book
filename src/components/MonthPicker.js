@@ -99,7 +99,7 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
             style={{display: 'block',left:'50%'}} //!!!BS4默認隱藏
         >
           <div className="row text-center">
-            <div className="col years-range border-right">
+            <div className="col-6 years-range border-right">
               {
                 yearRange.map((yearNum,index) =>
                   (
@@ -116,7 +116,7 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
                 )
               }
             </div>
-            <div className="col months-range">
+            <div className="col-6 months-range">
               {
                 monthRange.map((monthNum,index) =>
                   (

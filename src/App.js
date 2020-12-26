@@ -29,29 +29,51 @@ function App() {
   //   currentDate: parseToYearsAndMonth(),
   // })
 
-  const [ ledgerItems, setLedgerItems ] = useState({})
+  // const [ ledgerItems, setLedgerItems ] = useState({})
   const [ categories, setCategories] = useState({})
   const [ currentDate, setCurrentDate ] = useState(()=>parseToYearsAndMonth());//@@保留
 
-  const action = {
+  const actions = {
     getInitData: async () => {
       // const getUrlWithData = `/ledger/monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
-      const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}`;
+      const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'),api.get(getUrlWithData)];
       const resultArr = await Promise.all(promiseArr);//@@改then試同步?
-      const [ resLedger,resCategory ] = resultArr;
+      // const [ resLedger,resCategory ] = resultArr;//%%%順序
+      const [ resCategory, resLedger ] = resultArr;
       // setLedgerItems(flattenArr(resLedger.data));//%%@@
       dispatchLedger({
         type:'initialItem',
         payload:flattenArr(resLedger.data)
       })
       setCategories(flattenArr(resCategory.data));
+    },
+    selectNewMonth: async (year, month) => {
+      const getUrlWithData = `/ledger?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
+      const res = await api.get(getUrlWithData);
+      dispatchLedger({
+        type:'initialItem',
+        payload: flattenArr(res.data),
+      })
+      setCurrentDate({
+        year, month
+      })
+    },
+    deleteData: async (item) => {
+      await api.delete(`/ledger/${item.id}`).then(() =>{
+        console.log('順序1');
+        dispatchLedger({
+          type:'deleteItem',
+          payload: item
+        });
+      })
+      console.log('順序2');
     }
   }
 
-  useEffect(()=>{
-    action.getInitData();
-  },[])
+  // useEffect(()=>{ //%%%
+  //   action.getInitData();
+  // },[])
 
   const ledgerReducer = (state,action) => {
     const { type, payload } = action
@@ -109,13 +131,16 @@ function App() {
 
   }
 
-  const [ ledgerStore, dispatchLedger ] = useReducer(ledgerReducer,ledgerItems)
+  // const [ ledgerStore, dispatchLedger ] = useReducer(ledgerReducer,ledgerItems)
+  const [ ledgerStore, dispatchLedger ] = useReducer(ledgerReducer,{})
 
   return (
     <Provider value={{
       categories:categories,
       ledgerStore,
-      dispatchLedger,
+      // dispatchLedger,//~~因為在父層做幾乎不用 資料狀態在父層改變傳下去就好
+      currentDate,
+      actions,
       // node
     }}>
       <Router>

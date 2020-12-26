@@ -58,15 +58,22 @@ const Home = ({history, match}) => {
   //   })
   // }
 
-  const { categories, ledgerStore, dispatchLedger} = useContext(AppContext);
+  const { 
+    categories, 
+    ledgerStore, 
+    // dispatchLedger, 
+    actions,
+    currentDate
+  } = useContext(AppContext);
 
   // const [ list, setList ] = useState(JSON.parse(JSON.stringify(initItemsWithCategory)));//@@不需 會自動深拷貝
   // const [ list, setList ] = useState(items);
   // const [ list, setList ] = useState(itemsWithCategory);//%%%初始值不能變化
-  const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
+  // const [ currentDate, setCurrentDate ] = useState(parseToYearsAndMonth())
   //@@ 是否應該改用ref 因為update情況下 useState不會重取
   const [ tabView, setTabView ] = useState(LIST_VIEW);
 
+  console.log('獲取資料',categories,ledgerStore);
   // const listWithCategory  = useMemo(()=>{ //切換tabView不會重新來
   //   console.log('執行listWithCategory');
   //   return list.map(item=>{
@@ -76,10 +83,23 @@ const Home = ({history, match}) => {
   // },[list.length])
   // const ledgerIdList = Object.keys(ledgerStore)// @@移到下面避免重新渲染
 
+  useEffect(() => {
+    actions.getInitData();
+  },[''])
+
+  
+  const categoriesLen = Object.keys(categories).length;
+  const ledgerLen = Object.keys(ledgerStore).length;
+
   const listWithCategory = useMemo(()=>{
-    // let cloneObj = [...ledgerItems];//%%無法展開
     console.log('計算listWithCategory');
-    const ledgerIdList = Object.keys(ledgerStore)
+    // let cloneObj = [...ledgerItems];//%%無法展開
+    // console.log(!categoriesLen > 0 ,!ledgerLen > 0)
+    // if(!categoriesLen > 0 && !ledgerLen > 0 ) { //%%%% &&邏輯想錯
+    if(!categoriesLen > 0 || !ledgerLen > 0 ) { //%%%% &&邏輯想錯
+      return []
+    }
+    const ledgerIdList = Object.keys(ledgerStore);
     let cloneObj = JSON.parse(JSON.stringify(ledgerStore));
     return ledgerIdList
     .map((id) => {
@@ -87,8 +107,8 @@ const Home = ({history, match}) => {
       return cloneObj[id];
     // },{...ledgerItems})//%%%回傳物件
     })
-  // },[ledgerIdList.length])
-  },[categories,ledgerStore])//!!!換掉物件 不需ledgerStore.length可重新計算
+  // },[ledgerLen,categoriesLen])
+  },[categories,ledgerStore])//!!!是否換掉物件 不需ledgerStore.length可重新計算
   // },[])
 
   // ----------------------------------------------------
@@ -126,12 +146,12 @@ const Home = ({history, match}) => {
 
   const {totalIncome, totalOutcome} = useMemo(()=>{ //用另一個computed來計算
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
+    if(!listWithCategory.length>0 || !categoriesLen>0) return {totalIncome:0, totalOutcome:0};
     let totalIncome = 0,totalOutcome = 0;
     // list.forEach(item => {
-      console.log(listWithCategory);
     listWithCategory.forEach(item => {
       // if(item.category.type === 'outcome') {
-      if(categories[item.cid] === 'outcome') {
+      if(categories[item.cid].type === 'outcome') {
         totalOutcome += item.amount;
       } else {
         totalIncome += item.amount;
@@ -141,14 +161,16 @@ const Home = ({history, match}) => {
     return { totalIncome, totalOutcome }
   // },[ledgerIdList.length])
   // },[filteredListWithCategory.length])
-  },[listWithCategory])
+  // },[listWithCategory.length,categoriesLen])//@@
+  },[listWithCategory,categories])
 
 
   const changeDate = useCallback((yearNum,monthNum) => {
-    setCurrentDate({
-      year:yearNum,
-      month:monthNum
-    })
+    // setCurrentDate({//放在父層去做了
+    //   year:yearNum,
+    //   month:monthNum
+    // })
+    actions.selectNewMonth(yearNum,monthNum);
     // Object.values(currentDate).join('-')
   },[]);
 
@@ -190,13 +212,14 @@ const Home = ({history, match}) => {
     //   return item.id !== clickedItem.id
     // })
     // setList(newList);
-    dispatchLedger({
-      type:'deleteItem',
-      payload: clickedItem
-    });
-
+    // dispatchLedger({
+    //   type:'deleteItem',
+    //   payload: clickedItem
+    // });
+    actions.deleteData(clickedItem);
   };
 
+  console.log('listWithCategory',listWithCategory,categories);
   return (
     <Fragment>
       <header className="App-header">
@@ -247,7 +270,7 @@ const Home = ({history, match}) => {
         <CreateBtn
           onCreateItem={ createItem }
         />
-        { tabView === LIST_VIEW &&
+        { tabView === LIST_VIEW && listWithCategory.length > 0 &&
           <LedgerList
             // items={list} //!
             // items={listWithCategory.filter(item=>{
@@ -257,6 +280,7 @@ const Home = ({history, match}) => {
             items = { listWithCategory }
             onModifyItem={modifyItem}
             onDeleteItem={deleteItem}
+            // categories={categories}
             ></LedgerList>
         }
         {

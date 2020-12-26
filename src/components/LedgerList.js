@@ -1,9 +1,12 @@
+import { useContext } from 'react'
 import PropTypes from 'prop-types';
 import Ionicons from '../plugin/ionicons';
+import AppContext from '../AppContext';
 
 const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
 
   const { IosCreate, IosCloseCircle } = Ionicons;
+  const { categories } = useContext(AppContext);
 
   return (
     <ul className="list-group">
@@ -11,7 +14,8 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
         items.map(item => {
 
           // const {iconName:CategoryIcon} = item.category;//%%@@不行
-          const CategoryIcon = Ionicons[item.category.iconName]
+          // const CategoryIcon = Ionicons[item.category.iconName]
+          const CategoryIcon = Ionicons[categories[item.cid].iconName]
           return (
             <li className="list-group-item d-flex align-items-center"
               key={item.id}
