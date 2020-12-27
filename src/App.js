@@ -34,9 +34,17 @@ function App() {
   const [ currentDate, setCurrentDate ] = useState(()=>parseToYearsAndMonth());//@@保留
   const [ isLoading, setIsLoading ] = useState(false);
 
-  const actions = {
-    getInitData: async () => {
+  const withLoader = (cb) => {
+    return (...args) => {
       setIsLoading(true);
+      return cb(...args)
+      .then(() => { setIsLoading(false);});
+    }
+  }
+
+  const actions = {
+    getInitData: withLoader(async () => {
+      // setIsLoading(true);
       // const getUrlWithData = `/ledger/monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'),api.get(getUrlWithData)];
@@ -49,10 +57,10 @@ function App() {
         payload:flattenArr(resLedger.data)
       })
       setCategories(flattenArr(resCategory.data));
-      setIsLoading(false);
-    },
-    selectNewMonth: async (year, month) => {
-      setIsLoading(true);
+      // setIsLoading(false);
+    }),
+    selectNewMonth: withLoader(async (year, month) => {
+      // setIsLoading(true);
       const getUrlWithData = `/ledger?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
       const res = await api.get(getUrlWithData);
       dispatchLedger({
@@ -62,21 +70,21 @@ function App() {
       setCurrentDate({
         year, month
       })
-      setIsLoading(false);
+      // setIsLoading(false);
       // return res;//返不返回都可以
-    },
-    deleteData: async (item) => {
-      setIsLoading(true);
+    }),
+    deleteData: withLoader(async (item) => {
+      // setIsLoading(true);
       await api.delete(`/ledger/${item.id}`).then(() =>{
         console.log('順序1');
         dispatchLedger({
           type:'deleteItem',
           payload: item
         });
-        setIsLoading(false);
+        // setIsLoading(false);
       })
       console.log('順序2');
-    }
+    }),
   }
 
   // useEffect(()=>{ //%%%
