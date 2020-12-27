@@ -45,7 +45,7 @@ function App() {
       const [ resCategory, resLedger ] = resultArr;
       // setLedgerItems(flattenArr(resLedger.data));//%%@@
       dispatchLedger({
-        type:'initialItem',
+        type:'fetchItems',
         payload:flattenArr(resLedger.data)
       })
       setCategories(flattenArr(resCategory.data));
@@ -56,13 +56,14 @@ function App() {
       const getUrlWithData = `/ledger?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
       const res = await api.get(getUrlWithData);
       dispatchLedger({
-        type:'initialItem',
+        type:'fetchItems',
         payload: flattenArr(res.data),
       })
       setCurrentDate({
         year, month
       })
       setIsLoading(false);
+      // return res;//返不返回都可以
     },
     deleteData: async (item) => {
       setIsLoading(true);
@@ -87,8 +88,7 @@ function App() {
     let dateObj = {}, timestamp = 0;//%%
     // const { formData } = payload;
     switch (type) {
-      case 'initialItem': {
-
+      case 'fetchItems': {
         return payload;
       }
       case 'deleteItem':{

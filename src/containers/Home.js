@@ -12,7 +12,7 @@ import MonthPicker from '../components/MonthPicker';
 import { Tabs, Tab } from '../components/Tabs(bad)';
 import AppContext from '../AppContext';
 // import {Tabs, Tab} from '../components/Tabs';
-import Loader from '../components/Loader';
+import Loader from '../components/common/Loader';
 
 
 // const initItemsWithCategory = items.map(item => { //!!@移到外面就不會切換時一直執行
@@ -289,6 +289,11 @@ const Home = ({history, match}) => {
                   onDeleteItem={deleteItem}
                   // categories={categories}
                   ></LedgerList>
+              }
+              { tabView === LIST_VIEW && listWithCategory.length === 0 &&
+                <div className="no-record alert alert-light text-center">
+                  您還沒有記帳紀錄
+                </div>
               }
               {
                 tabView === CHART_VIEW &&
