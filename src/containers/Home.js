@@ -87,7 +87,9 @@ const Home = ({history, match}) => {
 
   useEffect(() => {
     actions.getInitData();
-  },[''])
+  },[''])//@@兩次api
+  // },[ledgerStore])
+  // },[Object.keys(ledgerStore).length])// @@三次api
 
   
   const categoriesLen = Object.keys(categories).length;

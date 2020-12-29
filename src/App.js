@@ -72,31 +72,45 @@ function App() {
       // return res;//返不返回都可以
     }),
     getEditData: withLoader(async (id) => { //創建頁重整可取得編輯資料
-      let promiseArr= [api.get('/category')];
-      if(id) {
+      let promiseArr= [];
+
+      if (Object.keys(categories).length===0) {
+        promiseArr.push(api.get('/category'))
+      }
+
+      const isItemAlreadyFetched = !!(Object.keys(ledgerStore).indexOf(id) > -1)
+
+      if(id && !isItemAlreadyFetched) {
         const getUrlWithId = `/ledger/${id}`;
         promiseArr.push(api.get(getUrlWithId));
       }
       const [ resCategory, resEditItem ] = await Promise.all(promiseArr);
+      // console.log('會是undefined',resCategory,resEditItem);
+
+      const finalCategory = resCategory ? flattenArr(resCategory.data) : categories;
+      const finalEditItem = resEditItem ? resEditItem.data : ledgerStore[id];
+
 
       if(id) {
-        setCategories(flattenArr(resCategory.data));
+        // setCategories(flattenArr(resCategory.data));
+        setCategories(finalCategory);
         setIsLoading(false);
         dispatchLedger({
           type:'fetchItems',
           // payload:resEditItem%%
           payload:{
-            [id]:resEditItem.data
+            // [id]:resEditItem.data
+            [id]:finalEditItem
           }
         })
       } else {
-        setCategories(flattenArr(resCategory.data));
+        setCategories(finalCategory);
         setIsLoading(false);
       }
 
       return {
-        categories: flattenArr(resCategory.data),
-        editItem: resEditItem ? resEditItem.data: {}
+        categories: finalCategory,
+        editItem: finalEditItem,
       }
     }),
     createData: withLoader(async (formData,selectedCategoryId) => {
