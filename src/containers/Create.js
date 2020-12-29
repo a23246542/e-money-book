@@ -1,4 +1,4 @@
-import React,{ useState,useMemo, useContext } from 'react'
+import React,{ useState, useMemo, useEffect, useContext } from 'react'
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
@@ -19,7 +19,7 @@ const Create = ({ match, history }) => {
   //展示表單 空或是item
 
   const { id } = match.params;
-  const { categories, dispatchLedger, ledgerStore} = useContext(AppContext);
+  const { categories, dispatchLedger, ledgerStore, actions} = useContext(AppContext);
   // const [selectedTab,setTab] = useState('支出');
   // const [ selectedTab, setTab ] = useState(TYPE_OUTCOME);//字串
   console.log(id,ledgerStore);
@@ -27,12 +27,20 @@ const Create = ({ match, history }) => {
   const [ selectedCategory, setCategory ] = useState( id && ledgerStore[id]? categories[ledgerStore[id].cid]: null);
   const [ validationPassed, setValidation ] = useState(true);
   const editItem = id && ledgerStore[id] ? ledgerStore[id] : {};
+  // const editItem = id && ledgerStore[id] ? ledgerStore[id] : null;
   // const [activeIndex,setIndex] = useState(0);
   const selectedTabIndex = useMemo(()=>{
     return testTabs.findIndex(item=>item.value === selectedTab);//!!!
   },[selectedTab])
 
 
+  useEffect(() => {
+    actions.getEditData(id).then((data) => {
+      const { editItem, categories } = data;
+      setTab(id && editItem ? categories[editItem.cid].type:TYPE_OUTCOME);
+      setCategory(id && editItem? categories[editItem.cid]: null)
+    });
+  },['']);
 
   const categoryIdList = Object.keys(categories);
 
@@ -62,31 +70,39 @@ const Create = ({ match, history }) => {
     }
     //create
     if(!isEditMode) {
-      dispatchLedger({
-        type: 'createItem',
-        payload: {
-          formData,
-          // isEditMode %%%造成cid為undefined
-          selectedCategoryId:selectedCategory.id
-        }
-      });
-      setTimeout(()=>{
+      // dispatchLedger({
+      //   type: 'createItem',
+      //   payload: {
+      //     formData,
+      //     // isEditMode %%%造成cid為undefined
+      //     selectedCategoryId:selectedCategory.id
+      //   }
+      // });
+      // setTimeout(()=>{
+      //   history.push('/');
+      // },0)   
+      actions.createData(formData,selectedCategory.id)
+      .then(()=>{
         history.push('/');
-      },0)
+      })
     //edit
     } else {
-      dispatchLedger({
-        type: 'updateItem',
-        payload: {
-          formData,
-          // updatedCategoryId: selectedCategory,/%%% bug半天
-          updatedCategoryId: selectedCategory.id,
-        }
-      })
-      setTimeout(()=>{
-        console.log(ledgerStore);
+      // dispatchLedger({
+      //   type: 'updateItem',
+      //   payload: {
+      //     formData,
+      //     // updatedCategoryId: selectedCategory,/%%% bug半天
+      //     updatedCategoryId: selectedCategory.id,
+      //   }
+      // })
+      // setTimeout(()=>{
+      //   console.log(ledgerStore);
+      //   history.push('/');
+      // },0)
+      actions.editData(formData,selectedCategory.id)
+      .then(()=>{
         history.push('/');
-      },0)
+      })
     }
   }
 
@@ -101,7 +117,9 @@ const Create = ({ match, history }) => {
             return(
               <Tab key={index}>
                 {/* {Ionicons[item.iconName]}{item.title} //@@無效 */}
-                {<Icon/>}{item.text}
+                {<Icon
+                  color={index===selectedTabIndex? "#fff" : null}
+                />}{item.text}
               </Tab>
             )
           })

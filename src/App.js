@@ -38,13 +38,12 @@ function App() {
     return (...args) => {
       setIsLoading(true);
       return cb(...args)
-      .then(() => { setIsLoading(false);});
+      // .then(() => { setIsLoading(false);});//%%會取代掉後來加上的
     }
   }
 
   const actions = {
     getInitData: withLoader(async () => {
-      // setIsLoading(true);
       // const getUrlWithData = `/ledger/monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'),api.get(getUrlWithData)];
@@ -57,10 +56,9 @@ function App() {
         payload:flattenArr(resLedger.data)
       })
       setCategories(flattenArr(resCategory.data));
-      // setIsLoading(false);
+      setIsLoading(false);
     }),
     selectNewMonth: withLoader(async (year, month) => {
-      // setIsLoading(true);
       const getUrlWithData = `/ledger?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
       const res = await api.get(getUrlWithData);
       dispatchLedger({
@@ -70,18 +68,84 @@ function App() {
       setCurrentDate({
         year, month
       })
-      // setIsLoading(false);
+      setIsLoading(false);
       // return res;//返不返回都可以
     }),
+    getEditData: withLoader(async (id) => { //創建頁重整可取得編輯資料
+      let promiseArr= [api.get('/category')];
+      if(id) {
+        const getUrlWithId = `/ledger/${id}`;
+        promiseArr.push(api.get(getUrlWithId));
+      }
+      const [ resCategory, resEditItem ] = await Promise.all(promiseArr);
+
+      if(id) {
+        setCategories(flattenArr(resCategory.data));
+        setIsLoading(false);
+        dispatchLedger({
+          type:'fetchItems',
+          // payload:resEditItem%%
+          payload:{
+            [id]:resEditItem.data
+          }
+        })
+      } else {
+        setCategories(flattenArr(resCategory.data));
+        setIsLoading(false);
+      }
+
+      return {
+        categories: flattenArr(resCategory.data),
+        editItem: resEditItem ? resEditItem.data: {}
+      }
+    }),
+    createData: withLoader(async (formData,selectedCategoryId) => {
+      const newId = makeID();
+      const dateObj = parseToYearsAndMonth(formData.date);
+      const timestamp = new Date().getTime();
+      const { data:newItem } = await api.post('/ledger',{
+        ...formData,
+        id:newId,
+        cid:selectedCategoryId,
+        monthCategory: `${dateObj.year}-${dateObj.month}`,
+        timestamp
+      });
+      dispatchLedger({
+        type: 'addItem',
+        payload: {
+          newItem,
+          newId
+        },
+      })
+      return newItem;
+    }),
+    editData: withLoader(async(formData, updatedCategoryId) => {
+      const dateObj = parseToYearsAndMonth(formData.date);
+      const timestamp = new Date(formData.date).getTime();//@年月日轉排序
+      const updatedItem = {
+        ...formData,
+        cid: updatedCategoryId,
+        timestamp,
+        monthCategory: `${dateObj.year}-${dateObj.month}`,
+      }
+      const modifiedItem = await api.put('/ledger',updatedItem)
+      dispatchLedger({
+        type: 'updateItem2',
+        payload:{
+          id:modifiedItem.id,
+          modifiedItem
+        }
+      })
+      return modifiedItem;
+    }),
     deleteData: withLoader(async (item) => {
-      // setIsLoading(true);
       await api.delete(`/ledger/${item.id}`).then(() =>{
         console.log('順序1');
         dispatchLedger({
           type:'deleteItem',
           payload: item
         });
-        // setIsLoading(false);
+        setIsLoading(false);
       })
       console.log('順序2');
     }),
@@ -100,10 +164,11 @@ function App() {
         return payload;
       }
       case 'deleteItem':{
+        const { id } = payload;
         // delete state[payload.id];
         // let clone = {...ledgerItems};//@@ ReferenceError: Cannot access 'ledgerItems' before initialization
         let clone = { ...state }
-        delete clone[payload.id];
+        delete clone[id];
         return clone;
       }
       case 'createItem':{
@@ -123,6 +188,10 @@ function App() {
         // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
         return {...state, [newId]: newItem};
       }
+      case 'addItem':{
+        const { newItem, newId } = payload;
+        return { ...state, [newId]: newItem}
+      }
       case 'updateItem':{
         // const { id, formData1, updatedCategoryId} = payload;//%%% const會重複
         // const dateObj = parseToYearsAndMonth(formData1.date);
@@ -140,6 +209,10 @@ function App() {
         // return {...state, modifiedItem[id]: modifiedItem} %% 屬性 Failed to compile Unexpected token, expected ","
         return {...state, [modifiedItem.id]: modifiedItem};
       }
+      case 'updatedItem2':{
+        const { id, modifiedItem } = payload;
+        return {...state, [id]: modifiedItem};
+      }
       default:
         return state;
     }
@@ -153,7 +226,7 @@ function App() {
     <Provider value={{
       categories:categories,
       ledgerStore,
-      // dispatchLedger,//~~因為在父層做幾乎不用 資料狀態在父層改變傳下去就好
+      dispatchLedger,//~~因為在父層做幾乎不用 資料狀態在父層改變傳下去就好
       currentDate,
       isLoading,
       actions,

@@ -11,6 +11,12 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
   const [ validatePass, setValidatePass ] = React.useState(true);
   const [ alertMessage, setAlertMessage ] = React.useState('');
 
+  useEffect(() => {
+    setTitle(ledgerItem.title);
+    setAmount(ledgerItem.amount);
+    setDate(ledgerItem.date);
+  },[ledgerItem])
+
   const isValidDate = (inputDate) => {
     const nowTimeStamp = new Date();
     const selectTimeStamp = Date.parse(inputDate);

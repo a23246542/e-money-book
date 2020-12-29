@@ -117,15 +117,6 @@
       "timestamp": 1534291200000
     },
     {
-      "title": "饭局",
-      "amount": 200,
-      "date": "2020-12-10",
-      "monthCategory": "2020-12",
-      "id": "_qmatbbw12",
-      "cid": "6",
-      "timestamp": 1544400000000
-    },
-    {
       "title": "兼职收入",
       "amount": 500,
       "date": "2020-12-05",
@@ -151,15 +142,6 @@
       "timestamp": 1544313600000,
       "id": "_2c96vz8d7",
       "cid": "7"
-    },
-    {
-      "title": "宠物美容",
-      "amount": 200,
-      "date": "2020-12-07",
-      "monthCategory": "2020-12",
-      "timestamp": 1544140800000,
-      "id": "_dgqbpp4z8",
-      "cid": "9"
     },
     {
       "title": "超市购物",
@@ -202,6 +184,24 @@
       "timestamp": 1546646400000,
       "id": "_cg4a9gzya",
       "cid": "1"
+    },
+    {
+      "title": "kkbox",
+      "amount": 150,
+      "date": "2020-12-28",
+      "id": "_c1cq5lczp",
+      "cid": "4",
+      "monthCategory": "2020-12",
+      "timestamp": 1609176047083
+    },
+    {
+      "title": "紅包",
+      "amount": 500,
+      "date": "2020-12-28",
+      "id": "_mb5h8q07z",
+      "cid": "13",
+      "monthCategory": "2020-12",
+      "timestamp": 1609176155212
     }
   ]
 }
