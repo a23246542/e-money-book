@@ -125,10 +125,10 @@ function App() {
       const updatedItem = {
         ...formData,
         cid: updatedCategoryId,
-        timestamp,
+        // timestamp,//%%會不小心把排序提升 創建有就好
         monthCategory: `${dateObj.year}-${dateObj.month}`,
       }
-      const modifiedItem = await api.put('/ledger',updatedItem)
+      const modifiedItem = await api.put(`ledger/${formData.id}`,updatedItem)
       dispatchLedger({
         type: 'updateItem2',
         payload:{
@@ -202,7 +202,7 @@ function App() {
           // ...state[id],//%%ledgerForm已經帶上id等等
           ...formData,
           cid: updatedCategoryId,
-          timestamp,
+          // timestamp,//%%會不小心把排序提升
           monthCategory: `${dateObj.year}-${dateObj.month}`,
         }
         // return {...state, state[id]: updatedItem}/ %%用modifiedItem

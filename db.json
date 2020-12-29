@@ -117,15 +117,6 @@
       "timestamp": 1534291200000
     },
     {
-      "title": "兼职收入",
-      "amount": 500,
-      "date": "2020-12-05",
-      "monthCategory": "2020-12",
-      "timestamp": 1543968000000,
-      "id": "_2cdxkbtzi",
-      "cid": "11"
-    },
-    {
       "title": "收入",
       "amount": 100,
       "date": "2020-12-05",
@@ -145,7 +136,7 @@
     },
     {
       "title": "超市购物",
-      "amount": 125,
+      "amount": 1250,
       "date": "2020-12-04",
       "monthCategory": "2020-12",
       "timestamp": 1543881600000,
@@ -154,7 +145,7 @@
     },
     {
       "title": "购买 iphone XR",
-      "amount": 6000,
+      "amount": 6500,
       "date": "2020-12-03",
       "monthCategory": "2020-12",
       "timestamp": 1543795200000,
@@ -201,7 +192,7 @@
       "id": "_mb5h8q07z",
       "cid": "13",
       "monthCategory": "2020-12",
-      "timestamp": 1609176155212
+      "timestamp": 1609113600000
     }
   ]
 }
