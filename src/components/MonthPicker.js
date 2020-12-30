@@ -45,10 +45,10 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
   // }, [''])
   }, [docHandleClick])
 
-  useEffect(()=>{
-    choiceDate(selectedYear,selectedMonth);
-    console.log('useEffect');
-  },[selectedYear,selectedMonth,choiceDate])//@@變成choiceDate需要層層useCallback
+  // useEffect(()=>{
+  //   choiceDate(selectedYear,selectedMonth);
+  //   console.log('useEffect');
+  // },[selectedYear,selectedMonth,choiceDate])//@@變成choiceDate需要層層useCallback
   // },[selectedMonth,choiceDate])//@@變成choiceDate需要層層useCallback
 
 
