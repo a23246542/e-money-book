@@ -6,6 +6,7 @@ import { Tabs, Tab } from '../components/Tabs';
 import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
 import CategorySelect from '../components/CategorySelect';
 import LedgerForm from '../components/LedgerForm';
+import Loader from '../components/common/Loader';
 // import { categories } from '../components/__test__/CategorySelect2.test';
 import { testTabs, testCategories, testItems} from '../testData';
 import AppContext from '../AppContext';
@@ -19,7 +20,7 @@ const Create = ({ match, history }) => {
   //展示表單 空或是item
 
   const { id } = match.params;
-  const { categories, dispatchLedger, ledgerStore, actions} = useContext(AppContext);
+  const { categories, dispatchLedger, ledgerStore, isLoading, actions} = useContext(AppContext);
   // const [selectedTab,setTab] = useState('支出');
   // const [ selectedTab, setTab ] = useState(TYPE_OUTCOME);//字串
   console.log(id,ledgerStore);
@@ -80,7 +81,7 @@ const Create = ({ match, history }) => {
       // });
       // setTimeout(()=>{
       //   history.push('/');
-      // },0)   
+      // },0)
       actions.createData(formData,selectedCategory.id)
       .then(()=>{
         history.push('/');
@@ -107,7 +108,10 @@ const Create = ({ match, history }) => {
   }
 
   return (
-    <div>
+    <div className="create-page py-3 px-3">
+      { isLoading &&
+        <Loader/>
+      }
       {/* <Tabs tabIndex="0"> 跟vue不一樣 %%%*/}
       {/* <Tabs tabIndex={0} onTabChange={tabChange}> */}
       <Tabs activeIndex={selectedTabIndex} onTabChange={tabChange}>

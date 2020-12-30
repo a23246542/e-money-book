@@ -39,6 +39,7 @@ describe('test LedgerForm component', () => {
   beforeEach(()=>{
     wrapper = mount(<LedgerForm {...props}/>);
     wrapper2 = mount(<LedgerForm {...props_with_item}/>)
+    // wrapper2 = async()=>{ await mount(<LedgerForm {...props_with_item}/>)}
     // formInstance =
   })
   it('should render the component to match the snapshot',()=>{//%%
@@ -46,7 +47,7 @@ describe('test LedgerForm component', () => {
     expect(wrapper2).toMatchSnapshot();
   })
   //創建
-  describe('test LedgerForm with no data ', () => {
+  describe('test LedgerForm with no data', () => {
     //-默認樣式
     //要看到三個input 一個form
     it('render should see three input and one form element',()=>{
@@ -148,6 +149,8 @@ describe('test LedgerForm component', () => {
     // 使用者編輯後，會把對的資料物件呼叫出去
     // it('submit with valid data should call the right callback with right object',()=>{})
     it('submit with change value should trigger callback with right object',()=>{
+      // jest.spyOn(React, 'useEffect').mockImplementation(f => f())
+      wrapper2.update();
       const mockSetState = jest.fn();
       React.useState = jest.fn(()=>(['',mockSetState]));
       // act(()=>{
