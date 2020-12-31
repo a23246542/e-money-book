@@ -36,6 +36,7 @@ const Create = ({ match, history }) => {
 
 
   useEffect(() => {
+    //判斷有無加載過交由App.js
     actions.getEditData(id).then((data) => {
       const { editItem, categories } = data;
       setTab(id && editItem ? categories[editItem.cid].type:TYPE_OUTCOME);
