@@ -15,7 +15,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
 
   useEffect(() => {
     // if (ledgerItem.id) {
-      console.log(ledgerItem,'執行from useEffect變無窮迴圈');
+      console.log(ledgerItem,'ledgerFrom useEffect');
       setTitle(ledgerItem.title);
       setAmount(ledgerItem.amount);
       setDate(ledgerItem.date);
