@@ -2,8 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Ionicons from '../../plugin/ionicons';
 import IosPlane from 'react-ionicons/lib/IosPlane';
+import { flattenArr } from '../../utility';
 import { shallow, mount } from 'enzyme';
 import LedgerList from '../LedgerList';
+// import AppContext, { Provider } from '../../AppContext';
+import { testCategories } from '../../testData';
+import Icon from '../../components/common/Icon';
 
 const category = {
   1: {
@@ -29,7 +33,7 @@ const items = [
     title: '去雲南旅遊',
     price: 200,
     date: '2020-11-26',
-    categoryId: 1, 
+    categoryId: 1,
   },
   {
     id: 2,
@@ -48,8 +52,11 @@ const items = [
 ]
 
 const listWithCategory =  items.map(item=>{
-  item.category = category[item.categoryId];
-  return item;
+  // item.category = category[item.categoryId];
+  return {
+    ...items,
+    category: category[item.categoryId]
+  };
 })
 
 
@@ -63,7 +70,9 @@ let wrapper;
 
 describe('test LedgerList component',() => {
   beforeEach(() => {
-    wrapper = shallow(<LedgerList {...props}/>)
+    wrapper = mount(
+        <LedgerList {...props}/>
+    )
     // wrapper = mount(<LedgerList {...props}/>)
   });
 
@@ -77,10 +86,9 @@ describe('test LedgerList component',() => {
   })
 
   it('should render correct icon and price for each item',() => {
-    const { IosPlane } = Ionicons;
+    // const { IosPlane } = Ionicons;
     // const icon = wrapper.find('.list-group-item').first().find(<IosPlane/>);
-    const iconList = wrapper.find('.list-group-item').first().find(IosPlane);//要直接蒐組件不能用mount 要用shallow
-    // console.log(wrapper.debug());
-    expect(iconList.first().props().iconTitle).toEqual(listWithCategory[0].category.iconName)
+    const iconList = wrapper.find('.list-group-item').first().find(Icon);//要直接蒐組件不能用mount 要用shallow
+    expect(iconList.first().props().icon).toEqual(listWithCategory[0].category.iconName)
   })
 })

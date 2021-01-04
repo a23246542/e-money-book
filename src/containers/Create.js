@@ -42,6 +42,8 @@ const Create = ({ match, history }) => {
       setTab(id && editItem ? categories[editItem.cid].type:TYPE_OUTCOME);
       setCategory(id && editItem? categories[editItem.cid]: null)
     });
+    // console.log(actions.getEditData());
+
   },['']);
 
   const categoryIdList = Object.keys(categories);

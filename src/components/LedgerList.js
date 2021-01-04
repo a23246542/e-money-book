@@ -2,11 +2,12 @@ import { useContext } from 'react'
 import PropTypes from 'prop-types';
 import Ionicons from '../plugin/ionicons';
 import AppContext from '../AppContext';
+import Icon from '../components/common/Icon';
 
 const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
 
   const { IosCreate, IosCloseCircle } = Ionicons;
-  const { categories } = useContext(AppContext);
+  // const { categories } = useContext(AppContext);//%%%items就有了
 
   return (
     <ul className="list-group">
@@ -15,16 +16,21 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
 
           // const {iconName:CategoryIcon} = item.category;//%%@@不行
           // const CategoryIcon = Ionicons[item.category.iconName]
-          const CategoryIcon = Ionicons[categories[item.cid].iconName]
+          // const CategoryIcon = Ionicons[categories[item.cid].iconName]
+          // const iconName = categories[item.cid].iconName;
           return (
             <li className="list-group-item d-flex align-items-center"
               key={item.id}
             >
               <span className="col-1 badge badge-primary">
-                <CategoryIcon
+                {/* <CategoryIcon
                   iconTitle={item.category.iconName}
                   color="#fff"
-                />
+                /> */}
+                {<Icon
+                  icon={item.category.iconName}
+                  color="#fff"
+                />}
               </span>
               {/* <span className="col-11 bg-primary"></span> */}
               <span className="col-5">{item.title}</span>

@@ -7,14 +7,19 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
   const [ title, setTitle ] = React.useState( (ledgerItem&&ledgerItem.title)||'');
   const [ amount, setAmount ] = React.useState((ledgerItem&&ledgerItem.amount)||'');//@但其實是數字
   const [ date, setDate ] = React.useState((ledgerItem&&ledgerItem.date)||'');
+  // const { title, amount, date } = ledgerItem;
   //畫面資料狀態
   const [ validatePass, setValidatePass ] = React.useState(true);
   const [ alertMessage, setAlertMessage ] = React.useState('');
 
+
   useEffect(() => {
-    setTitle(ledgerItem.title);
-    setAmount(ledgerItem.amount);
-    setDate(ledgerItem.date);
+    // if (ledgerItem.id) {
+      console.log(ledgerItem,'執行from useEffect變無窮迴圈');
+      setTitle(ledgerItem.title);
+      setAmount(ledgerItem.amount);
+      setDate(ledgerItem.date);
+    // }
   },[ledgerItem])
 
   const isValidDate = (inputDate) => {
