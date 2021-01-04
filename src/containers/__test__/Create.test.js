@@ -1,5 +1,6 @@
 import React,{ useState, useMemo, useEffect, useContext } from 'react'
 import { shallow, mount} from 'enzyme';
+import { render } from 'react-dom';
 import { BrowserRouter as Router, withRouter } from 'react-router-dom';
 import Create from '../Create';
 import { parseToYearsAndMonth, flattenArr, makeArrByRange} from '../../utility';
@@ -17,6 +18,7 @@ const history = {};
 const actions = {
   // getEditData:jest.fn().mockReturnValue({id:testItem.id}),//%%&
   getEditData: jest.fn().mockReturnValue(Promise.resolve({ editItem: testItem, categories: flattenArr(testCategories)})),
+  // getEditData: jest.fn().mockResolvedValue({ editItem: testItem, categories: flattenArr(testCategories)}),
   // getEditData: jest.fn().mockReturnValue({then:jest.fn()}),
   // getEditData: jest.fn().mockReturnValue(new Promise((resolve=>{resolve({ editItem: testItem, categories: flattenArr(testCategories)})}))),
   // getEditData: jest.fn().mockReturnValue(new Promise({ editItem: testItem, categories: flattenArr(testCategories)})),
@@ -54,12 +56,12 @@ describe('test Create component init behavior', () => {
         </AppContext.Provider>
       </Router>
     )
-    await act(async () => {
-      await Promise.resolve(wrapper);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      // await new Promise(resolve => setImmediate(resolve));
-      wrapper.update();
-    });
+    // await act(async () => {
+    //   await Promise.resolve(wrapper);
+    //   await new Promise(resolve => setTimeout(resolve, 0));
+    //   // await new Promise(resolve => setImmediate(resolve));
+    //   wrapper.update();
+    // });
 
   })
 
@@ -68,6 +70,37 @@ describe('test Create component init behavior', () => {
   }
 
   it('test Create page for the first render，getEditData should be called with right params',async(done)=>{
+
+    const fakeData = {
+      categories: flattenArr(testCategories),
+      editItem: testItem,
+    };
+
+    jest.spyOn(actions, 'getEditData').mockImplementation(() =>
+      // Promise.resolve({
+      //   json: () => Promise.resolve(fakeData),
+      // })
+      Promise.resolve(fakeData)
+    );
+
+    // Use the asynchronous version of act to apply resolved promises
+    // await act(async () => {
+    //   render(<User id="123" />, container);
+    // });
+    await act(async () => {
+      // wrapper = mount(
+        // <Router>
+        //   <AppContext.Provider value={initData}>
+        //     <Create match={match} history={history} />
+        //   </AppContext.Provider>
+        // </Router>
+      // )
+      render( <Router>
+        <AppContext.Provider value={initData}>
+          <Create match={match} history={history} />
+        </AppContext.Provider>
+      </Router>, wrapper);    
+    });
     setTimeout(async()=>{
       wrapper.update();
       expect(actions.getEditData).toHaveBeenCalledWith(testItem.id);
