@@ -18,12 +18,13 @@ const Create = ({ match, history }) => {
   //收入還是支出 tab切換 selectedTab
   //收入還是支出 分類切換 selectedCategory
   //展示表單 空或是item
+  console.log('Create.js match',match);
 
   const { id } = match.params;
   const { categories, dispatchLedger, ledgerStore, isLoading, actions} = useContext(AppContext);
   // const [selectedTab,setTab] = useState('支出');
   // const [ selectedTab, setTab ] = useState(TYPE_OUTCOME);//字串
-  console.log(id,ledgerStore);
+  // console.log(id,ledgerStore);
   const [ selectedTab, setTab ] = useState( id && ledgerStore[id] ? categories[ledgerStore[id].cid].type:TYPE_OUTCOME );// !每次重新執行
   const [ selectedCategory, setCategory ] = useState( id && ledgerStore[id]? categories[ledgerStore[id].cid]: null);
   const [ validationPassed, setValidation ] = useState(true);
@@ -33,6 +34,8 @@ const Create = ({ match, history }) => {
   const selectedTabIndex = useMemo(()=>{
     return testTabs.findIndex(item=>item.value === selectedTab);//!!!
   },[selectedTab])
+
+  console.log('Create.js',selectedCategory,id,!!ledgerStore,!!categories);
 
 
   useEffect(() => {

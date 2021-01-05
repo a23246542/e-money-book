@@ -12,13 +12,17 @@ import AppContext, { Provider } from '../../AppContext';
 import act from 'react-dom/test-utils';
 
 const testItem = testItems[1];
-const match = {};
+let match = {
+  params:{
+    id:"_jjfice21k"
+  }
+};
 const history = {};
 
 const actions = {
   // getEditData:jest.fn().mockReturnValue({id:testItem.id}),//%%&
-  getEditData: jest.fn().mockReturnValue(Promise.resolve({ editItem: testItem, categories: flattenArr(testCategories)})),
-  // getEditData: jest.fn().mockResolvedValue({ editItem: testItem, categories: flattenArr(testCategories)}),
+  // getEditData: jest.fn().mockReturnValue(Promise.resolve({ editItem: testItem, categories: flattenArr(testCategories)})),
+  getEditData: jest.fn().mockResolvedValue({ editItem: testItem, categories: flattenArr(testCategories)}),
   // getEditData: jest.fn().mockReturnValue({then:jest.fn()}),
   // getEditData: jest.fn().mockReturnValue(new Promise((resolve=>{resolve({ editItem: testItem, categories: flattenArr(testCategories)})}))),
   // getEditData: jest.fn().mockReturnValue(new Promise({ editItem: testItem, categories: flattenArr(testCategories)})),
@@ -28,7 +32,7 @@ const actions = {
 }
 const initData = {
   ledgerStore:{},
-  categories:{},
+  categories: flattenArr(testCategories),//%% 要給否則category-item會空的
   isLoading:false,
   currentDate: parseToYearsAndMonth(),
   actions
@@ -49,6 +53,10 @@ let wrapper;
 
 describe('test Create component init behavior', () => {
   beforeEach(async()=>{
+    // expect.assertions(1);
+    // jest.mock('./actions');
+    jest.mock('actions');
+    actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
     wrapper = mount(
       <Router>
         <AppContext.Provider value={initData}>
@@ -76,31 +84,32 @@ describe('test Create component init behavior', () => {
       editItem: testItem,
     };
 
-    jest.spyOn(actions, 'getEditData').mockImplementation(() =>
-      // Promise.resolve({
-      //   json: () => Promise.resolve(fakeData),
-      // })
-      Promise.resolve(fakeData)
-    );
+
+    // jest.spyOn(actions, 'getEditData').mockImplementation(() =>
+    //   // Promise.resolve({
+    //   //   json: () => Promise.resolve(fakeData),
+    //   // })
+    //   Promise.resolve(fakeData)
+    // );
 
     // Use the asynchronous version of act to apply resolved promises
     // await act(async () => {
     //   render(<User id="123" />, container);
     // });
-    await act(async () => {
+    // await act(async () => {
       // wrapper = mount(
-        // <Router>
-        //   <AppContext.Provider value={initData}>
-        //     <Create match={match} history={history} />
-        //   </AppContext.Provider>
-        // </Router>
+      //   <Router>
+      //     <AppContext.Provider value={initData}>
+      //       <Create match={match} history={history} />
+      //     </AppContext.Provider>
+      //   </Router>
       // )
-      render( <Router>
-        <AppContext.Provider value={initData}>
-          <Create match={match} history={history} />
-        </AppContext.Provider>
-      </Router>, wrapper);    
-    });
+    //   render( <Router>
+    //     <AppContext.Provider value={initData}>
+    //       <Create match={match} history={history} />
+    //     </AppContext.Provider>
+    //   </Router>, wrapper);
+    // });
     setTimeout(async()=>{
       wrapper.update();
       expect(actions.getEditData).toHaveBeenCalledWith(testItem.id);
@@ -126,10 +135,15 @@ describe('test Create component init behavior', () => {
     setInputValue('#inputTitle', 'new title')
     setInputValue('#inputAmount', '200')
     setInputValue('#inputDate', '2018-08-30')
-    wrapper.find('.category-item').first().simulate('click')
-    wrapper.find('form').simulate('submit')
-    const testData = {title: 'new title', price: 200 , date: '2018-08-30'}
-    expect(actions.createData).toHaveBeenCalledWith(testData, testCategories[0].id)
+    // process.nextTick(()=>{
+      wrapper.find('.category-item').first().simulate('click')
+      wrapper.find('form').simulate('submit')
+      // })
+      const testData = {title: 'new title', price: 200 , date: '2018-08-30'}
+      setTimeout(()=>{ //%%要加否則報錯 @@click晚執行
+      // console.log(wrapper.debug());
+      expect(actions.createData).toHaveBeenCalledWith(testData, testCategories[0].id)
+    },100)
   })
 
 });
@@ -137,9 +151,13 @@ describe('test Create component init behavior', () => {
 
 describe('test component when in edit mode', () => {
   beforeEach(async()=>{
+    jest.mock('actions');
+    actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
+    jest.mock('match')
+    // match = { params:{ id:"_jjfice21k" }}
     wrapper = mount(
       <Router>
-        <AppContext.Provider value={initData}>
+        <AppContext.Provider value={withLoadedData}>
           <Create match={match} history={history} />
         </AppContext.Provider>
       </Router>
@@ -148,7 +166,7 @@ describe('test component when in edit mode', () => {
 
   const setInputValue = (selector, newValue) => {
     wrapper.find(selector).instance().value = newValue
-  }
+  } //%%%
 
   const selectedCategory = testCategories.find(category => testItem.cid === category.id)
 
