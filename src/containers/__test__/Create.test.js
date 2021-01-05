@@ -49,14 +49,26 @@ const withLoadedData = {
   actions
 }
 
+const fakeData = {
+  categories: flattenArr(testCategories),
+  editItem: testItem,
+};
+
 let wrapper;
 
 describe('test Create component init behavior', () => {
   beforeEach(async()=>{
     // expect.assertions(1);
     // jest.mock('./actions');
-    jest.mock('actions');
-    actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
+    // jest.mock('actions');
+    // actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
+
+    // jest.spyOn(actions, 'getEditData').mockImplementation(() =>
+    //   Promise.resolve(fakeData)
+    // );
+
+    actions.getEditData = jest.fn().mockResolvedValue({ editItem: testItem, categories: flattenArr(testCategories)})
+
     wrapper = mount(
       <Router>
         <AppContext.Provider value={initData}>
@@ -79,11 +91,14 @@ describe('test Create component init behavior', () => {
 
   it('test Create page for the first render，getEditData should be called with right params',async(done)=>{
 
-    const fakeData = {
-      categories: flattenArr(testCategories),
-      editItem: testItem,
-    };
-
+    // 給Create setProps?
+    // https://enzymejs.github.io/enzyme/docs/api/ReactWrapper/setProps.html
+    const CreatePage = wrapper.find(Create);
+    CreatePage.setProps({match:{
+      params:{
+        id:"_jjfice21k"
+      }
+    }})
 
     // jest.spyOn(actions, 'getEditData').mockImplementation(() =>
     //   // Promise.resolve({
