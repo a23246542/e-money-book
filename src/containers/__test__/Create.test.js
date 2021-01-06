@@ -62,10 +62,9 @@ describe('test Create component init behavior', () => {
     // jest.mock('./actions');
     // jest.mock('actions');
     // actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
-
-    jest.spyOn(actions, 'getEditData').mockImplementation(() =>
+    jest.spyOn(actions, 'getEditData').mockImplementation(jest.fn((id) =>
       Promise.resolve(fakeData)
-    );
+    ));
 
     // actions.getEditData = jest.fn().mockResolvedValue({ editItem: testItem, categories: flattenArr(testCategories)})
 

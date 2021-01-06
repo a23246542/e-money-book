@@ -1,5 +1,5 @@
 import React,{ useState, useMemo, useEffect, useContext } from 'react'
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Ionicons,{ IosCard, IosCash } from '../plugin/ionicons';
 import { Tabs, Tab } from '../components/Tabs';
@@ -18,9 +18,10 @@ const Create = ({ match, history }) => {
   //收入還是支出 tab切換 selectedTab
   //收入還是支出 分類切換 selectedCategory
   //展示表單 空或是item
-  console.log('Create.js match',match);
 
   const { id } = match.params;
+  // const { id }  = useParams();
+  console.log('Create.js match',match);
   const {
     categories,
     dispatchLedger,

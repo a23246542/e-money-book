@@ -19,7 +19,7 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
           // const CategoryIcon = Ionicons[categories[item.cid].iconName]
           // const iconName = categories[item.cid].iconName;
           return (
-            <li className="list-group-item d-flex align-items-center"
+            <li className="ledger-item list-group-item d-flex align-items-center"
               key={item.id}
             >
               <span className="col-1 badge badge-primary">

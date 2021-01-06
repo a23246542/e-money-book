@@ -119,7 +119,8 @@ function App() {
       const newId = makeID();
       const dateObj = parseToYearsAndMonth(formData.date);
       const timestamp = new Date().getTime();
-      const { data:newItem } = await api.post('/ledger',{
+      // const { data:newItem } = await api.post('/ledger',{
+      const newItem  = await api.post('/ledger',{ //@@會自動解構data
         ...formData,
         id:newId,
         cid:selectedCategoryId,
@@ -144,7 +145,8 @@ function App() {
         // timestamp,//%%會不小心把排序提升 創建有就好
         monthCategory: `${dateObj.year}-${dateObj.month}`,
       }
-      const modifiedItem = await api.put(`ledger/${formData.id}`,updatedItem)
+      // const { data: modifiedItem } = await api.put(`ledger/${formData.id}`,updatedItem)
+      const modifiedItem  = await api.put(`ledger/${formData.id}`,updatedItem)
       dispatchLedger({
         type: 'updateItem2',
         payload:{

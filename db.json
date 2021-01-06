@@ -154,7 +154,7 @@
     },
     {
       "title": "入账工资",
-      "amount": 25000,
+      "amount": 2500,
       "date": "2020-12-08",
       "monthCategory": "2020-12",
       "timestamp": 1544227200000,
@@ -178,7 +178,7 @@
     },
     {
       "title": "kkbox",
-      "amount": 150,
+      "amount": 175,
       "date": "2020-12-28",
       "id": "_c1cq5lczp",
       "cid": "4",
@@ -187,7 +187,7 @@
     },
     {
       "title": "紅包",
-      "amount": 500,
+      "amount": 475,
       "date": "2020-12-28",
       "id": "_mb5h8q07z",
       "cid": "13",
