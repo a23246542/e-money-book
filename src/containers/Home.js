@@ -75,7 +75,7 @@ const Home = ({history, match}) => {
   //@@ 是否應該改用ref 因為update情況下 useState不會重取
   const [ tabView, setTabView ] = useState(LIST_VIEW);
 
-  console.log('獲取資料',categories,ledgerStore);
+  // console.log('獲取資料',categories,ledgerStore);
   // const listWithCategory  = useMemo(()=>{ //切換tabView不會重新來
   //   console.log('執行listWithCategory');
   //   return list.map(item=>{
@@ -223,7 +223,7 @@ const Home = ({history, match}) => {
     actions.deleteData(clickedItem);
   };
 
-  console.log('listWithCategory',listWithCategory,categories);
+  // console.log('listWithCategory',listWithCategory,categories);
   return (
     <Fragment>
       <header className="App-header">

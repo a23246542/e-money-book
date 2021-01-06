@@ -15,7 +15,7 @@ import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
 
 // import mockAxios from './__mocks__/axios'
 import api from './api';
-import { mockComponent } from 'react-dom/test-utils';
+import { act } from 'react-dom/test-utils';
 
 // https://github.com/facebook/jest/issues/2157#issuecomment-279171856
 // const waitForAsync = () => new Promise(resolve => setImmediate(resolve))
@@ -67,7 +67,7 @@ describe('test App component init behavior', () => {
     });
   })
 
-  //@@如何測
+
   //app home加載過後 => app的state資料長度等於test資料長度
   it('check App Home state with initial action', async () => {
     const wrapper = mount(<App/>)
@@ -78,11 +78,13 @@ describe('test App component init behavior', () => {
     expect(Object.keys(currentState.categories).length).toEqual(testCategories.length)
   })
 // ----
-  //首頁加載過資料後 創建頁呼叫getEditData => 不會再發新api.get，只有mount的兩次
+  //首頁加載過資料後 到創建頁呼叫getEditData => 不會再發新api.get，只有mount的兩次
   it('test getEditData with initial data in create mode', async () => {
     const wrapper = mount(<App/>)
     // await waitForAsync()
-    // await wrapper.instance().actions.getEditData()//@@
+    await act(async()=>{
+      await wrapper.instance().actions.getEditData()//@@
+    })
     expect(api.get).toHaveBeenCalledTimes(2)
   })
 
@@ -94,9 +96,11 @@ describe('test App component init behavior', () => {
       categories: {},
       items: {},
     })
-    await wrapper.instance().actions.getEditData()
+    await act(async()=>{
+      await wrapper.instance().actions.getEditData()
+    })
     expect(api.get).toHaveBeenCalledTimes(3)
-    expect(api.get).toHaveBeenLastCalledWith('/categories')
+    expect(api.get).toHaveBeenLastCalledWith('/category')
   })
 
 // -----
@@ -104,11 +108,13 @@ describe('test App component init behavior', () => {
   it('test getEditData with initial data in edit mode', async () => {
     const wrapper = mount(<App/>)
     // await waitForAsync()
-    // await wrapper.instance().actions.getEditData('_kly1klf4g')
+    await act(async()=>{
+      await wrapper.instance().actions.getEditData('_1fg1wme63')
+    })
     expect(api.get).toHaveBeenCalledTimes(2)
   })
 
-  //首頁沒有加載，創建頁無法做編輯
+  //首頁沒有加載，創建頁不会做編輯
 
   //@@好像有問題
   // it('test getEditData with initial data in edit mode with new data', async () => {
@@ -125,7 +131,10 @@ describe('test App component init behavior', () => {
   it('test createItem with initial data', async() => {
     const wrapper = mount(<App/>)
     // await waitForAsync()
-    // await wrapper.instance().actions.createItem({}, 2)
+    await act(async()=>{
+      await wrapper.instance().actions.createItem({}, 2)
+    })
+    wrapper.update();
     expect(api.post).toHaveBeenCalledTimes(1)
     const currentState = wrapper.instance().state
     expect(Object.keys(currentState.items).length).toEqual(testItems.length + 1)
@@ -139,7 +148,9 @@ describe('test App component init behavior', () => {
     //~拿testItem的第三項
     const singleItem = testItems[2];//id為_1fg1wme63
     const modifiedItem = { ...singleItem, title: 'updated title' }
-    await wrapper.instance().actions.editData(modifiedItem, 2)
+    await act(async()=>{
+      await wrapper.instance().actions.editData(modifiedItem, 2)
+    })
     wrapper.update();
     expect(api.put).toHaveBeenCalledTimes(1)
     // -------------------------------------
@@ -152,15 +163,18 @@ describe('test App component init behavior', () => {
   it('test deleteItem with initial data', async() => {
     const wrapper = mount(<App/>)
     // await waitForAsync()
-    // await wrapper.instance().actions.deleteItem({ id: '_1fg1wme63'})//@@如何觸發內部函數
-    expect(api.delete).toHaveBeenCalledTimes(1)
+    await act(async()=>{
+      // await wrapper.instance().actions.deleteItem({ id: '_1fg1wme63'})//@@如何觸發內部函數
+      await wrapper.getDOMNode().actions.deleteItem({ id: '_1fg1wme63'})//@@如何觸發內部函數
+    })
     //~dispatchLedger運行 重新setState
     wrapper.update();
-    // const currentState = wrapper.instance().state
-    // expect(Object.keys(currentState.items).length).toEqual(testItems.length - 1)
-    expect(wrapper.find(".ledger-item").length).toEqual(testItems.length - 1);
-    // const deletedItem = currentState.items['_1fg1wme63']
-    // expect(deletedItem).toBeUndefined()
+    expect(api.delete).toHaveBeenCalledTimes(1)
+    const currentState = wrapper.instance().state
+    expect(Object.keys(currentState.items).length).toEqual(testItems.length - 1)
+    // expect(wrapper.find(".ledger-item").length).toEqual(testItems.length - 1);
+    const deletedItem = currentState.items['_1fg1wme63']
+    expect(deletedItem).toBeUndefined()
     // expect(wrapper.find('.').length).toBe(0);
   })
 })
