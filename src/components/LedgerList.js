@@ -47,7 +47,7 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
                 className="col-1 btn d-flex justify-content-center align-items-center"
                 // style={{backgroundColor:'#28a745'}}
                 // onClick={onModifyItem(item)} //會傳直接執行的函式%%%
-                onClick={()=>{onModifyItem(item)}}
+                onClick={(e)=>{e.preventDefault();onModifyItem(item)}}
               >
                 <IosCreate
                   // icon="ios-create"
@@ -58,7 +58,7 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
               </button>
               <button
               className="col-1 btn d-flex justify-content-center align-items-center"
-                onClick={()=>{onDeleteItem(item)}}
+                onClick={(e)=>{e.preventDefault();onDeleteItem(item)}}
               >
                 <IosCloseCircle
                   // icon="ios-close-circle"

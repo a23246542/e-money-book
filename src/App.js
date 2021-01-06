@@ -76,6 +76,8 @@ function App() {
 
       if (Object.keys(categories).length===0) {
         promiseArr.push(api.get('/category'))
+      } else {
+        promiseArr.push(new Promise((resolve)=>resolve(null)))
       }
 
       const isItemAlreadyFetched = !!(Object.keys(ledgerStore).indexOf(id) > -1)
@@ -198,7 +200,7 @@ function App() {
           monthCategory: `${dateObj.year}-${dateObj.month}`,
           timestamp
         }
-        console.log({...state, [newId]: newItem});
+        // console.log({...state, [newId]: newItem});
         // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
         return {...state, [newId]: newItem};
       }

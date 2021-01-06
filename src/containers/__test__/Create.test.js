@@ -1,7 +1,7 @@
 import React,{ useState, useMemo, useEffect, useContext } from 'react'
 import { shallow, mount} from 'enzyme';
 import { render } from 'react-dom';
-import { BrowserRouter as Router, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router, MemoryRouter, withRouter } from 'react-router-dom';
 import Create from '../Create';
 import { parseToYearsAndMonth, flattenArr, makeArrByRange} from '../../utility';
 import Loader from '../../components/common/Loader';
@@ -63,11 +63,11 @@ describe('test Create component init behavior', () => {
     // jest.mock('actions');
     // actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
 
-    // jest.spyOn(actions, 'getEditData').mockImplementation(() =>
-    //   Promise.resolve(fakeData)
-    // );
+    jest.spyOn(actions, 'getEditData').mockImplementation(() =>
+      Promise.resolve(fakeData)
+    );
 
-    actions.getEditData = jest.fn().mockResolvedValue({ editItem: testItem, categories: flattenArr(testCategories)})
+    // actions.getEditData = jest.fn().mockResolvedValue({ editItem: testItem, categories: flattenArr(testCategories)})
 
     wrapper = mount(
       <Router>
@@ -93,12 +93,12 @@ describe('test Create component init behavior', () => {
 
     // 給Create setProps?
     // https://enzymejs.github.io/enzyme/docs/api/ReactWrapper/setProps.html
-    const CreatePage = wrapper.find(Create);
-    CreatePage.setProps({match:{
-      params:{
-        id:"_jjfice21k"
-      }
-    }})
+    // const CreatePage = wrapper.find(Create);
+    // CreatePage.setProps({match:{
+    //   params:{
+    //     id:"_jjfice21k"
+    //   }
+    // }})
 
     // jest.spyOn(actions, 'getEditData').mockImplementation(() =>
     //   // Promise.resolve({
@@ -125,11 +125,14 @@ describe('test Create component init behavior', () => {
     //     </AppContext.Provider>
     //   </Router>, wrapper);
     // });
-    setTimeout(async()=>{
+    // setTimeout(async()=>{
+    setImmediate(()=>{
       wrapper.update();
+      // console.log('aaaaa',wrapper.debug());
       expect(actions.getEditData).toHaveBeenCalledWith(testItem.id);
       done();
-    },100)
+    })
+    // },100)
   })
 
   it('should pass the null to props selectedCategory for CategorySelect', () => {
@@ -168,7 +171,7 @@ describe('test component when in edit mode', () => {
   beforeEach(async()=>{
     jest.mock('actions');
     actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
-    jest.mock('match')
+    // jest.mock('match')
     // match = { params:{ id:"_jjfice21k" }}
     wrapper = mount(
       <Router>

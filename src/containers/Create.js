@@ -21,7 +21,13 @@ const Create = ({ match, history }) => {
   console.log('Create.js match',match);
 
   const { id } = match.params;
-  const { categories, dispatchLedger, ledgerStore, isLoading, actions} = useContext(AppContext);
+  const {
+    categories,
+    dispatchLedger,
+    ledgerStore,
+    isLoading,
+    actions
+  } = useContext(AppContext);
   // const [selectedTab,setTab] = useState('支出');
   // const [ selectedTab, setTab ] = useState(TYPE_OUTCOME);//字串
   // console.log(id,ledgerStore);

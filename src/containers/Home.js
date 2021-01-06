@@ -59,10 +59,10 @@ const Home = ({history, match}) => {
   //   })
   // }
 
-  const { 
-    categories, 
-    ledgerStore, 
-    // dispatchLedger, 
+  const {
+    categories,
+    ledgerStore,
+    // dispatchLedger,
     currentDate,
     isLoading,
     actions,
@@ -91,12 +91,12 @@ const Home = ({history, match}) => {
   // },[ledgerStore])
   // },[Object.keys(ledgerStore).length])// @@三次api
 
-  
+
   const categoriesLen = Object.keys(categories).length;
   const ledgerLen = Object.keys(ledgerStore).length;
 
   const listWithCategory = useMemo(()=>{
-    console.log('計算listWithCategory');
+    // console.log('計算listWithCategory');
     // let cloneObj = [...ledgerItems];//%%無法展開
     // console.log(!categoriesLen > 0 ,!ledgerLen > 0)
     // if(!categoriesLen > 0 && !ledgerLen > 0 ) { //%%%% &&邏輯想錯
