@@ -132,7 +132,7 @@ describe('test App component init behavior', () => {
     const wrapper = mount(<App/>)
     // await waitForAsync()
     await act(async()=>{
-      await wrapper.instance().actions.createItem({}, 2)
+      await wrapper.instance().actions.createData({}, 2)
     })
     wrapper.update();
     expect(api.post).toHaveBeenCalledTimes(1)
@@ -165,7 +165,7 @@ describe('test App component init behavior', () => {
     // await waitForAsync()
     await act(async()=>{
       // await wrapper.instance().actions.deleteItem({ id: '_1fg1wme63'})//@@如何觸發內部函數
-      await wrapper.getDOMNode().actions.deleteItem({ id: '_1fg1wme63'})//@@如何觸發內部函數
+      await wrapper.getDOMNode().actions.deleteData({ id: '_1fg1wme63'})//@@如何觸發內部函數
     })
     //~dispatchLedger運行 重新setState
     wrapper.update();
