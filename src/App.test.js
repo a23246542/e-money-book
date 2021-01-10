@@ -89,9 +89,11 @@ describe('test App component init behavior', () => {
   })
 
   //沒有加載過資料，直接到達創建頁新建 =>api get會呼叫三次 ，一開始mount兩次清空後getEditData 創建再一次
-  it('test getEditData without initial data in create mode', async () => {
+  it.only('test getEditData without initial data in create mode', async () => {
     const wrapper = mount(<App/>)
     // await waitForAsync()
+
+    // const actions = wrapper.find()
     wrapper.setState({
       categories: {},
       items: {},

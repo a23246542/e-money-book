@@ -13,7 +13,7 @@ import AppContext from '../AppContext';
 
 
 
-const Create = ({ match, history }) => {
+export const CreatePage = ({ match, history }) => {
   //@parmas
   //收入還是支出 tab切換 selectedTab
   //收入還是支出 分類切換 selectedCategory
@@ -21,7 +21,8 @@ const Create = ({ match, history }) => {
 
   const { id } = match.params;
   // const { id }  = useParams();
-  console.log('Create.js match',match);
+  // console.log('Create.js id',id);
+  console.log('Create.js id',id);
   const {
     categories,
     dispatchLedger,
@@ -42,17 +43,25 @@ const Create = ({ match, history }) => {
     return testTabs.findIndex(item=>item.value === selectedTab);//!!!
   },[selectedTab])
 
-  console.log('Create.js',selectedCategory,id,!!ledgerStore,!!categories);
-
+  // console.log('Create.js',selectedCategory,id,!!ledgerStore,!!categories);
+  // console.log('action',actions);
 
   useEffect(() => {
     //判斷有無加載過交由App.js
+    // const b = actions.getEditData();
+    // console.log('create',b);
+    // console.log('Create',actions.getEditData());
+    // actions.getEditData('测试id').then((data) => {
     actions.getEditData(id).then((data) => {
+      // console.log('Create.js data',data);
       const { editItem, categories } = data;
       setTab(id && editItem ? categories[editItem.cid].type:TYPE_OUTCOME);
-      setCategory(id && editItem? categories[editItem.cid]: null)
+      setCategory(id && editItem? categories[editItem.cid]: null);
+      // console.log('nnnn',id && editItem? categories[editItem.cid]: null);
+      // setTimeout(()=>{
+      //   console.log('selectedCategory',selectedCategory);
+      // },1000)
     });
-    // console.log(actions.getEditData());
 
   },['']);
 
@@ -82,6 +91,7 @@ const Create = ({ match, history }) => {
       setValidation(false);
       return;
     }
+    console.log('submitForm被觸發',!isEditMode,selectedCategory);
     //create
     if(!isEditMode) {
       // dispatchLedger({
@@ -113,13 +123,14 @@ const Create = ({ match, history }) => {
       //   console.log(ledgerStore);
       //   history.push('/');
       // },0)
+      console.log('create編輯模式');
       actions.editData(formData,selectedCategory.id)
       .then(()=>{
         history.push('/');
       })
     }
   }
-
+  // console.log('selectedCategory',selectedCategory);
   return (
     <div className="create-page py-3 px-3">
       { isLoading &&
@@ -167,8 +178,8 @@ const Create = ({ match, history }) => {
   )
 }
 
-Create.propTypes = {
+CreatePage.propTypes = {
 
 }
 
-export default withRouter(Create)
+export default withRouter(CreatePage)

@@ -12,7 +12,7 @@ const CategorySelect = ({categories, selectedCategory, onSelectCategory}) => {
     onSelectCategory(category);
     event.preventDefault();
   }
-  console.log('CategorySelect.js',categories);
+  // console.log('CategorySelect.js',categories);
 
   return (
     <div className="category-select pt-4">

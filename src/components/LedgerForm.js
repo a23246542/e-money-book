@@ -35,7 +35,9 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
     // }
     // const editMode = ledgerItem && !!ledgerItem.id;//%%%ledgerItem為{} 為true 傳後面變undefined
     const isEditMode = !!ledgerItem.id; //!!這樣就行
-
+    // setTimeout(() =>{
+      console.log('LedgerForm.js被觸發',title,amount,date,!!ledgerItem.id);
+    // },1000)
     // console.log('submitForm的值',title,amount,date);
     if( title && amount && date ) {
       if(amount<0) {
@@ -103,7 +105,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
                 <input type="number" className="form-control" id="inputAmount"
                   value={amount}
                   // onChange={(e)=>{setAmount(e.target.value.trim())}}
-                  onChange={(e)=>{setAmount(e.target.value.trim()*1)}}//@@
+                  onChange={(e)=>{setAmount(e.target.value.trim()*1);console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',e.target.value);}}//@@
                   // ref={(input) => {setAmount(input.current.value)}}
                 />
               </div>
@@ -140,7 +142,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
         <button type="submit"
           id="submit"
           className="btn btn-primary mx-3"
-          onClick={(e)=>{submitForm(e)}}
+          onClick={(e)=>{submitForm(e); console.log('bbbbbb');}}
         >
           提交
         </button>
