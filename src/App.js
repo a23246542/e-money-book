@@ -46,6 +46,7 @@ function App() {
 
   const actions = {
     getInitData: withLoader(async () => {
+      console.log('觸發getInitData');
       // const getUrlWithData = `/ledger/monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'),api.get(getUrlWithData)];
@@ -53,6 +54,7 @@ function App() {
       // const [ resLedger,resCategory ] = resultArr;//%%%順序
       const [ resCategory, resLedger ] = resultArr;
       // setLedgerItems(flattenArr(resLedger.data));//%%@@
+      console.log('resLedger.data',flattenArr(resLedger.data));
       dispatchLedger({
         type:'fetchItems',
         payload:flattenArr(resLedger.data)
@@ -75,7 +77,7 @@ function App() {
     }),
     getEditData: withLoader(async (id) => { //創建頁重整可取得編輯資料
       let promiseArr= [];
-
+      console.log('getEditData.js的ledgerStore',ledgerStore);
       if (Object.keys(categories).length===0) {
         promiseArr.push(api.get('/category'))
       } else {
@@ -122,13 +124,15 @@ function App() {
       const dateObj = parseToYearsAndMonth(formData.date);
       const timestamp = new Date().getTime();
       // const { data:newItem } = await api.post('/ledger',{
-      const newItem  = await api.post('/ledger',{ //@@會自動解構data
+      // const newItem  = await api.post('/ledger',{ //@@會自動解構data
+      const { data:newItem }  = await api.post('/ledger',{ //%%%不會自動解構data
         ...formData,
         id:newId,
         cid:selectedCategoryId,
         monthCategory: `${dateObj.year}-${dateObj.month}`,
         timestamp
       });
+      console.log('createData的newItem',newItem);
       dispatchLedger({
         type: 'addItem',
         payload: {

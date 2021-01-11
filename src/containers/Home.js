@@ -86,6 +86,7 @@ const Home = ({history, match}) => {
   // const ledgerIdList = Object.keys(ledgerStore)// @@移到下面避免重新渲染
 
   useEffect(() => {
+    console.log('home觸發actions');
     actions.getInitData();
   },[''])//@@兩次api
   // },[ledgerStore])
@@ -103,10 +104,13 @@ const Home = ({history, match}) => {
     if(!categoriesLen > 0 || !ledgerLen > 0 ) { //%%%% &&邏輯想錯
       return []
     }
+    console.log('idididid',ledgerStore);
     const ledgerIdList = Object.keys(ledgerStore);
     let cloneObj = JSON.parse(JSON.stringify(ledgerStore));
+    // console.log('cloneObj',cloneObj);
     return ledgerIdList
     .map((id) => {
+      // console.log(cloneObj[id]);
       cloneObj[id].category = categories[ledgerStore[id].cid];//@@原本會改到
       return cloneObj[id];
     // },{...ledgerItems})//%%%回傳物件
@@ -149,16 +153,22 @@ const Home = ({history, match}) => {
   // },[currentDate,listWithCategory])
 
   const {totalIncome, totalOutcome} = useMemo(()=>{ //用另一個computed來計算
+    // console.log('跑listWithCategory.forEach',categories,listWithCategory);
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
     if(!listWithCategory.length>0 || !categoriesLen>0) return {totalIncome:0, totalOutcome:0};
     let totalIncome = 0,totalOutcome = 0;
     // list.forEach(item => {
     listWithCategory.forEach(item => {
       // if(item.category.type === 'outcome') {
-      if(categories[item.cid].type === 'outcome') {
-        totalOutcome += item.amount;
-      } else {
-        totalIncome += item.amount;
+      try{
+        if(categories[item.cid].type === 'outcome') {
+          totalOutcome += item.amount;
+        } else {
+          totalIncome += item.amount;
+        }
+      } catch {
+        console.log(item);
+        throw new Error(item);
       }
     })
     console.log('計算total');

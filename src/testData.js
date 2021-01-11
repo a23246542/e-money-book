@@ -67,7 +67,7 @@ export const testCategories = [
 
 export const testItems = [
   {
-    "title": "这是我的工资",
+    "title": "工资",
     "amount": 2000,
     "date": "2020-11-18",
     "monthCategory": "2020-11",
@@ -98,6 +98,53 @@ export const testItems = [
     "amount": 300,
     "date": "2020-11-15",
     "monthCategory": "2018-11",
+    "id": "_qryggm5y8",
+    "cid": "12",
+    "timestamp": 1534291200000
+  },
+  {
+    "title": "请别人吃饭",
+    "amount": 300,
+    "date": "2020-12-15",
+    "monthCategory": "2020-12",
+    "id": "_qryggm511",
+    "cid": "3",
+    "timestamp": 1534291200000
+  }
+]
+export const testItemsCopy = [
+  {
+    "title": "工资",
+    "amount": 2000,
+    "date": "2020-11-18",
+    "monthCategory": "2020-11",
+    "id": "_bd16bjeen",
+    "cid": "10",
+    "timestamp": 1534550400000
+  },
+  {
+    "title": "喝酒",
+    "amount": 300,
+    "date": "2020-12-20",
+    "monthCategory": "2020-12",
+    "id": "_jjfice21k",
+    "cid": "3",
+    "timestamp": 1534723200000
+  },
+  {
+    "title": "抽奖",
+    "amount": 1000,
+    "date": "2020-12-11",
+    "monthCategory": "2020-12",
+    "id": "_1fg1wme63",
+    "cid": "11",
+    "timestamp": 1533945600000
+  },
+  {
+    "title": "理财收入",
+    "amount": 300,
+    "date": "2020-11-15",
+    "monthCategory": "2020-11",
     "id": "_qryggm5y8",
     "cid": "12",
     "timestamp": 1534291200000

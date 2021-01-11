@@ -8,7 +8,7 @@
 // });
 
 import React from 'react'
-import { testCategories, testItems } from './testData'
+import { testCategories, testItems, testItemsCopy } from './testData'
 import { mount } from 'enzyme'
 import { render,fireEvent,cleanup,waitFor } from '@testing-library/react';
 import { toBeInTheDocument } from '@testing-library/jest-dom';
@@ -26,7 +26,7 @@ import api from './api';
 import { act } from 'react-dom/test-utils';
 
 jest.mock('./api');
-const testItem = testItems[1];
+const testItem = JSON.parse(JSON.stringify(testItems[1]));
 const match = {
   params:{
     id:"_jjfice21k"
@@ -46,14 +46,14 @@ const initData = {
   categories: {},//%% 要給否則category-item會空的
   isLoading:false,
   currentDate: parseToYearsAndMonth(),
-  actions
+  // actions
   // actions:initActions
 }
 
 // https://github.com/facebook/jest/issues/2157#issuecomment-279171856
 // const waitForAsync = () => new Promise(resolve => setImmediate(resolve))
 describe('test App component init behavior', () => {
-
+  
   afterEach(() => {
     jest.clearAllMocks()
 
@@ -71,7 +71,8 @@ describe('test App component init behavior', () => {
       }
       if (url.indexOf('ledger?') > -1) {
           return Promise.resolve({
-              data: testItems
+              // data: testItems
+              data: testItemsCopy
           });
       }
       if (url.indexOf('ledger/') > -1 ) {
@@ -196,20 +197,24 @@ describe('test App component init behavior', () => {
     // await act(async()=>{
     //   await wrapper.instance().actions.createData({}, 2)
     // })
+    console.log('testItems11111111111',testItems);
     process.nextTick(()=>{
       // act(()=>{
         wrapper.update();
         // console.log(wrapper.debug());
         wrapper.find(CreateBtn).simulate('click');
         wrapper.find('.category-item').first().simulate('click');
-        console.log(wrapper.debug());
-        wrapper.find(LedgerForm).invoke('onFormSubmit')({}, false);
+      //   // console.log(wrapper.debug());
+        wrapper.find(LedgerForm).invoke('onFormSubmit')({
+          title:'new title', amount:300, date:'2021-01-01'
+        }, false);
         setTimeout(()=>{
-          expect(api.post).toHaveBeenCalledTimes(1)
+          expect(api.post).toHaveBeenCalledTimes(1);
+          done();
         },100)
         // done()
       // })
-    },100)
+    })
     // setTimeout(()=>{
     //   wrapper.update();
     //
