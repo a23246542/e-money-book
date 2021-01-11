@@ -1,4 +1,4 @@
-import { useState, createContext, useReducer, useRef, useEffect } from 'react';
+import { useState, createContext, useReducer, useRef, useEffect, component, Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
@@ -11,8 +11,10 @@ import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
 import api from './api';
 // import axios from 'axios';
 
+// let actions;
 
 function App() {
+// class App extends Component {
 
   // const state = {//%%!!用這個state reducer不會更新後
   //   // ledgerItems: flattenArr(testItems),
@@ -269,3 +271,5 @@ function App() {
 }
 
 export default App;
+// export {actions};
+

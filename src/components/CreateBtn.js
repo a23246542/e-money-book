@@ -8,6 +8,7 @@ const CreateBtn = ({onCreateItem}) => {
   const { IosAddCircle }  = Ionicons;
   return (
     <div className="btn btn-primary btn-block my-3"
+      data-testid="createBtn"
       onClick={onCreateItem}
     >
       <IosAddCircle

@@ -50,14 +50,15 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
 
         setAlertMessage('');
         setValidatePass(true);
-        console.log('通過');
         if(isEditMode) {
+          console.log('通過編輯模式');
           console.log(title,amount,date);//%%%旧资料
           // onFormSubmit(...ledgerItem,title,amount,date);//%% @@TypeError: ledgerItem is not iterable
           // setTimeout(()=>{
             onFormSubmit({...ledgerItem,title,amount,date}, isEditMode)
           // },1000)
         } else {
+          console.log('通過創建模式');
           onFormSubmit({title,amount,date}, isEditMode);
         }
       }
@@ -83,7 +84,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
               <label htmlFor="inputTitle" className="text-nowrap">標題*: </label>
             </div>
             <div className="col-10">
-              <input type="text" className="form-control" id="inputTitle" aria-describedby="emailHelp"
+              <input type="text" className="form-control" id="inputTitle" data-testid="inputTitle" aria-describedby="emailHelp"
                 value={title}
                 onChange={(e)=>{setTitle(e.target.value.trim())}}
                 // ref={(input) => {setTitle(input.current.value)}}//@@原本的操作
@@ -102,7 +103,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
                 <div className="input-group-prepend">
                   <span className="input-group-text">$</span>
                 </div>
-                <input type="number" className="form-control" id="inputAmount"
+                <input type="number" className="form-control" id="inputAmount" data-testid="inputAmount"
                   value={amount}
                   // onChange={(e)=>{setAmount(e.target.value.trim())}}
                   onChange={(e)=>{setAmount(e.target.value.trim()*1);console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',e.target.value);}}//@@
@@ -118,7 +119,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
               <label htmlFor="inputDate" className="text-nowrap">日期*:</label>
             </div>
             <div className="col-10">
-              <input type="date" className="form-control" id="inputDate"
+              <input type="date" className="form-control" id="inputDate" data-testid="inputDate"
                 value={date}
                 onChange={(e)=>{setDate(e.target.value.trim())}}
                 // ref={(input) => {setDate(input.current.value)}}
@@ -140,7 +141,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
           children
         }
         <button type="submit"
-          id="submit"
+          id="submit" data-testid="submit"
           className="btn btn-primary mx-3"
           onClick={(e)=>{submitForm(e); console.log('bbbbbb');}}
         >

@@ -50,17 +50,15 @@ export const CreatePage = ({ match, history }) => {
     //判斷有無加載過交由App.js
     // const b = actions.getEditData();
     // console.log('create',b);
-    // console.log('Create',actions.getEditData());
+    console.log('Create',actions);
     // actions.getEditData('测试id').then((data) => {
-    actions.getEditData(id).then((data) => {
+    actions.getEditData(id)
+    .then((data) => { //@@因為有await才會return then
       // console.log('Create.js data',data);
-      const { editItem, categories } = data;
-      setTab(id && editItem ? categories[editItem.cid].type:TYPE_OUTCOME);
-      setCategory(id && editItem? categories[editItem.cid]: null);
-      // console.log('nnnn',id && editItem? categories[editItem.cid]: null);
-      // setTimeout(()=>{
-      //   console.log('selectedCategory',selectedCategory);
-      // },1000)
+      //@@似乎不寫這些也行
+      // const { editItem, categories } = data;
+      // setTab(id && editItem ? categories[editItem.cid].type:TYPE_OUTCOME);
+      // setCategory(id && editItem? categories[editItem.cid]: null);
     });
 
   },['']);
@@ -78,6 +76,7 @@ export const CreatePage = ({ match, history }) => {
   }
 
   const selectCategory = (category) => {
+    console.log("Create.js設置",category);
     setCategory(category);
   }
 
@@ -87,11 +86,11 @@ export const CreatePage = ({ match, history }) => {
 
   const submitForm = (formData, isEditMode) => {
     // if(!selectedCategory.id) {//@@@ null.id不行
+    console.log('submitForm被觸發11',!isEditMode,selectedCategory);
     if(!selectedCategory) {
       setValidation(false);
       return;
     }
-    console.log('submitForm被觸發',!isEditMode,selectedCategory);
     //create
     if(!isEditMode) {
       // dispatchLedger({
@@ -105,6 +104,8 @@ export const CreatePage = ({ match, history }) => {
       // setTimeout(()=>{
       //   history.push('/');
       // },0)
+      console.log('觸發actions.createData',formData,selectedCategory.id);
+
       actions.createData(formData,selectedCategory.id)
       .then(()=>{
         history.push('/');
@@ -123,7 +124,7 @@ export const CreatePage = ({ match, history }) => {
       //   console.log(ledgerStore);
       //   history.push('/');
       // },0)
-      console.log('create編輯模式');
+      console.log('create編輯模式',formData,selectedCategory.id);
       actions.editData(formData,selectedCategory.id)
       .then(()=>{
         history.push('/');

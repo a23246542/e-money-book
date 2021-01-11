@@ -10,12 +10,45 @@
 import React from 'react'
 import { testCategories, testItems } from './testData'
 import { mount } from 'enzyme'
-import App from './App'
+import { render,fireEvent,cleanup,waitFor } from '@testing-library/react';
+import { toBeInTheDocument } from '@testing-library/jest-dom';
+import App,{actions} from './App'
+import { BrowserRouter as Router, MemoryRouter, withRouter, Route } from 'react-router-dom';
 import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
+import AppContext from './AppContext';
+import { CreatePage } from './containers/Create';
+import CreateBtn from './components/CreateBtn';
+import LedgerForm from './components/LedgerForm';
+
 
 // import mockAxios from './__mocks__/axios'
 import api from './api';
 import { act } from 'react-dom/test-utils';
+
+jest.mock('./api');
+const testItem = testItems[1];
+const match = {
+  params:{
+    id:"_jjfice21k"
+  }
+};
+const createMatch = { params: { id: '' } }
+const history = { push: () => {} }
+
+// const actions = {
+//   getEditData: jest.fn().mockResolvedValue({ editItem: undefined, categories: flattenArr(testCategories)}),
+//   createData: jest.fn().mockReturnValue(Promise.resolve('')),
+//   editData: jest.fn().mockReturnValue(Promise.resolve(''))
+// }
+
+const initData = {
+  ledgerStore:{},
+  categories: {},//%% 要給否則category-item會空的
+  isLoading:false,
+  currentDate: parseToYearsAndMonth(),
+  actions
+  // actions:initActions
+}
 
 // https://github.com/facebook/jest/issues/2157#issuecomment-279171856
 // const waitForAsync = () => new Promise(resolve => setImmediate(resolve))
@@ -25,8 +58,9 @@ describe('test App component init behavior', () => {
     jest.clearAllMocks()
 
   })
+  afterEach(cleanup)
   beforeEach(() => {
-    jest.mock('./api');
+
     // api.get.mockImplementation(jest.fn((url) => { //無效
     api.get = jest.fn().mockImplementation(jest.fn((url) => {
       console.log("log output from mock axios!!!!!!!!!");
@@ -69,49 +103,75 @@ describe('test App component init behavior', () => {
 
 
   //app home加載過後 => app的state資料長度等於test資料長度
-  it('check App Home state with initial action', async () => {
+  it('check App Home state with initial action', () => {
     const wrapper = mount(<App/>)
     expect(api.get).toHaveBeenCalledTimes(2)
     // await waitForAsync()
-    const currentState = wrapper.instance().state
-    expect(Object.keys(currentState.items).length).toEqual(testItems.length)
-    expect(Object.keys(currentState.categories).length).toEqual(testCategories.length)
+    // const currentState = wrapper.instance().state
+    // expect(Object.keys(currentState.items).length).toEqual(testItems.length)
+    // expect(Object.keys(currentState.categories).length).toEqual(testCategories.length)
   })
 // ----
   //首頁加載過資料後 到創建頁呼叫getEditData => 不會再發新api.get，只有mount的兩次
-  it('test getEditData with initial data in create mode', async () => {
-    const wrapper = mount(<App/>)
-    // await waitForAsync()
-    await act(async()=>{
-      await wrapper.instance().actions.getEditData()//@@
-    })
-    expect(api.get).toHaveBeenCalledTimes(2)
-  })
+  // it.only('test getEditData with initial data in create mode', async() => {
+  //   // const wrapper = mount(<App/>)
+  //   const {getByTestId,debug} = render(<App/>)
+  //   // await act(async()=>{
+  //   //   await wrapper.instance().actions.getEditData()//@@
+  //   // // })
+  //   // console.log(wrapper.debug());
+  //   debug()
+  //   await waitFor(() => { //!!!!需要不然會處在加載中找不到按鈕
+  //     fireEvent.click(getByTestId('createBtn'));
+  //   })
+  //   // wrapper.find(CreateBtn).simulate('click');
+  //   expect(api.get).toHaveBeenCalledTimes(2)
+  // })
 
   //沒有加載過資料，直接到達創建頁新建 =>api get會呼叫三次 ，一開始mount兩次清空後getEditData 創建再一次
-  it.only('test getEditData without initial data in create mode', async () => {
-    const wrapper = mount(<App/>)
+  it('test getEditData without initial data in create mode', () => {
+    // jest.mock('react-router-dom',()=>({
+    //   ...jest.requireActual('react-router-dom'),
+    //   Route:MemoryRouter
+    // }))
+    // jest.spyOn('react-router-dom','Route')
+    // jest.mock('react-router-dom')
+    const wrapper = mount(
+      <AppContext.Provider value={initData}>
+          <CreatePage match={createMatch} history={history} />
+      </AppContext.Provider>
+      // <App/>
+    )
     // await waitForAsync()
+      // console.log(wrapper.debug());
 
     // const actions = wrapper.find()
-    wrapper.setState({
-      categories: {},
-      items: {},
-    })
-    await act(async()=>{
-      await wrapper.instance().actions.getEditData()
-    })
-    expect(api.get).toHaveBeenCalledTimes(3)
-    expect(api.get).toHaveBeenLastCalledWith('/category')
+    // wrapper.setState({
+    //   categories: {},
+    //   items: {},
+    // })
+    // await act(async()=>{
+    //   await wrapper.instance().actions.getEditData()
+    // })
+    expect(api.get).toHaveBeenCalledTimes(1)
+    // expect(api.get).toHaveBeenLastCalledWith('/category')
   })
 
 // -----
   //首頁加載後，創建頁做編輯 ，api一樣只get兩次(items、categories) edit mode不會再發請求
   it('test getEditData with initial data in edit mode', async () => {
-    const wrapper = mount(<App/>)
-    // await waitForAsync()
-    await act(async()=>{
-      await wrapper.instance().actions.getEditData('_1fg1wme63')
+    // const wrapper = mount(<App/>)
+    const { getByTestId,debug } = render(<App/>)
+    // await act(async()=>{
+    //   await wrapper.instance().actions.getEditData('_1fg1wme63')
+    // })
+    await waitFor(()=>{
+      // fireEvent.click(getByTestId('ledger-item-_bd16bjeen').getByText('編輯'));
+      fireEvent.click(getByTestId('editBtn-_bd16bjeen'));
+    })
+    await waitFor(()=>{
+      // debug();
+      expect(getByTestId('submit')).toBeInTheDocument();
     })
     expect(api.get).toHaveBeenCalledTimes(2)
   })
@@ -130,16 +190,34 @@ describe('test App component init behavior', () => {
   // })
 // ---------
   //觸發app create =>post被觸發一次，之後items增加一個
-  it('test createItem with initial data', async() => {
+  it.only('test createItem with initial data', (done) => {
     const wrapper = mount(<App/>)
     // await waitForAsync()
-    await act(async()=>{
-      await wrapper.instance().actions.createData({}, 2)
-    })
-    wrapper.update();
-    expect(api.post).toHaveBeenCalledTimes(1)
-    const currentState = wrapper.instance().state
-    expect(Object.keys(currentState.items).length).toEqual(testItems.length + 1)
+    // await act(async()=>{
+    //   await wrapper.instance().actions.createData({}, 2)
+    // })
+    process.nextTick(()=>{
+      // act(()=>{
+        wrapper.update();
+        // console.log(wrapper.debug());
+        wrapper.find(CreateBtn).simulate('click');
+        wrapper.find('.category-item').first().simulate('click');
+        console.log(wrapper.debug());
+        wrapper.find(LedgerForm).invoke('onFormSubmit')({}, false);
+        setTimeout(()=>{
+          expect(api.post).toHaveBeenCalledTimes(1)
+        },100)
+        // done()
+      // })
+    },100)
+    // setTimeout(()=>{
+    //   wrapper.update();
+    //
+    //   done()
+    // },100)
+    // const currentState = wrapper.instance().state
+    // expect(Object.keys(currentState.items).length).toEqual(testItems.length + 1)
+
   })
   //加載後 更新item
   //觸發app create => put被觸發一次，新顯示的item是對的

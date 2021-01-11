@@ -21,6 +21,7 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
           return (
             <li className="ledger-item list-group-item d-flex align-items-center"
               key={item.id}
+              data-testid={`ledger-item-${item.id}`}
             >
               <span className="col-1 badge badge-primary">
                 {/* <CategoryIcon
@@ -48,6 +49,7 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
                 // style={{backgroundColor:'#28a745'}}
                 // onClick={onModifyItem(item)} //會傳直接執行的函式%%%
                 onClick={(e)=>{e.preventDefault();onModifyItem(item)}}
+                data-testid={`editBtn-${item.id}`}
               >
                 <IosCreate
                   // icon="ios-create"

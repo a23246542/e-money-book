@@ -9,13 +9,15 @@ const CategorySelect = ({categories, selectedCategory, onSelectCategory}) => {
   const selectedCategoryId = selectedCategory && selectedCategory.id;//@@const 可以等於undefined
   const selectCategory = (event, category) => {
     // setSelectedCategory(category);
+    console.log('CategorySelect.js選中',category);
     onSelectCategory(category);
+
     event.preventDefault();
   }
   // console.log('CategorySelect.js',categories);
 
   return (
-    <div className="category-select pt-4">
+    <div className="category-select pt-4" data-testid="category-select">
       {/* //有row沒container會破版 */}
       <div className="container">
         <div className="row">
@@ -26,7 +28,7 @@ const CategorySelect = ({categories, selectedCategory, onSelectCategory}) => {
             const activeClassName = isActive ? 'col-3 category-item active' : 'col-3 category-item'
             // const activeClass = selectedCategory.id === item.id ?
             return (
-              <div className={activeClassName} key={item.id}
+              <div className={activeClassName} key={item.id} data-testid={item.id}
                   onClick={(e)=>{selectCategory(e, item)}}
               >
                 {<Icon
