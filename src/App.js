@@ -151,8 +151,8 @@ function App() {
         // timestamp,//%%會不小心把排序提升 創建有就好
         monthCategory: `${dateObj.year}-${dateObj.month}`,
       }
-      // const { data: modifiedItem } = await api.put(`ledger/${formData.id}`,updatedItem)
-      const modifiedItem  = await api.put(`ledger/${formData.id}`,updatedItem)
+      const { data:modifiedItem } = await api.put(`ledger/${formData.id}`,updatedItem)
+      // const modifiedItem  = await api.put(`ledger/${formData.id}`,updatedItem)
       dispatchLedger({
         type: 'updateItem2',
         payload:{
@@ -160,6 +160,7 @@ function App() {
           modifiedItem
         }
       })
+      console.log('update title的',modifiedItem);
       return modifiedItem;
     }),
     deleteData: withLoader(async (item) => {

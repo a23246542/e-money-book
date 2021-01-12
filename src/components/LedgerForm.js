@@ -36,7 +36,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
     // const editMode = ledgerItem && !!ledgerItem.id;//%%%ledgerItem為{} 為true 傳後面變undefined
     const isEditMode = !!ledgerItem.id; //!!這樣就行
     // setTimeout(() =>{
-      console.log('LedgerForm.js被觸發',title,amount,date,!!ledgerItem.id);
+      // console.log('LedgerForm.js被觸發',title,amount,date,!!ledgerItem.id);
     // },1000)
     // console.log('submitForm的值',title,amount,date);
     if( title && amount && date ) {
@@ -76,7 +76,6 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
   return (
     //!需要改input閉合 className htmlFor
     <div className="container">
-
       <form className="pt-5 px-2">
         <div className="form-group">
           <div className="row">
@@ -148,6 +147,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
           提交
         </button>
         <button type="button" id="cancel"
+          data-testid="cancel"
           className="btn btn-primary mx-3"
           onClick={(e)=>{cancelSubmit(e)}}
         >取消</button>

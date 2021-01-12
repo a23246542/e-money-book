@@ -127,6 +127,7 @@ export const CreatePage = ({ match, history }) => {
       console.log('create編輯模式',formData,selectedCategory.id);
       actions.editData(formData,selectedCategory.id)
       .then(()=>{
+        console.log('----跳回首頁----');
         history.push('/');
       })
     }

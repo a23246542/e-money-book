@@ -104,7 +104,7 @@ const Home = ({history, match}) => {
     if(!categoriesLen > 0 || !ledgerLen > 0 ) { //%%%% &&邏輯想錯
       return []
     }
-    console.log('idididid',ledgerStore);
+    // console.log('idididid',ledgerStore);
     const ledgerIdList = Object.keys(ledgerStore);
     let cloneObj = JSON.parse(JSON.stringify(ledgerStore));
     // console.log('cloneObj',cloneObj);

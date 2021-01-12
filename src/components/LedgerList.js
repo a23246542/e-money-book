@@ -34,7 +34,7 @@ const LedgerList = ({items, onModifyItem, onDeleteItem}) => {
                 />}
               </span>
               {/* <span className="col-11 bg-primary"></span> */}
-              <span className="col-5">{item.title}</span>
+              <span className="col-5 ledger-title">{item.title}</span>
               <span className="col-2 font-weight-bold">
                 {/* {item.category.type === 'income'?
                   `${item.price}元`:
