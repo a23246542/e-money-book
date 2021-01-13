@@ -71,14 +71,26 @@ const MonthPicker = ({year, month, choiceDate,path}) => {
   const selectMonth = (e,monthNum) => {
     e.preventDefault();
     // setMonth(monthNum);
-    setMonth(()=> (monthNum));//!!后面函式同样有影响
+    setMonth(()=> (monthNum));//!!后面函式同样有影响%%後面吃到selectedYear的還是舊的
+    // setMonth(()=> {
+    //   // toggleDropdown();
+    //   // choiceDate(selectedYear,selectedMonth);
+    //   return monthNum;
+    // })
+    // console.log('choiceDate',selectedYear,selectedMonth);
     toggleDropdown();
-    console.log('choiceDate',selectedYear,selectedMonth);
-    choiceDate(selectedYear,selectedMonth);
-    // choiceDate(selectedYear,monthNum);
-    // console.log(Number(padLeft(monthNum)));
-
+    choiceDate(selectedYear,monthNum);//!!最簡單的方法用舊的值
   }
+
+  // const isFirstRender = useRef(true)
+  // useEffect(()=>{//!!可是會有不想mount就toggle down的問題 用useRef
+  //   if(!isFirstRender.current) {
+  //     toggleDropdown();
+  //     choiceDate(selectedYear,selectedMonth);
+  //   } else {
+  //     isFirstRender.current = false
+  //   }
+  // },[selectedMonth])//%%可是有個問題點了12月再點關不掉
 
   // console.log('渲染');
 
