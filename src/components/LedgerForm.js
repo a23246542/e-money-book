@@ -4,14 +4,18 @@ import PropTypes from 'prop-types'
 // const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
 const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { //%%避免無傳入報錯
   //畫面表單
-  const [ title, setTitle ] = React.useState( (ledgerItem&&ledgerItem.title)||'');
-  const [ amount, setAmount ] = React.useState((ledgerItem&&ledgerItem.amount)||'');//@但其實是數字
-  const [ date, setDate ] = React.useState((ledgerItem&&ledgerItem.date)||'');
+  const [ title, setTitle ] = React.useState( (ledgerItem.id&&ledgerItem.title)||'');
+  const [ amount, setAmount ] = React.useState((ledgerItem.id&&ledgerItem.amount)||'');//@但其實是數字
+  const [ date, setDate ] = React.useState((ledgerItem.id&&ledgerItem.date)||'');
+  //
+  // const [ title, setTitle ] = React.useState( ledgerItem.id? ledgerItem.title:'');
+  // const [ amount, setAmount ] = React.useState(ledgerItem.id?ledgerItem.amount:'');//@但其實是數字
+  // const [ date, setDate ] = React.useState(ledgerItem.id?ledgerItem.date:'');
   // const { title, amount, date } = ledgerItem;
+  console.log('看看是否undefined',ledgerItem.id&&ledgerItem.title);
   //畫面資料狀態
   const [ validatePass, setValidatePass ] = React.useState(true);
   const [ alertMessage, setAlertMessage ] = React.useState('');
-
 
   useEffect(() => {
     // if (ledgerItem.id) {
@@ -55,11 +59,17 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
           console.log(title,amount,date);//%%%旧资料
           // onFormSubmit(...ledgerItem,title,amount,date);//%% @@TypeError: ledgerItem is not iterable
           // setTimeout(()=>{
-            onFormSubmit({...ledgerItem,title,amount,date}, isEditMode)
+            onFormSubmit({...ledgerItem,title,amount,date}, isEditMode);
+            setTitle('');
+            setAmount('');
+            setDate('');
           // },1000)
         } else {
           console.log('通過創建模式');
           onFormSubmit({title,amount,date}, isEditMode);
+          setTitle('');
+          setAmount('');
+          setDate('');
         }
       }
     } else {
@@ -84,7 +94,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
             </div>
             <div className="col-10">
               <input type="text" className="form-control" id="inputTitle" data-testid="inputTitle" aria-describedby="emailHelp"
-                value={title}
+                value={title||''}
                 onChange={(e)=>{setTitle(e.target.value.trim())}}
                 // ref={(input) => {setTitle(input.current.value)}}//@@原本的操作
               />
@@ -103,7 +113,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
                   <span className="input-group-text">$</span>
                 </div>
                 <input type="number" className="form-control" id="inputAmount" data-testid="inputAmount"
-                  value={amount}
+                  value={amount||''}
                   // onChange={(e)=>{setAmount(e.target.value.trim())}}
                   onChange={(e)=>{setAmount(e.target.value.trim()*1);console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',e.target.value);}}//@@
                   // ref={(input) => {setAmount(input.current.value)}}
@@ -119,7 +129,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
             </div>
             <div className="col-10">
               <input type="date" className="form-control" id="inputDate" data-testid="inputDate"
-                value={date}
+                value={date||''}
                 onChange={(e)=>{setDate(e.target.value.trim())}}
                 // ref={(input) => {setDate(input.current.value)}}
               />

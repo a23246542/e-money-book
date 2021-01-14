@@ -195,7 +195,7 @@ describe('test component when in create mode', () => {
   // })
 
   // jest.setTimeout(100000);
-  it('改test-library測試', (done) => {
+  it.only('改test-library測試', (done) => {
   // it('改test-library測試', async(done) => {// %%%%async不能隨便加上 會超時!!!!
     // beforeEach(cleanup)
     // expect.assertions(1);
@@ -224,7 +224,7 @@ describe('test component when in create mode', () => {
     // await waitFor(()=>{
       // container.update();
       // console.log(container.debug());
-      // debug()
+      debug()
       fireEvent.click(getByTestId("submit"));
       // expect(actions.createData.mock.calls).toHaveBeenCalledWith(testData, testCategories[0].id)
       // done()
