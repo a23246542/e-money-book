@@ -15,7 +15,7 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
 
   useEffect(() => {
     // if (ledgerItem.id) {
-      console.log(ledgerItem,'ledgerFrom useEffect');
+      console.log('ledgerFrom useEffect取得新ledger',ledgerItem,);
       setTitle(ledgerItem.title);
       setAmount(ledgerItem.amount);
       setDate(ledgerItem.date);

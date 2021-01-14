@@ -18,6 +18,7 @@ const ViewTab = ({ activeTab, onTabChange }) => {
         <button
           className={ generateLinkClass(LIST_VIEW,activeTab)}
           onClick={(e) => {e.preventDefault(); onTabChange(LIST_VIEW)}}
+          data-testid="listBtn"
         >
           <IosPaper
             className="mr-2 align-bottom"
@@ -30,6 +31,7 @@ const ViewTab = ({ activeTab, onTabChange }) => {
         <button
           className={ generateLinkClass(CHART_VIEW,activeTab)}
           onClick={(e)=>{e.preventDefault();onTabChange(CHART_VIEW)}}
+          data-testid="chartBtn"
           >
           <IosPie
             className="mr-2 align-bottom"

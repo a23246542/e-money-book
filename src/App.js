@@ -77,7 +77,7 @@ function App() {
     }),
     getEditData: withLoader(async (id) => { //創建頁重整可取得編輯資料
       let promiseArr= [];
-      console.log('getEditData.js的ledgerStore',ledgerStore);
+      // console.log('getEditData.js的ledgerStore',ledgerStore);
       if (Object.keys(categories).length===0) {
         promiseArr.push(api.get('/category'))
       } else {
@@ -92,6 +92,7 @@ function App() {
       }
       const [ resCategory, resEditItem ] = await Promise.all(promiseArr);
       // console.log('會是undefined',resCategory,resEditItem);
+      console.log('getEditData.js',`/ledger/${id}`,resEditItem);
 
       const finalCategory = resCategory ? flattenArr(resCategory.data) : categories;
       const finalEditItem = resEditItem ? resEditItem.data : ledgerStore[id];
@@ -113,6 +114,7 @@ function App() {
         setCategories(finalCategory);
         setIsLoading(false);
       }
+      console.log('有id set資料');
 
       return {
         categories: finalCategory,

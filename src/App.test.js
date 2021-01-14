@@ -30,6 +30,7 @@ import {
   createMemorySource,
   LocationProvider,
 } from '@reach/router'
+// import { findByTestAttr } from 'test/testUtils';
 
 
 
@@ -74,38 +75,38 @@ describe('test App component init behavior', () => {
   afterEach(cleanup)
   beforeEach(() => {
     // api.get.mockImplementation(jest.fn((url) => { //無效
-    // api.get = jest.fn().mockImplementation(jest.fn((url) => {
-    //   console.log("log output from mock axios!!!!!!!!!");
-    //   if (url.indexOf('category') > -1) {
-    //       return Promise.resolve({
-    //           data: testCategories
-    //     });
-    //   }
-    //   if (url.indexOf('ledger?') > -1) {
-    //       return Promise.resolve({
-    //           // data: testItems
-    //           data: testItems
-    //       });
-    //   }
-    //   if (url.indexOf('ledger/') > -1 ) {
-    //     return Promise.resolve({
-    //       data: {
-    //           ...testItems[2],
-    //           // id: 'testId'
-    //       }
-    //     });
-    //   }
-    // }));
+    api.get = jest.fn().mockImplementation(jest.fn((url) => {
+      console.log("log output from mock axios!!!!!!!!!");
+      if (url.indexOf('category') > -1) {
+          return Promise.resolve({
+              data: testCategories
+        });
+      }
+      if (url.indexOf('ledger?') > -1) {
+          return Promise.resolve({
+              // data: testItems
+              data: testItems
+          });
+      }
+      if (url.indexOf('ledger/') > -1 ) {
+        return Promise.resolve({
+          data: {
+              ...testItems[2],
+              // id: 'testId'
+          }
+        });
+      }
+    }));
     api.post = jest.fn().mockImplementation((url)=>{
       // return Promise.resolve({ data: {...testItems[0], id: 'new_created_id'}})
       //~返回不需要拿id
       return Promise.resolve({ data: {...testItems[0]}})
     })
-    // api.put = jest.fn().mockImplementation((url, updateObj)=>{
-    //   //尋找testItems陣列原本id的item
-    //   const modifiedItem = testItems.find((item) => item.id === updateObj.id)
-    //   return Promise.resolve({ data: { ...modifiedItem, ...updateObj }})//返回覆蓋過後的
-    // });
+    api.put = jest.fn().mockImplementation((url, updateObj)=>{
+      //尋找testItems陣列原本id的item
+      const modifiedItem = testItems.find((item) => item.id === updateObj.id)
+      return Promise.resolve({ data: { ...modifiedItem, ...updateObj }})//返回覆蓋過後的
+    });
     api.delete = jest.fn().mockImplementation((url)=>{
       // const id = url.match(/\w+/g)[1]
       // const filteredItem = testItems.find((item) => item.id === id)
@@ -123,6 +124,19 @@ describe('test App component init behavior', () => {
     // const currentState = wrapper.instance().state
     // expect(Object.keys(currentState.items).length).toEqual(testItems.length)
     // expect(Object.keys(currentState.categories).length).toEqual(testCategories.length)
+  })
+
+  it.only('check App Home change ViewTab and LedgerList should show right',(done)=>{
+    const wrapper = mount(<App/>);
+    setTimeout(()=>{
+      wrapper.update()
+      wrapper.find('[data-testid="chartBtn"]').simulate('click');
+      expect(wrapper.find(LedgerList).length).toBe(0);
+      wrapper.find('[data-testid="listBtn"]').simulate('click');
+      // console.log(wrapper.debug());
+      expect(wrapper.find(LedgerList).length).toBe(1);
+      done()
+    },100)
   })
 // ----
   //首頁加載過資料後 到創建頁呼叫getEditData => 不會再發新api.get，只有mount的兩次
@@ -193,9 +207,46 @@ describe('test App component init behavior', () => {
     // expect(container.innerHTML).toMatch('取消');
     expect(api.get).toHaveBeenCalledTimes(1);
     fireEvent.click(getByTestId('cancel'));
-    debug();
+    // debug();
     // expect(api.get).toHaveBeenLastCalledWith('/category')
   })
+
+ it.only('直接到達編輯頁',(done)=>{
+  const renderWithRouter = (ui, { route = '/' } = {}) => {
+    window.history.pushState({}, 'Test page', route)
+
+    // return render(ui, { wrapper: BrowserRouter })
+    return render(ui, { wrapper: MemoryRouter })
+  }
+
+  const { container, debug,getByTestId,rerender } = renderWithRouter(<App />, {
+    route: '/edit/_1fg1wme63',
+  })
+
+  // debug();
+  expect(api.get).toHaveBeenNthCalledWith(1,'/category');
+  expect(api.get).toHaveBeenNthCalledWith(2,'/ledger/_1fg1wme63')
+  setTimeout(async()=>{
+    // rerender()
+
+    //@@還是沒有成功!!
+    fireEvent.change(getByTestId("inputTitle"),{ target:{value:'抽獎'}});
+      fireEvent.change(getByTestId("inputAmount"),{ target:{value:'1000'}});
+      fireEvent.change(getByTestId("inputDate"),{ target:{value:'2020-12-11'}});
+    await waitFor(()=>{
+      setTimeout(()=>{
+
+        debug();
+        done()
+      },1000)
+    })
+  },2000)
+  // await waitFor(()=> {
+  //   debug()
+  // })
+  // expect(api.get).toHaveBeenCalledTimes(1);
+  // fireEvent.click(getByTestId('cancel'));
+ })
 
 // -----
   //首頁加載後，創建頁做編輯 ，api一樣只get兩次(items、categories) edit mode不會再發請求
@@ -217,6 +268,8 @@ describe('test App component init behavior', () => {
       fireEvent.click(getByTestId('cancel'));//不按回去下一頁的url會不對
       // debug();
   })
+
+
 
   //首頁沒有加載，創建頁不会做編輯
   //@@好像有問題
@@ -272,7 +325,7 @@ describe('test App component init behavior', () => {
   })
   //加載後 更新item
   // 觸發app create => put被觸發一次，新顯示的item是對的
-  it.only('test updateItem with initial data', (done) => {
+  it('test updateItem with initial data', (done) => {
     jest.clearAllMocks();
     const wrapper = mount(<App/>)
 
@@ -336,6 +389,9 @@ describe('test App component init behavior', () => {
         // })
     // })
   })
+  // describe('加載後刪除item',()=>{
+
+  // })
   //加載後 刪除item
   //觸發app的delete => api delete會呼叫一次，顯示的長度會比test資料少一個
   // it('test deleteItem with initial data', async() => {

@@ -88,7 +88,7 @@ export const testItems = [
     "title": "抽奖",
     "amount": 1000,
     "date": "2020-12-11",
-    "monthCategory": "2018-8",
+    "monthCategory": "2020-12",
     "id": "_1fg1wme63",
     "cid": "11",
     "timestamp": 1533945600000
@@ -97,7 +97,7 @@ export const testItems = [
     "title": "理财收入",
     "amount": 300,
     "date": "2020-11-15",
-    "monthCategory": "2018-11",
+    "monthCategory": "2020-11",
     "id": "_qryggm5y8",
     "cid": "12",
     "timestamp": 1534291200000

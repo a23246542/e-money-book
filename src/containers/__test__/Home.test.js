@@ -99,7 +99,8 @@ describe('test home container with loaded data', () => {
     // expect(actions.deleteData).toHaveBeenCalledWith(testItems[0])//@@
     expect(actions.deleteData).toHaveBeenCalledWith(testItems[0])//@@
   })
-  //點擊tab view有改變
+
+  //點擊tab view有改變 算集成了?
   it('click the the tab should change the view and state', () => {
     wrapper.find('.nav-tabs .nav-item button').at(1).simulate('click')
     expect(wrapper.find(LedgerList).length).toEqual(0)
