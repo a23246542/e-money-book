@@ -43,3 +43,11 @@ export const Color = {
   lightGray: '#efefef',
   white: '#fff',
 }
+
+export const PieColor = {
+  orange: '#F5A536',
+  yellow: '#F7D674',
+  green: '#4BAD6B',
+  blue: '#528ECB',
+  purple: '#9F61C2'
+}

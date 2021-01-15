@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { PieChart, Pie, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { PieColor } from '../utility';
 const data = [
   {
     name: 'Page A', 
@@ -19,6 +20,10 @@ const data02 = [{name: 'Group A', value: 2400}, {name: 'Group B', value: 4567},
                   {name: 'Group E', value: 3908}, {name: 'Group F', value: 4800}];
 
 const Charts = props => {
+
+
+  const colorsArr = Object.keys(PieColor).map((color,index) =>PieColor[color])
+
   return (
     <div>
       {/* <LineChart width={400} height={400} data={data}>
@@ -29,10 +34,20 @@ const Charts = props => {
         <Tooltip />
       </LineChart> */}
       <PieChart width={800} height={400}>
-        <Pie isAnimationActive={false} data={data01} cx={200} cy={200} outerRadius={80} fill="#8884d8" label/>
-        <Pie data={data02} cx={500} cy={200} innerRadius={40} outerRadius={80} fill="#82ca9d"/>
+        <Pie isAnimationActive={false} 
+          data={data01} 
+          cx={200} 
+          cy={200} 
+          outerRadius={80} 
+          fill="#8884d8" 
+          label>
+            {
+              data01.map((entry, index) => <Cell key={index} fill={colorsArr[index % colorsArr.length]}/>)
+            }
+          </Pie>
+        {/* <Pie data={data02} cx={500} cy={200} innerRadius={40} outerRadius={80} fill="#82ca9d"/> */}
         <Tooltip/>
-       </PieChart>
+      </PieChart>
     </div>
   )
 }
