@@ -113,6 +113,7 @@ describe('test LedgerForm component', () => {
         wrapper.find('#inputAmount').simulate('change',{ target:{value:'300'}});
         wrapper.find('#inputDate').simulate('change',{ target:{value:'2020-12-13'}});
       })
+      // console.log(wrapper.debug());
       wrapper.update();
       wrapper.find('#submit').simulate('click');
       // console.log(wrapper.debug());
@@ -148,7 +149,7 @@ describe('test LedgerForm component', () => {
     //交互
     // 使用者編輯後，會把對的資料物件呼叫出去
     // it('submit with valid data should call the right callback with right object',()=>{})
-    it('submit with change value should trigger callback with right object',()=>{
+    it.only('submit with change value should trigger callback with right object',()=>{
       // jest.spyOn(React, 'useEffect').mockImplementation(f => f())
       wrapper2.update();
       const mockSetState = jest.fn();
@@ -167,6 +168,7 @@ describe('test LedgerForm component', () => {
         // expect(props.onFormSubmit).toHaveBeenCalledWith(newItem);//%%Number of calls: 0
       // })
       wrapper2.update();
+      console.log(wrapper2.debug());
       // wrapper2 =  wrapper2.update();
       const newItem = {...props_with_item.ledgerItem,title:'工資',amount:2000,date:'2020-12-13'};
       // expect(props_with_item.onFormSubmit).toHaveBeenCalledWith(newItem);//@@哪個好

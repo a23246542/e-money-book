@@ -63,6 +63,28 @@ const initData = {
   // actions:initActions
 }
 
+
+describe('test App component with real api',()=>{
+
+  // beforeEach(()=>{
+  //   jest.clearAllMocks()
+  // })
+
+  it.only('click the year&month item, should show the right ledgerItem',(done)=>{
+    const wrapper = mount(<App/>);
+    wrapper.find('.dropdown-toggle').simulate('click')
+    wrapper.find('.years-range .dropdown-item').at(3).simulate('click');
+    wrapper.find('.months-range .dropdown-item').last().simulate('click');
+    console.log('====================================');
+    console.log(wrapper.debug());
+    console.log('====================================');
+    setTimeout(()=>{
+      wrapper.update()
+      expect(wrapper.find('.ledger-item').length).toBe(5);
+      done()
+    },100)
+  })
+})
 // https://github.com/facebook/jest/issues/2157#issuecomment-279171856
 // const waitForAsync = () => new Promise(resolve => setImmediate(resolve))
 describe('test App component init behavior', () => {
@@ -139,6 +161,9 @@ describe('test App component init behavior', () => {
     },100)
   })
 // ----
+
+
+
   //首頁加載過資料後 到創建頁呼叫getEditData => 不會再發新api.get，只有mount的兩次
   it('test getEditData with initial data in create mode', async() => {
     // const wrapper = mount(<App/>)
@@ -224,6 +249,7 @@ describe('test App component init behavior', () => {
   })
 
   // debug();
+  expect(api.get).toHaveBeenCalledTimes(2);
   expect(api.get).toHaveBeenNthCalledWith(1,'/category');
   expect(api.get).toHaveBeenNthCalledWith(2,'/ledger/_1fg1wme63')
   setTimeout(async()=>{
@@ -249,6 +275,9 @@ describe('test App component init behavior', () => {
  })
 
 // -----
+
+
+
   //首頁加載後，創建頁做編輯 ，api一樣只get兩次(items、categories) edit mode不會再發請求
   it('test getEditData with initial data in edit mode', async () => {
     // const wrapper = mount(<App/>)
