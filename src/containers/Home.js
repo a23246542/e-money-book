@@ -13,6 +13,7 @@ import { Tabs, Tab } from '../components/Tabs(bad)';
 import AppContext from '../AppContext';
 // import {Tabs, Tab} from '../components/Tabs';
 import Loader from '../components/common/Loader';
+import Charts from '../components/Charts';
 
 
 // const initItemsWithCategory = items.map(item => { //!!@移到外面就不會切換時一直執行
@@ -308,8 +309,7 @@ const Home = ({history, match}) => {
                 </div>
               }
               {
-                tabView === CHART_VIEW &&
-                "這裡是圖表模式"
+                tabView === CHART_VIEW && <Charts/>
               }
           </Fragment>
         }
