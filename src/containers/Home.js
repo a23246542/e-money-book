@@ -2,7 +2,7 @@ import { useState, Fragment, useMemo, useEffect, useContext, useCallback } from 
 import { useRouteMatch, withRouter } from 'react-router-dom';
 import logo from '../logo.svg';
 
-import { LIST_VIEW, CHART_VIEW } from '../constants';
+import { LIST_VIEW, CHART_VIEW, TYPE_OUTCOME, TYPE_INCOME } from '../constants';
 import { parseToYearsAndMonth, padLeft } from '../utility';
 import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
@@ -31,6 +31,25 @@ import Charts from '../components/Charts';
   帳目表的分類資訊跟月份資訊
 
 */
+const generateChartDataByCategory = (ledgerItemsWithCategory, type = TYPE_OUTCOME ) => {
+  let categoryMap = {};
+  ledgerItemsWithCategory.filter(item => item.category.type === type)
+  .forEach(item => {
+    if (categoryMap[item.cid]) {
+      categoryMap[item.cid].value += (item.amount*1);
+      categoryMap[item.cid].items.push(item.id);
+    } else {
+      categoryMap[item.cid] = {
+        name: item.category.name,
+        value: item.amount * 1,
+        items: [item.id]
+      }
+    }
+  })
+  return Object.values(categoryMap);
+}
+
+
 const Home = ({history, match}) => {
 
   // let initItemsWithCategory = []
@@ -172,7 +191,7 @@ const Home = ({history, match}) => {
         throw new Error(item);
       }
     })
-    console.log('計算total');
+    // console.log('計算total');
     return { totalIncome, totalOutcome }
   // },[ledgerIdList.length])
   // },[filteredListWithCategory.length])
@@ -234,6 +253,8 @@ const Home = ({history, match}) => {
     actions.deleteData(clickedItem);
   };
 
+  const chartOutcomeDataByCategory = generateChartDataByCategory(listWithCategory,TYPE_OUTCOME);
+  const chartIncomeDataByCategory = generateChartDataByCategory(listWithCategory,TYPE_OUTCOME);
   // console.log('listWithCategory',listWithCategory,categories);
   return (
     <Fragment>

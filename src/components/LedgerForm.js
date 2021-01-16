@@ -23,15 +23,15 @@ const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit, children}) => { /
 
   useEffect(() => {
     // if (ledgerItem.id) {
-      if(isFirstRender.current) {
-        isFirstRender.current = false;
-      } else {
+      // if(isFirstRender.current) {
+      //   isFirstRender.current = false;
+      // } else {
 
         console.log('ledgerFrom useEffect取得新ledger',ledgerItem,);
         setTitle(ledgerItem.title);
         setAmount(ledgerItem.amount);
         setDate(ledgerItem.date);
-      }
+      // }
     // }
   },[ledgerItem])
 
