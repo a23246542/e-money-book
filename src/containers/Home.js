@@ -13,7 +13,7 @@ import { Tabs, Tab } from '../components/Tabs(bad)';
 import AppContext from '../AppContext';
 // import {Tabs, Tab} from '../components/Tabs';
 import Loader from '../components/common/Loader';
-import Charts from '../components/Charts';
+import PieChart from '../components/PieCharts';
 
 
 // const initItemsWithCategory = items.map(item => { //!!@移到外面就不會切換時一直執行
@@ -254,8 +254,9 @@ const Home = ({history, match}) => {
   };
 
   const chartOutcomeDataByCategory = generateChartDataByCategory(listWithCategory,TYPE_OUTCOME);
-  const chartIncomeDataByCategory = generateChartDataByCategory(listWithCategory,TYPE_OUTCOME);
+  const chartIncomeDataByCategory = generateChartDataByCategory(listWithCategory,TYPE_INCOME);
   // console.log('listWithCategory',listWithCategory,categories);
+  // console.log('支出圖表資料',chartOutcomeDataByCategory);
   return (
     <Fragment>
       <header className="App-header">
@@ -330,7 +331,20 @@ const Home = ({history, match}) => {
                 </div>
               }
               {
-                tabView === CHART_VIEW && <Charts/>
+                tabView === CHART_VIEW && (
+                  <Fragment>
+                    <PieChart 
+                      title="本月支出"
+                      type={TYPE_OUTCOME}
+                      categoryData={chartOutcomeDataByCategory} 
+                      />
+                    <PieChart 
+                      title="本月收入"
+                      type={TYPE_INCOME}
+                      categoryData={chartIncomeDataByCategory}
+                    />
+                  </Fragment>
+                )
               }
           </Fragment>
         }

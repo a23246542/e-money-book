@@ -45,9 +45,14 @@ export const Color = {
 }
 
 export const PieColor = {
+  // orange: '#FF8863',
+  // yellow: '#FFF961',
+  // green: '#4BAD6B',
+  // blue: '#528ECB',
+  // purple: '#9F61C2'
   orange: '#F5A536',
   yellow: '#F7D674',
   green: '#4BAD6B',
-  blue: '#528ECB',
-  purple: '#9F61C2'
+  blue: '#22A2F2',
+  purple: '#57D6F2'
 }
