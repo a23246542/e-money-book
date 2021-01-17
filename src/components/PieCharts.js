@@ -26,98 +26,6 @@ const CustomPieChart = ({ title, type, categoryData }) => {
     );
   };
 
-  const renderCustomizedLabel1 = (props) => {
-    const {
-      x, y, width, height, value, percent, name
-    } = props;
-    const radius = 10;
-  
-    return (  
-        // <text x={x + width / 2} y={y - radius} fill="#fff" textAnchor="middle" dominantBaseline="middle">
-        //   {'30%'}
-        // </text>
-        // <div>
-        //   30趴
-        // </div>
-        <text 
-            x={x} 
-            y={y}
-            dy={18}
-            textAnchor={textAnchor}
-            fill="#999"
-            // style={{ fontSize: '2rem' }}
-            >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
-      </text>
-    );
-  };
-
-  const pieLabel = ({
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    percent,
-    index,
-  }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    let x = cx + radius * Math.cos(-midAngle * RADIAN);
-    let y = cy + radius * Math.sin(-midAngle * RADIAN);
-  
-    if (index === 0) {
-      x = x - 5;
-    } else {
-      x = x + 10;
-    }
-  
-    return (
-      <text
-        x={x}
-        y={y}
-        // dy={18}
-        fill="white"
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
-        // style={{ fontSize: '0.5rem' }}
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-      // <p>'aaaa'</p>
-    );
-  };
-
-  // const pie =({
-  //   cx,
-  //   cy,
-  //   midAngle,
-  //   innerRadius,
-  //   outerRadius,
-  //   value,
-  //   index,
-  //   data
-  // }) => {
-  //   console.log("handling label?");
-  //   const RADIAN = Math.PI / 180;
-  //   // eslint-disable-next-line
-  //   const radius = 25 + innerRadius + (outerRadius - innerRadius);
-  //   // eslint-disable-next-line
-  //   const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  //   // eslint-disable-next-line
-  //   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  //   return (
-  //     <text
-  //       x={x}
-  //       y={y}
-  //       fill="#8884d8"
-  //       textAnchor={x > cx ? "start" : "end"}
-  //       dominantBaseline="central"
-  //     >
-  //       {data[index].name} ({value})
-  //     </text>
-  //   );
-  // }
 
   return (
     <div className="pie-chart-component">
@@ -130,7 +38,7 @@ const CustomPieChart = ({ title, type, categoryData }) => {
             cy={'40%'}
             outerRadius={100} 
             fill="#8884d8"
-            labelline={false}
+            labelline={true}
             label={renderCustomizedLabel}
             isAnimationActive={true} 
             >
@@ -139,7 +47,6 @@ const CustomPieChart = ({ title, type, categoryData }) => {
                   <Cell 
                     key={index}
                     fill={colorsArr[index % colorsArr.length]}
-                    // label
                   />
                 )
               }
