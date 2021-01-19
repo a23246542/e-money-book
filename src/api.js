@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 let api = axios.create({
-  baseURL:process.env.PORT || 'http://localhost:3002',
+  baseURL:'',
   headers: { 'Content-Type': 'application/json' },
 })
 
