@@ -1,68 +1,36 @@
 import {
   useState,
-  createContext,
   useReducer,
-  useRef,
-  useEffect,
-  component,
-  Component,
 } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './containers/Home';
 import Create from './containers/Create';
-import { testCategories, testItems } from './testData';
 import { Provider } from './AppContext';
 import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
 import api from './api';
-// import axios from 'axios';
 
-// let actions;
 
 function App() {
-  // class App extends Component {
 
-  // const state = {//%%!!用這個state reducer不會更新後
-  //   // ledgerItems: flattenArr(testItems),
-  //   // categories: flattenArr(testCategories),
-  //   ledgerItems: {},
-  //   categories: {},
-  //   currentDate: parseToYearsAndMonth(),
-  // }
-  // const node = useRef(null);
-
-  // const [ state, setState ] = useState({
-  //   ledgerItems: {},
-  //   categories: {},
-  //   currentDate: parseToYearsAndMonth(),
-  // })
-
-  // const [ ledgerItems, setLedgerItems ] = useState({})
   const [categories, setCategories] = useState({});
-  const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth()); //@@保留
+  const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
 
   const withLoader = (cb) => {
     return (...args) => {
       setIsLoading(true);
       return cb(...args);
-      // .then(() => { setIsLoading(false);});//%%會取代掉後來加上的
     };
   };
 
   const actions = {
     getInitData: withLoader(async () => {
-      console.log('觸發getInitData');
-      // const getUrlWithData = `/ledger/monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'), api.get(getUrlWithData)];
-      const resultArr = await Promise.all(promiseArr); //@@改then試同步?
-      // const [ resLedger,resCategory ] = resultArr;//%%%順序
-      const [resCategory, resLedger] = resultArr;
-      // setLedgerItems(flattenArr(resLedger.data));//%%@@
-      console.log('resLedger.data', flattenArr(resLedger.data));
+      const [resCategory, resLedger] = await Promise.all(promiseArr);
+
       dispatchLedger({
         type: 'fetchItems',
         payload: flattenArr(resLedger.data),
@@ -72,11 +40,13 @@ function App() {
     }),
     selectNewMonth: withLoader(async (year, month) => {
       const getUrlWithData = `/ledger?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
-      const res = await api.get(getUrlWithData);
+      const resLedger = await api.get(getUrlWithData);
+
       dispatchLedger({
         type: 'fetchItems',
-        payload: flattenArr(res.data),
+        payload: flattenArr(resLedger.data),
       });
+
       setCurrentDate({
         year,
         month,
@@ -87,7 +57,7 @@ function App() {
     getEditData: withLoader(async (id) => {
       //創建頁重整可取得編輯資料
       let promiseArr = [];
-      // console.log('getEditData.js的ledgerStore',ledgerStore);
+
       if (Object.keys(categories).length === 0) {
         promiseArr.push(api.get('/category'));
       } else {
@@ -97,37 +67,31 @@ function App() {
       const isItemAlreadyFetched = !!(
         Object.keys(ledgerStore).indexOf(id) > -1
       );
-
       if (id && !isItemAlreadyFetched) {
         const getUrlWithId = `/ledger/${id}`;
         promiseArr.push(api.get(getUrlWithId));
       }
+
       const [resCategory, resEditItem] = await Promise.all(promiseArr);
-      // console.log('會是undefined',resCategory,resEditItem);
-      console.log('getEditData.js', `/ledger/${id}`, resEditItem);
 
       const finalCategory = resCategory
         ? flattenArr(resCategory.data)
         : categories;
       const finalEditItem = resEditItem ? resEditItem.data : ledgerStore[id];
 
-      if (id) {
-        // setCategories(flattenArr(resCategory.data));
+      if (id) { // 編輯模式
         setCategories(finalCategory);
         setIsLoading(false);
         dispatchLedger({
           type: 'fetchItems',
-          // payload:resEditItem%%
           payload: {
-            // [id]:resEditItem.data
             [id]: finalEditItem,
           },
         });
-      } else {
+      } else { // 創建模式
         setCategories(finalCategory);
         setIsLoading(false);
       }
-      console.log('有id set資料');
 
       return {
         categories: finalCategory,
@@ -195,9 +159,6 @@ function App() {
     }),
   };
 
-  // useEffect(()=>{ //%%%
-  //   action.getInitData();
-  // },[])
 
   const ledgerReducer = (state, action) => {
     const { type, payload } = action;
@@ -293,16 +254,9 @@ function App() {
       }}
     >
       <Router>
-        <ul>
-          <Link to="/">首頁</Link>
-          <Link to="/create">新增編輯</Link>
-        </ul>
         <div className="App">
-          {/* <Home/> */}
           <Route path="/" exact component={Home} />
           <Route path="/create" component={Create} />
-          {/* %%%會同時出現 */}
-          {/* <Route path="/create/:id"  render={()=><p>編輯頁</p>} /> */}
           <Route path="/edit/:id" component={Create} />
         </div>
       </Router>
@@ -311,4 +265,3 @@ function App() {
 }
 
 export default App;
-// export {actions};
