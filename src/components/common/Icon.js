@@ -4,18 +4,11 @@ import ionicons from '../../plugin/ionicons';
 
 // %%% props會undefined
 // const Icon = ({icon, fontSize, color}) => {
-const Icon = ({icon,...props}) => {
+const Icon = ({ icon, ...props }) => {
+  const IconComponent = ionicons[icon]; // %%icon要是字串讀取物件屬性
+  return <IconComponent {...props} />;
+};
 
-  const IconComponent = ionicons[icon];// %%icon要是字串讀取物件屬性
-  return (
-    <IconComponent
-      {...props}
-    />
-  )
-}
+Icon.propTypes = {};
 
-Icon.propTypes = {
-
-}
-
-export default Icon
+export default Icon;

@@ -21,13 +21,28 @@ import IosApps from 'react-ionicons/lib/IosApps';
 import IosRefresh from 'react-ionicons/lib/IosRefresh';
 import MdRefresh from 'react-ionicons/lib/MdRefresh';
 
-
-const ionicons =  { IosCreate, IosCloseCircle,
-  IosPlane, IosPaper, IosPie, IosAddCircle,
-  IosCard, IosCash, IosRestaurant, IosBasket,
-  IosPhonePortrait, LogoYen, IosTrain, IosBeer,
-  IosCar, IosMedkit, IosFootball, IosPaw, IosApps,
-  IosRefresh, MdRefresh
+const ionicons = {
+  IosCreate,
+  IosCloseCircle,
+  IosPlane,
+  IosPaper,
+  IosPie,
+  IosAddCircle,
+  IosCard,
+  IosCash,
+  IosRestaurant,
+  IosBasket,
+  IosPhonePortrait,
+  LogoYen,
+  IosTrain,
+  IosBeer,
+  IosCar,
+  IosMedkit,
+  IosFootball,
+  IosPaw,
+  IosApps,
+  IosRefresh,
+  MdRefresh,
 };
 
 export default ionicons;

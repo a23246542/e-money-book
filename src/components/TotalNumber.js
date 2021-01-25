@@ -1,6 +1,4 @@
-
-
-const TotalNumber = ({income,outcome}) => {
+const TotalNumber = ({ income, outcome }) => {
   return (
     <div className="container">
       <ul className="row justify-content-center">
@@ -8,7 +6,7 @@ const TotalNumber = ({income,outcome}) => {
         <li className="col-3">支出:{outcome}</li>
       </ul>
     </div>
-  )
-}
+  );
+};
 
 export default TotalNumber;

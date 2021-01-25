@@ -1,23 +1,22 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 import Icon from './Icon';
 import { Color } from '../../utility';
 
-const Loader = props => {
+const Loader = (props) => {
   return (
     <div className="loading-component">
-      <Icon icon="IosRefresh"
+      <Icon
+        icon="IosRefresh"
         fontSize="50px"
         color={Color.blue}
         rotate={true}
       />
       <p className="h6">加載中</p>
     </div>
-  )
-}
+  );
+};
 
-Loader.propTypes = {
+Loader.propTypes = {};
 
-}
-
-export default Loader
+export default Loader;

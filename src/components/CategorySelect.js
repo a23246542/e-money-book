@@ -1,19 +1,19 @@
-import React,{ useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Icon from './common/Icon';
 import { Color } from '../utility';
 
-const CategorySelect = ({categories, selectedCategory, onSelectCategory}) => {
+const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
   // const [selectedCategory,setSelectedCategory] = useState(selectedCategory)//@@會重複宣告
   // const selectedCategoryId = selectedCategory.id && selectedCategory.id;%%
-  const selectedCategoryId = selectedCategory && selectedCategory.id;//@@const 可以等於undefined
+  const selectedCategoryId = selectedCategory && selectedCategory.id; //@@const 可以等於undefined
   const selectCategory = (event, category) => {
     // setSelectedCategory(category);
-    console.log('CategorySelect.js選中',category);
+    console.log('CategorySelect.js選中', category);
     onSelectCategory(category);
 
     event.preventDefault();
-  }
+  };
   // console.log('CategorySelect.js',categories);
 
   return (
@@ -25,33 +25,41 @@ const CategorySelect = ({categories, selectedCategory, onSelectCategory}) => {
             const isActive = selectedCategoryId === item.id;
             const iconColor = isActive ? Color.white : Color.gray;
             const backColor = isActive ? Color.blue : Color.lightGray;
-            const activeClassName = isActive ? 'col-3 category-item active' : 'col-3 category-item'
+            const activeClassName = isActive
+              ? 'col-3 category-item active'
+              : 'col-3 category-item';
             // const activeClass = selectedCategory.id === item.id ?
             return (
-              <div className={activeClassName} key={item.id} data-testid={item.id}
-                  onClick={(e)=>{selectCategory(e, item)}}
+              <div
+                className={activeClassName}
+                key={item.id}
+                data-testid={item.id}
+                onClick={(e) => {
+                  selectCategory(e, item);
+                }}
               >
-                {<Icon
-                  icon={item.iconName}
-                  className="rounded-circle"
-                  style={{backgroundColor:`${backColor}`,padding:'6px'}}
-                  fontSize="40px"
-                  color={iconColor}
-                />}
-                <div className="mt-1">
-                  {item.name}
-                </div>
+                {
+                  <Icon
+                    icon={item.iconName}
+                    className="rounded-circle"
+                    style={{
+                      backgroundColor: `${backColor}`,
+                      padding: '6px',
+                    }}
+                    fontSize="40px"
+                    color={iconColor}
+                  />
+                }
+                <div className="mt-1">{item.name}</div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-CategorySelect.propTypes = {
+CategorySelect.propTypes = {};
 
-}
-
-export default CategorySelect
+export default CategorySelect;

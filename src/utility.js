@@ -1,7 +1,6 @@
-
-export const padLeft = ( number ) => {
-  return number < 10 ? '0'+ number : String(number)
-}
+export const padLeft = (number) => {
+  return number < 10 ? '0' + number : String(number);
+};
 
 export const parseToYearsAndMonth = (str) => {
   const date = str ? new Date(str) : new Date();
@@ -9,30 +8,30 @@ export const parseToYearsAndMonth = (str) => {
     year: date.getFullYear(),
     // month: Number(padLeft(date.getMonth() + 1)) //%%%Number 05 變就了
     month: date.getMonth() + 1,
-  }
-}
+  };
+};
 
 export const makeArrByRange = (size, startAt) => {
   let arr = [];
-  for(let i = 0; i<size; i++) {
+  for (let i = 0; i < size; i++) {
     arr[i] = startAt + i;
   }
   return arr;
-}
+};
 
 export const flattenArr = (arr) => {
-  return arr.reduce((map, item)=>{
+  return arr.reduce((map, item) => {
     map[item.id] = item;
     return map;
-  },{})
-}
+  }, {});
+};
 
 export const makeID = () => {
   // Math.random should be unique because of its seeding algorithm.
   // Convert it to base 36 (numbers + letters), and grab the first 9 characters
   // after the decimal.
   return '_' + Math.random().toString(36).substr(2, 9);
-}
+};
 
 export const Color = {
   blue: '#347eff',
@@ -42,7 +41,7 @@ export const Color = {
   gray: '#555',
   lightGray: '#efefef',
   white: '#fff',
-}
+};
 
 export const PieColor = {
   // orange: '#FF8863',
@@ -54,5 +53,5 @@ export const PieColor = {
   yellow: '#F7D674',
   green: '#4BAD6B',
   blue: '#22A2F2',
-  purple: '#57D6F2'
-}
+  purple: '#57D6F2',
+};

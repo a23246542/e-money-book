@@ -7,5 +7,6 @@ import Enzyme, { shallow, mount } from 'enzyme';
 // import Adapter from 'enzyme-adapter-react-16';
 import EnzymeAdapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-
-Enzyme.configure({ adapter : new EnzymeAdapter() });
+Enzyme.configure({
+  adapter: new EnzymeAdapter(),
+});

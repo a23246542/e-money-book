@@ -1,1 +1,1 @@
-export const match = { params:{ id:"_jjfice21k" }}
+export const match = { params: { id: '_jjfice21k' } };
