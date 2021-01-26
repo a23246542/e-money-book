@@ -102,17 +102,15 @@ function App() {
       const newId = makeID();
       const dateObj = parseToYearsAndMonth(formData.date);
       const timestamp = new Date().getTime();
-      // const { data:newItem } = await api.post('/ledger',{
-      // const newItem  = await api.post('/ledger',{ //@@會自動解構data
+
       const { data: newItem } = await api.post('/ledger', {
-        //%%%不會自動解構data
         ...formData,
         id: newId,
         cid: selectedCategoryId,
         monthCategory: `${dateObj.year}-${dateObj.month}`,
         timestamp,
       });
-      console.log('createData的newItem', newItem);
+
       dispatchLedger({
         type: 'addItem',
         payload: {
@@ -122,12 +120,13 @@ function App() {
       });
       return newItem;
     }),
-    editData: withLoader(async (formData, updatedCategoryId) => {
+    editData: withLoader(async (formData, newCategoryId) => {
       const dateObj = parseToYearsAndMonth(formData.date);
       const timestamp = new Date(formData.date).getTime(); //@年月日轉排序
+
       const updatedItem = {
         ...formData,
-        cid: updatedCategoryId,
+        cid: newCategoryId,
         // timestamp,//%%會不小心把排序提升 創建有就好
         monthCategory: `${dateObj.year}-${dateObj.month}`,
       };
@@ -135,27 +134,26 @@ function App() {
         `ledger/${formData.id}`,
         updatedItem
       );
-      // const modifiedItem  = await api.put(`ledger/${formData.id}`,updatedItem)
+
       dispatchLedger({
-        type: 'updateItem2',
+        type: 'updateItem',
         payload: {
           id: modifiedItem.id,
           modifiedItem,
         },
       });
-      console.log('update title的', modifiedItem);
+
       return modifiedItem;
     }),
     deleteData: withLoader(async (item) => {
-      await api.delete(`/ledger/${item.id}`).then(() => {
-        console.log('順序1');
-        dispatchLedger({
-          type: 'deleteItem',
-          payload: item,
-        });
-        setIsLoading(false);
+      const deleteItem = await api.delete(`/ledger/${item.id}`);
+      dispatchLedger({
+        type: 'deleteItem',
+        payload: item,
       });
-      console.log('順序2');
+      setIsLoading(false);
+
+      return deleteItem;
     }),
   };
 
@@ -164,27 +162,27 @@ function App() {
     const { type, payload } = action;
     let dateObj = {},
       timestamp = 0; //%%
-    // const { formData } = payload;
+    
     switch (type) {
       case 'fetchItems': {
         return payload;
       }
       case 'deleteItem': {
         const { id } = payload;
-        // delete state[payload.id];
+        // delete state[payload.id];//不react
         // let clone = {...ledgerItems};//@@ ReferenceError: Cannot access 'ledgerItems' before initialization
-        let clone = {
+        let cloneObj = {
           ...state,
         };
-        delete clone[id];
-        return clone;
+        delete cloneObj[id];
+        return cloneObj;
       }
       case 'createItem': {
         const { selectedCategoryId, formData } = payload;
-        // console.log(formData,selectedCategoryId);
         dateObj = parseToYearsAndMonth(formData.date);
         timestamp = new Date().getTime();
         const newId = makeID();
+
         const newItem = {
           ...formData,
           id: newId,
@@ -192,7 +190,6 @@ function App() {
           monthCategory: `${dateObj.year}-${dateObj.month}`,
           timestamp,
         };
-        // console.log({...state, [newId]: newItem});
         // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
         return {
           ...state,
@@ -206,27 +203,7 @@ function App() {
           [newId]: newItem,
         };
       }
-      case 'updateItem': {
-        // const { id, formData1, updatedCategoryId} = payload;//%%% const會重複
-        // const dateObj = parseToYearsAndMonth(formData1.date);
-        const { updatedCategoryId, formData } = payload;
-        dateObj = parseToYearsAndMonth(formData.date);
-        timestamp = new Date(formData.date).getTime(); //@年月日轉排序
-        const modifiedItem = {
-          // ...state[id],//%%ledgerForm已經帶上id等等
-          ...formData,
-          cid: updatedCategoryId,
-          // timestamp,//%%會不小心把排序提升
-          monthCategory: `${dateObj.year}-${dateObj.month}`,
-        };
-        // return {...state, state[id]: updatedItem}/ %%用modifiedItem
-        // return {...state, modifiedItem[id]: modifiedItem} %% 屬性 Failed to compile Unexpected token, expected ","
-        return {
-          ...state,
-          [modifiedItem.id]: modifiedItem,
-        };
-      }
-      case 'updatedItem2': {
+      case 'updatedItem': {
         const { id, modifiedItem } = payload;
         return {
           ...state,
@@ -246,11 +223,10 @@ function App() {
       value={{
         categories: categories,
         ledgerStore,
-        dispatchLedger, //~~因為在父層做幾乎不用 資料狀態在父層改變傳下去就好
+        // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
         currentDate,
         isLoading,
         actions,
-        // node
       }}
     >
       <Router>

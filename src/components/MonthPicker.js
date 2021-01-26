@@ -2,7 +2,6 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useContext,
   useCallback,
 } from 'react';
 import AppContext from '../AppContext';
@@ -19,11 +18,8 @@ const MonthPicker = ({ year, month, choiceDate, path }) => {
   const monthRange = makeArrByRange(12, 1);
   const yearRange = makeArrByRange(9, -4).map((number) => number + year);
 
-  console.log('渲染');
   const docHandleClick = useCallback((e, node) => {
     // if (this.node.current.contains(e.target)) {
-    console.log(nodeMonthPicker);
-    console.log(node);
     if (!nodeMonthPicker.current) {
       return;
     }

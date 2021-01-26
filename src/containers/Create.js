@@ -23,7 +23,6 @@ export const CreatePage = ({ match, history }) => {
   console.log('Create.js id', id);
   const {
     categories,
-    dispatchLedger,
     ledgerStore,
     isLoading,
     actions,
@@ -117,8 +116,8 @@ export const CreatePage = ({ match, history }) => {
       //   type: 'updateItem',
       //   payload: {
       //     formData,
-      //     // updatedCategoryId: selectedCategory,/%%% bug半天
-      //     updatedCategoryId: selectedCategory.id,
+      //     // newCategoryId: selectedCategory,/%%% bug半天
+      //     newCategoryId: selectedCategory.id,
       //   }
       // })
       // setTimeout(()=>{

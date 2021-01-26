@@ -8,6 +8,7 @@ const Tabs = ({ children, activeIndex, onTabChange }) => {
   const selectTab = (index) => {
     // setActiveIndex(index)
     onTabChange(index);
+    console.log('onTabChange',index);
   };
   console.log('tabs渲染');
   return (

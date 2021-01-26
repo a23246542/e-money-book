@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import {
   PieChart,
@@ -79,4 +79,4 @@ const CustomPieChart = ({ title, type, categoryData }) => {
 
 CustomPieChart.propTypes = {};
 
-export default CustomPieChart;
+export default memo(CustomPieChart);
