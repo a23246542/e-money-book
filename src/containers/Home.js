@@ -6,11 +6,12 @@ import {
   useContext,
   useCallback,
 } from 'react';
+import PropTypes from 'prop-types';
 import { useRouteMatch, withRouter } from 'react-router-dom';
-import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW, TYPE_OUTCOME, TYPE_INCOME } from '../constants';
 import { parseToYearsAndMonth, padLeft } from '../utility';
+import Icon from '../components/common/Icon';
 import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
 import { Tabs, Tab } from '../components/Tabs';
@@ -51,9 +52,7 @@ const Home = ({ history, match }) => {
 
   useEffect(() => {
     actions.getInitData();
-  }, ['']); //@@兩次api
-  // },[ledgerStore])
-  // },[Object.keys(ledgerStore).length])// @@三次api
+  }, ['']);
 
   const changeDate = (yearNum, monthNum) => {
     actions.selectNewMonth(yearNum, monthNum);
@@ -79,7 +78,7 @@ const Home = ({ history, match }) => {
     actions.deleteData(clickedItem);
   };
 
-    
+
   const listWithCategory = useMemo(() => { //切換View不會重新來
     const categoriesLen = Object.keys(categories).length;
     const ledgerLen = Object.keys(ledgerStore).length;
@@ -109,7 +108,7 @@ const Home = ({ history, match }) => {
         totalOutcome: 0,
       };
     }
-    
+
     listWithCategory.forEach((item) => {
       try {
         if (categories[item.cid].type === 'outcome') {
@@ -203,8 +202,23 @@ const Home = ({ history, match }) => {
         {!isLoading && (
           <Fragment>
              <Tabs activeIndex={tabIndex} onTabChange={changeView1}>
-              <Tab>列表</Tab>
-              <Tab>圖表</Tab>
+              <Tab>
+                <Icon
+                  icon="IosPaper"
+                  className="mr-2 align-bottom"
+                  fontSize="25px"
+                  color="#007bff"
+                />列表模式
+              </Tab>
+              <Tab>
+                <Icon
+                  icon="IosPie"
+                  className="mr-2 align-bottom"
+                  fontSize="25px"
+                  color="#007bff"
+                />
+                圖表
+              </Tab>
             </Tabs>
             {/* <ViewTab activeTab={tabView} onTabChange={changeView} /> */}
             <CreateBtn onCreateItem={createItem} />
@@ -240,5 +254,10 @@ const Home = ({ history, match }) => {
     </Fragment>
   );
 };
+
+Home.propTypes = {
+  match:PropTypes.object,
+  history:PropTypes.object
+}
 
 export default withRouter(Home);

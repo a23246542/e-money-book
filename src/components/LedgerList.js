@@ -7,9 +7,10 @@ import Icon from '../components/common/Icon';
 const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
   const { IosCreate, IosCloseCircle } = Ionicons;
   // const { categories } = useContext(AppContext);//%%%items就有了
-
   return (
     <ul className="list-group">
+      {console.log('渲染list')
+      }
       {items.map((item) => {
         // const {iconName:CategoryIcon} = item.category;//%%@@不行
         // const CategoryIcon = Ionicons[item.category.iconName]

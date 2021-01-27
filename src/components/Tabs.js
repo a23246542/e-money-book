@@ -1,31 +1,27 @@
-import React, { useState, memo } from 'react';
-// import ReactDOM from 'react-dom';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const Tabs = ({ children, activeIndex, onTabChange }) => {
-  // const [Index,setIndex] = useState(1)
-  // const [activeIndex,setActiveIndex] = useState(activeIndex1)
-  const selectTab = (index) => {
-    // setActiveIndex(index)
+  const selectTab = (e,index) => {
+    e.preventDefault();
     onTabChange(index);
-    console.log('onTabChange',index);
   };
-  console.log('tabs渲染');
   return (
-    <ul className="nav nav-tabs nav-pills nav-justified" data-testid="navTabs">
+    <ul className="nav nav-tabs nav-justified" data-testid="navTabs">
       {React.Children.map(children, (item, index) => {
         const activeClassName =
           index === activeIndex ? 'nav-link active' : 'nav-link';
         return (
           <li className="nav-item" data-test="navItem">
-            <div
+            <a
               className={activeClassName}
-              onClick={() => {
-                selectTab(index);
+              onClick={(e) => {
+                selectTab(e,index);
               }}
+              role="button"
             >
               {item}
-            </div>
+            </a>
           </li>
         );
       })}
@@ -33,11 +29,13 @@ const Tabs = ({ children, activeIndex, onTabChange }) => {
   );
 };
 
-const Tab = memo(({ children }) => {
+const Tab = ({ children }) => {
   return <React.Fragment>{children}</React.Fragment>;
-});
+};
 
-Tabs.propTypes = {};
+Tabs.propTypes = {
+  activeIndex: PropTypes.number.isRequired,
+  onTabChange: PropTypes.func.isRequired
+};
 
-// export default Tabs
 export { Tabs, Tab };
