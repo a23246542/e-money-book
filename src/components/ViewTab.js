@@ -52,7 +52,7 @@ const ViewTab = ({ activeTab, onTabChange }) => {
 
 ViewTab.propTypes = {
   activeTab: PropTypes.string.isRequired,
-  onTabChange: PropTypes.func.isRequired
+  onTabChange: PropTypes.func.isRequired,
 };
 
 export default ViewTab;

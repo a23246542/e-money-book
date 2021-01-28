@@ -12,8 +12,8 @@ const TotalNumber = ({ income, outcome }) => {
 };
 
 TotalNumber.propTypes = {
-  income:PropTypes.number.isRequired,
-  outcome:PropTypes.number.isRequired,
-}
+  income: PropTypes.number.isRequired,
+  outcome: PropTypes.number.isRequired,
+};
 
 export default TotalNumber;

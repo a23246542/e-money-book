@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }) => {
-
+const LedgerForm = ({
+  ledgerItem = {},
+  onFormSubmit,
+  onCancelSubmit,
+  children,
+}) => {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState(0);
   const [date, setDate] = useState('');
-  const [formValidate,setFormValidate] = useState({
-    validatePass:true,
-    alertMessage:''
-  })
- 
-  useEffect(() => {
+  const [formValidate, setFormValidate] = useState({
+    validatePass: true,
+    alertMessage: '',
+  });
 
-    if (!ledgerItem.id) { return; }
+  useEffect(() => {
+    if (!ledgerItem.id) {
+      return;
+    }
 
     setTitle(ledgerItem.title);
     setAmount(ledgerItem.amount);
     setDate(ledgerItem.date);
-
   }, [ledgerItem]);
 
   const isValidDate = (inputDate) => {
@@ -29,25 +33,25 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
 
   const submitForm = (e) => {
     e.preventDefault();
- 
-    const isEditMode = !!ledgerItem.id; 
-    
+
+    const isEditMode = !!ledgerItem.id;
+
     if (title && amount && date) {
       if (amount < 0) {
         setFormValidate({
-          validatePass:false,
-          alertMessage:'數字不能為負'
-        })
+          validatePass: false,
+          alertMessage: '數字不能為負',
+        });
       } else if (!isValidDate(date)) {
         setFormValidate({
-          validatePass:false,
-          alertMessage:'不能選擇未來的日期'
-        })
+          validatePass: false,
+          alertMessage: '不能選擇未來的日期',
+        });
       } else {
         setFormValidate({
-          validatePass:true,
-          alertMessage:''
-        })
+          validatePass: true,
+          alertMessage: '',
+        });
 
         if (isEditMode) {
           onFormSubmit(
@@ -78,9 +82,9 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
       }
     } else {
       setFormValidate({
-        validatePass:false,
-        alertMessage:'表格不能為空'
-      })
+        validatePass: false,
+        alertMessage: '表格不能為空',
+      });
     }
   };
 
@@ -170,8 +174,7 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
           <div className="alert alert-warning" role="alert">
             {formValidate.alertMessage}
           </div>
-          )
-        }
+        )}
         {children}
         <button
           type="submit"

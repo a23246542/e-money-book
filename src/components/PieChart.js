@@ -78,9 +78,9 @@ const CustomPieChart = ({ title, type, chartData }) => {
 };
 
 CustomPieChart.propTypes = {
-  title:PropTypes.string.isRequired,
-  type:PropTypes.string.isRequired,
-  chartData:PropTypes.func.isRequired
+  title: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  chartData: PropTypes.func.isRequired,
 };
 
 export default CustomPieChart;

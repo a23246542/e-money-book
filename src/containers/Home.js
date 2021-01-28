@@ -31,7 +31,6 @@ import PieChart from '../components/PieChart';
 */
 
 const Home = ({ history, match }) => {
-
   const {
     categories,
     ledgerStore,
@@ -41,7 +40,7 @@ const Home = ({ history, match }) => {
   } = useContext(AppContext);
 
   const [tabView, setTabView] = useState(LIST_VIEW);
-  const tabsTexts = [LIST_VIEW,CHART_VIEW];
+  const tabsTexts = [LIST_VIEW, CHART_VIEW];
 
   useEffect(() => {
     actions.getInitData();
@@ -56,8 +55,8 @@ const Home = ({ history, match }) => {
   };
 
   const changeView1 = (tabIndex) => {
-    setTabView(tabsTexts[tabIndex])
-  }
+    setTabView(tabsTexts[tabIndex]);
+  };
 
   const modifyItem = (clickedItem) => {
     history.push(`/edit/${clickedItem.id}`);
@@ -71,8 +70,8 @@ const Home = ({ history, match }) => {
     actions.deleteData(clickedItem);
   };
 
-
-  const listWithCategory = useMemo(() => { //切換View不會重新來
+  const listWithCategory = useMemo(() => {
+    //切換View不會重新來
     const categoriesLen = Object.keys(categories).length;
     const ledgerLen = Object.keys(ledgerStore).length;
 
@@ -146,17 +145,17 @@ const Home = ({ history, match }) => {
     return Object.values(categoryMap);
   };
 
-  const tabIndex = tabsTexts.findIndex(tabText=>tabText === tabView)
+  const tabIndex = tabsTexts.findIndex((tabText) => tabText === tabView);
 
-  const chartOutcomeDataByCategory = useMemo(()=>generateChartDataByCategory(
-    listWithCategory,
-    TYPE_OUTCOME
-  ),[listWithCategory]);
+  const chartOutcomeDataByCategory = useMemo(
+    () => generateChartDataByCategory(listWithCategory, TYPE_OUTCOME),
+    [listWithCategory]
+  );
 
-  const chartIncomeDataByCategory = useMemo(() =>generateChartDataByCategory(
-    listWithCategory,
-    TYPE_INCOME
-  ),[listWithCategory]);
+  const chartIncomeDataByCategory = useMemo(
+    () => generateChartDataByCategory(listWithCategory, TYPE_INCOME),
+    [listWithCategory]
+  );
 
   return (
     <Fragment>
@@ -194,14 +193,15 @@ const Home = ({ history, match }) => {
         {isLoading && <Loader />}
         {!isLoading && (
           <Fragment>
-             <Tabs activeIndex={tabIndex} onTabChange={changeView1}>
+            <Tabs activeIndex={tabIndex} onTabChange={changeView1}>
               <Tab>
                 <Icon
                   icon="IosPaper"
                   className="mr-2 align-bottom"
                   fontSize="25px"
                   color="#007bff"
-                />列表模式
+                />
+                列表模式
               </Tab>
               <Tab>
                 <Icon
@@ -249,8 +249,8 @@ const Home = ({ history, match }) => {
 };
 
 Home.propTypes = {
-  match:PropTypes.object,
-  history:PropTypes.object
-}
+  match: PropTypes.object,
+  history: PropTypes.object,
+};
 
 export default withRouter(Home);

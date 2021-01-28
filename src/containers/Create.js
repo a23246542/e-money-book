@@ -11,28 +11,22 @@ import { testTabs, testCategories, testItems } from '../testData';
 import AppContext from '../AppContext';
 
 export const CreatePage = ({ match, history }) => {
-
-  const {
-    categories,
-    ledgerStore,
-    isLoading,
-    actions,
-  } = useContext(AppContext);
-
+  const { categories, ledgerStore, isLoading, actions } = useContext(
+    AppContext
+  );
 
   const [selectedTab, setTab] = useState(TYPE_OUTCOME);
-  const [selectedCategory, setCategory] = useState( null);
+  const [selectedCategory, setCategory] = useState(null);
   const [validationPassed, setValidation] = useState(true);
 
   useEffect(() => {
     const { id } = match.params;
     actions.getEditData(id).then((data) => {
       const { editItem, categories } = data;
-      setTab( (id && editItem) ? categories[editItem.cid].type : TYPE_OUTCOME );
-      setCategory( (id && editItem) ? categories[editItem.cid] : null );
+      setTab(id && editItem ? categories[editItem.cid].type : TYPE_OUTCOME);
+      setCategory(id && editItem ? categories[editItem.cid] : null);
     });
   }, ['']);
-
 
   const tabChange = (index) => {
     setTab(testTabs[index].value);
@@ -53,20 +47,20 @@ export const CreatePage = ({ match, history }) => {
       return;
     }
 
-    if (!isEditMode) { //創建模式
-      actions.createData(formData, selectedCategory.id)
-      .then(() => {
+    if (!isEditMode) {
+      //創建模式
+      actions.createData(formData, selectedCategory.id).then(() => {
         history.push('/');
       });
-    } else { //編輯模式
-      actions.editData(formData, selectedCategory.id)
-      .then(() => {
+    } else {
+      //編輯模式
+      actions.editData(formData, selectedCategory.id).then(() => {
         history.push('/');
       });
     }
   };
 
-    //fix 改CreateTabs 首頁改HomeTabs 迴圈
+  //fix 改CreateTabs 首頁改HomeTabs 迴圈
   const selectedTabIndex = useMemo(() => {
     return testTabs.findIndex((item) => item.value === selectedTab); //!!!
   }, [selectedTab]);
@@ -81,8 +75,7 @@ export const CreatePage = ({ match, history }) => {
   }, [selectedTab, categories]);
 
   const { id } = match.params;
-  const editItem = (id && ledgerStore[id]) ? ledgerStore[id] : {};
-
+  const editItem = id && ledgerStore[id] ? ledgerStore[id] : {};
 
   return (
     <div className="create-page py-3 px-3">
@@ -91,11 +84,7 @@ export const CreatePage = ({ match, history }) => {
         {testTabs.map((item, index) => {
           return (
             <Tab key={index}>
-              {
-                <Icon
-                  icon ={item.iconName}
-                />
-              }
+              {<Icon icon={item.iconName} />}
               {item.text}
             </Tab>
           );
@@ -110,7 +99,7 @@ export const CreatePage = ({ match, history }) => {
         ledgerItem={editItem}
         onFormSubmit={submitForm}
         onCancelSubmit={cancelSubmit}
-        >
+      >
         {!validationPassed && (
           <div className="alert alert-warning">請選擇分類選項</div>
         )}
@@ -120,8 +109,8 @@ export const CreatePage = ({ match, history }) => {
 };
 
 CreatePage.propTypes = {
-  match:PropTypes.object,
-  history:PropTypes.object
+  match: PropTypes.object,
+  history: PropTypes.object,
 };
 
 export default withRouter(CreatePage);

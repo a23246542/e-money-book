@@ -1,8 +1,4 @@
-import {
-  useState,
-  useReducer,
-  useRef
-} from 'react';
+import { useState, useReducer, useRef } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -12,9 +8,7 @@ import { Provider } from './AppContext';
 import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
 import api from './api';
 
-
 function App() {
-
   const [categories, setCategories] = useState({});
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
@@ -139,7 +133,8 @@ function App() {
         : categories;
       const finalEditItem = resEditItem ? resEditItem.data : ledgerStore[id];
 
-      if (id) { // 編輯模式
+      if (id) {
+        // 編輯模式
         setCategories(finalCategory);
         setIsLoading(false);
         dispatchLedger({
@@ -148,7 +143,8 @@ function App() {
             [id]: finalEditItem,
           },
         });
-      } else { // 創建模式
+      } else {
+        // 創建模式
         setCategories(finalCategory);
         setIsLoading(false);
       }
@@ -217,7 +213,6 @@ function App() {
     }),
   });
 
-
   return (
     <Provider
       value={{
@@ -226,7 +221,7 @@ function App() {
         // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
         currentDate,
         isLoading,
-        actions:actions.current,
+        actions: actions.current,
       }}
     >
       <Router>

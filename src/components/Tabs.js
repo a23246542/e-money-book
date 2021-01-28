@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Tabs = ({ children, activeIndex, onTabChange }) => {
-  const selectTab = (e,index) => {
+  const selectTab = (e, index) => {
     e.preventDefault();
     onTabChange(index);
   };
@@ -16,7 +16,7 @@ const Tabs = ({ children, activeIndex, onTabChange }) => {
             <a
               className={activeClassName}
               onClick={(e) => {
-                selectTab(e,index);
+                selectTab(e, index);
               }}
               role="button"
             >
@@ -35,7 +35,7 @@ const Tab = ({ children }) => {
 
 Tabs.propTypes = {
   activeIndex: PropTypes.number.isRequired,
-  onTabChange: PropTypes.func.isRequired
+  onTabChange: PropTypes.func.isRequired,
 };
 
 export { Tabs, Tab };

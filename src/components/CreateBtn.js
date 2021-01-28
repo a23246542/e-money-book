@@ -17,7 +17,7 @@ const CreateBtn = ({ onCreateItem }) => {
 };
 
 CreateBtn.propTypes = {
-  onCreateItem:PropTypes.func.isRequired
+  onCreateItem: PropTypes.func.isRequired,
 };
 
 export default CreateBtn;

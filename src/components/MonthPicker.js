@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-} from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { padLeft, makeArrByRange } from '../utility';
 
@@ -13,16 +8,20 @@ const MonthPicker = ({ year, month, choiceDate }) => {
   const [selectedMonth, setMonth] = useState(month);
   const nodeMonthPicker = useRef(null); // 指派monthPicker
 
-  const docHandleClickWhenIsOpen = useCallback((e) => {
-    if (!nodeMonthPicker.current && !isOpen) {
-      return;
-    }
+  const docHandleClickWhenIsOpen = useCallback(
+    (e) => {
+      if (!nodeMonthPicker.current && !isOpen) {
+        return;
+      }
 
-    if (nodeMonthPicker.current.contains(e.target)) {// 包含點擊的位置
-      return;
-    }
-    setOpen(false);
-  }, [isOpen]);
+      if (nodeMonthPicker.current.contains(e.target)) {
+        // 包含點擊的位置
+        return;
+      }
+      setOpen(false);
+    },
+    [isOpen]
+  );
 
   useEffect(() => {
     document.addEventListener('click', docHandleClickWhenIsOpen, false);

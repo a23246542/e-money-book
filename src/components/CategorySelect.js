@@ -19,11 +19,14 @@ const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
       <div className="container">
         <div className="row">
           {categories.map((item, index) => {
-            const iconColor = selectedCategoryId === item.id ? Color.white : Color.gray;
-            const backColor = selectedCategoryId === item.id ? Color.blue : Color.lightGray;
-            const activeClassName = selectedCategoryId === item.id
-              ? 'col-3 category-item active'
-              : 'col-3 category-item';
+            const iconColor =
+              selectedCategoryId === item.id ? Color.white : Color.gray;
+            const backColor =
+              selectedCategoryId === item.id ? Color.blue : Color.lightGray;
+            const activeClassName =
+              selectedCategoryId === item.id
+                ? 'col-3 category-item active'
+                : 'col-3 category-item';
             return (
               <div
                 className={activeClassName}
@@ -57,9 +60,9 @@ const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
 };
 
 CategorySelect.propTypes = {
-  categories:PropTypes.array.isRequired,
-  selectedCategory:PropTypes.object,
-  onSelectCategory:PropTypes.func.isRequired,
+  categories: PropTypes.array.isRequired,
+  selectedCategory: PropTypes.object,
+  onSelectCategory: PropTypes.func.isRequired,
 };
 
 export default CategorySelect;
