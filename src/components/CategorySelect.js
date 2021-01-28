@@ -1,39 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from './common/Icon';
 import { Color } from '../utility';
 
 const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
   // const [selectedCategory,setSelectedCategory] = useState(selectedCategory)//@@會重複宣告
-  // const selectedCategoryId = selectedCategory.id && selectedCategory.id;%%
-  const selectedCategoryId = selectedCategory && selectedCategory.id; //@@const 可以等於undefined
+
   const selectCategory = (event, category) => {
     // setSelectedCategory(category);
-    console.log('CategorySelect.js選中', category);
     onSelectCategory(category);
-
     event.preventDefault();
   };
-  // console.log('CategorySelect.js',categories);
+
+  const selectedCategoryId = selectedCategory && selectedCategory.id;
 
   return (
     <div className="category-select pt-4" data-testid="category-select">
-      {/* //有row沒container會破版 */}
       <div className="container">
         <div className="row">
           {categories.map((item, index) => {
-            const isActive = selectedCategoryId === item.id;
-            const iconColor = isActive ? Color.white : Color.gray;
-            const backColor = isActive ? Color.blue : Color.lightGray;
-            const activeClassName = isActive
+            const iconColor = selectedCategoryId === item.id ? Color.white : Color.gray;
+            const backColor = selectedCategoryId === item.id ? Color.blue : Color.lightGray;
+            const activeClassName = selectedCategoryId === item.id
               ? 'col-3 category-item active'
               : 'col-3 category-item';
-            // const activeClass = selectedCategory.id === item.id ?
             return (
               <div
                 className={activeClassName}
                 key={item.id}
                 data-testid={item.id}
+                role="button"
                 onClick={(e) => {
                   selectCategory(e, item);
                 }}
@@ -60,6 +56,10 @@ const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
   );
 };
 
-CategorySelect.propTypes = {};
+CategorySelect.propTypes = {
+  categories:PropTypes.array.isRequired,
+  selectedCategory:PropTypes.object,
+  onSelectCategory:PropTypes.func.isRequired,
+};
 
 export default CategorySelect;

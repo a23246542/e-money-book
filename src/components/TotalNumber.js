@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const TotalNumber = ({ income, outcome }) => {
   return (
     <div className="container">
@@ -8,5 +10,10 @@ const TotalNumber = ({ income, outcome }) => {
     </div>
   );
 };
+
+TotalNumber.propTypes = {
+  income:PropTypes.number.isRequired,
+  outcome:PropTypes.number.isRequired,
+}
 
 export default TotalNumber;

@@ -1,6 +1,7 @@
 import {
   useState,
   useReducer,
+  useRef
 } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
@@ -18,6 +19,65 @@ function App() {
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
 
+  const ledgerReducer = (state, action) => {
+    const { type, payload } = action;
+    let dateObj = {},
+      timestamp = 0; //%%
+
+    switch (type) {
+      case 'fetchItems': {
+        return payload;
+      }
+      case 'deleteItem': {
+        const { id } = payload;
+        // delete state[payload.id];//不react
+        // let clone = {...ledgerItems};//@@ ReferenceError: Cannot access 'ledgerItems' before initialization
+        let cloneObj = {
+          ...state,
+        };
+        delete cloneObj[id];
+        return cloneObj;
+      }
+      case 'createItem': {
+        const { selectedCategoryId, formData } = payload;
+        dateObj = parseToYearsAndMonth(formData.date);
+        timestamp = new Date().getTime();
+        const newId = makeID();
+
+        const newItem = {
+          ...formData,
+          id: newId,
+          cid: selectedCategoryId,
+          monthCategory: `${dateObj.year}-${dateObj.month}`,
+          timestamp,
+        };
+        // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
+        return {
+          ...state,
+          [newId]: newItem,
+        };
+      }
+      case 'addItem': {
+        const { newItem, newId } = payload;
+        return {
+          ...state,
+          [newId]: newItem,
+        };
+      }
+      case 'updatedItem': {
+        const { id, modifiedItem } = payload;
+        return {
+          ...state,
+          [id]: modifiedItem,
+        };
+      }
+      default:
+        return state;
+    }
+  };
+
+  const [ledgerStore, dispatchLedger] = useReducer(ledgerReducer, {});
+
   const withLoader = (cb) => {
     return (...args) => {
       setIsLoading(true);
@@ -25,7 +85,7 @@ function App() {
     };
   };
 
-  const actions = {
+  const actions = useRef({
     getInitData: withLoader(async () => {
       const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'), api.get(getUrlWithData)];
@@ -155,68 +215,8 @@ function App() {
 
       return deleteItem;
     }),
-  };
+  });
 
-
-  const ledgerReducer = (state, action) => {
-    const { type, payload } = action;
-    let dateObj = {},
-      timestamp = 0; //%%
-    
-    switch (type) {
-      case 'fetchItems': {
-        return payload;
-      }
-      case 'deleteItem': {
-        const { id } = payload;
-        // delete state[payload.id];//不react
-        // let clone = {...ledgerItems};//@@ ReferenceError: Cannot access 'ledgerItems' before initialization
-        let cloneObj = {
-          ...state,
-        };
-        delete cloneObj[id];
-        return cloneObj;
-      }
-      case 'createItem': {
-        const { selectedCategoryId, formData } = payload;
-        dateObj = parseToYearsAndMonth(formData.date);
-        timestamp = new Date().getTime();
-        const newId = makeID();
-
-        const newItem = {
-          ...formData,
-          id: newId,
-          cid: selectedCategoryId,
-          monthCategory: `${dateObj.year}-${dateObj.month}`,
-          timestamp,
-        };
-        // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
-        return {
-          ...state,
-          [newId]: newItem,
-        };
-      }
-      case 'addItem': {
-        const { newItem, newId } = payload;
-        return {
-          ...state,
-          [newId]: newItem,
-        };
-      }
-      case 'updatedItem': {
-        const { id, modifiedItem } = payload;
-        return {
-          ...state,
-          [id]: modifiedItem,
-        };
-      }
-      default:
-        return state;
-    }
-  };
-
-  // const [ ledgerStore, dispatchLedger ] = useReducer(ledgerReducer,ledgerItems)
-  const [ledgerStore, dispatchLedger] = useReducer(ledgerReducer, {});
 
   return (
     <Provider
@@ -226,7 +226,7 @@ function App() {
         // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
         currentDate,
         isLoading,
-        actions,
+        actions:actions.current,
       }}
     >
       <Router>

@@ -11,11 +11,13 @@ const CreateBtn = ({ onCreateItem }) => {
       onClick={onCreateItem}
     >
       <IosAddCircle className="mr-2 align-bottom" color="#fff" />
-      創建一個項目
+      新增記帳
     </div>
   );
 };
 
-CreateBtn.propTypes = {};
+CreateBtn.propTypes = {
+  onCreateItem:PropTypes.func.isRequired
+};
 
 export default CreateBtn;

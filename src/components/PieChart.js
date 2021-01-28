@@ -10,9 +10,9 @@ import {
   Label,
 } from 'recharts';
 import { PieColor } from '../utility';
-import { TYPE_INCOME, TYPE_OUTCOME } from '../constants';
+import { TYPE_OUTCOME } from '../constants';
 
-const CustomPieChart = ({ title, type, categoryData }) => {
+const CustomPieChart = ({ title, type, chartData }) => {
   const colorsArr =
     type === TYPE_OUTCOME
       ? Object.keys(PieColor).map((color, index) => PieColor[color])
@@ -56,7 +56,7 @@ const CustomPieChart = ({ title, type, categoryData }) => {
       <ResponsiveContainer width={'100%'} height={300}>
         <PieChart>
           <Pie
-            data={categoryData}
+            data={chartData}
             cx={'50%'}
             cy={'40%'}
             outerRadius={100}
@@ -65,7 +65,7 @@ const CustomPieChart = ({ title, type, categoryData }) => {
             label={renderCustomizedLabel}
             isAnimationActive={true}
           >
-            {categoryData.map((entry, index) => (
+            {chartData.map((entry, index) => (
               <Cell key={index} fill={colorsArr[index % colorsArr.length]} />
             ))}
             <LabelList dataKey={'name'} />
@@ -77,6 +77,10 @@ const CustomPieChart = ({ title, type, categoryData }) => {
   );
 };
 
-CustomPieChart.propTypes = {};
+CustomPieChart.propTypes = {
+  title:PropTypes.string.isRequired,
+  type:PropTypes.string.isRequired,
+  chartData:PropTypes.func.isRequired
+};
 
 export default CustomPieChart;

@@ -20,13 +20,7 @@ import CreateBtn from '../components/CreateBtn';
 import MonthPicker from '../components/MonthPicker';
 import AppContext from '../AppContext';
 import Loader from '../components/common/Loader';
-import PieChart from '../components/PieCharts';
-
-// const initItemsWithCategory = items.map(item => { //!!@移到外面就不會切換時一直執行
-//   console.log('四次為一遍');
-//   item.category = category[item.categoryId];
-//   return item;
-// })
+import PieChart from '../components/PieChart';
 
 /* @param
   ledgerList //帳目列表
@@ -34,7 +28,6 @@ import PieChart from '../components/PieCharts';
   totalIncome,totalOutcome //收入支出總和
   tabView //當前視圖信息
   帳目表的分類資訊跟月份資訊
-
 */
 
 const Home = ({ history, match }) => {
@@ -239,12 +232,12 @@ const Home = ({ history, match }) => {
                 <PieChart
                   title="本月支出"
                   type={TYPE_OUTCOME}
-                  categoryData={chartOutcomeDataByCategory}
+                  chartData={chartOutcomeDataByCategory}
                 />
                 <PieChart
                   title="本月收入"
                   type={TYPE_INCOME}
-                  categoryData={chartIncomeDataByCategory}
+                  chartData={chartIncomeDataByCategory}
                 />
               </Fragment>
             )}

@@ -1,34 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-// const LedgerForm = ({ledgerItem, onFormSubmit, onCancelSubmit}) => {
-const LedgerForm = ({ ledgerItem, onFormSubmit, onCancelSubmit, children }) => {
+const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }) => {
   //%%避免無傳入報錯
   //畫面表單
   const [title, setTitle] = React.useState('');
-  const [amount, setAmount] = React.useState(''); //@但其實是數字
+  const [amount, setAmount] = React.useState(0);
   const [date, setDate] = React.useState('');
   // const [ title, setTitle ] = React.useState( (ledgerItem.id&&ledgerItem.title)||'');
   // const [ amount, setAmount ] = React.useState((ledgerItem.id&&ledgerItem.amount)||'');//@但其實是數字
   // const [ date, setDate ] = React.useState((ledgerItem.id&&ledgerItem.date)||'');
-  //
-  // const [ title, setTitle ] = React.useState( ledgerItem.id? ledgerItem.title:'');
-  // const [ amount, setAmount ] = React.useState(ledgerItem.id?ledgerItem.amount:'');//@但其實是數字
-  // const [ date, setDate ] = React.useState(ledgerItem.id?ledgerItem.date:'');
+
   // const { title, amount, date } = ledgerItem;
-  console.log('看看是否undefined', ledgerItem.id && ledgerItem.title);
+
   //畫面資料狀態
   const [validatePass, setValidatePass] = React.useState(true);
   const [alertMessage, setAlertMessage] = React.useState('');
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    // if (ledgerItem.id) {
+    if (!ledgerItem.id) { return; }
     // if(isFirstRender.current) {
     //   isFirstRender.current = false;
     // } else {
 
-    console.log('ledgerFrom useEffect取得新ledger', ledgerItem);
     setTitle(ledgerItem.title);
     setAmount(ledgerItem.amount);
     setDate(ledgerItem.date);
@@ -154,16 +149,10 @@ const LedgerForm = ({ ledgerItem, onFormSubmit, onCancelSubmit, children }) => {
                   className="form-control"
                   id="inputAmount"
                   data-testid="inputAmount"
-                  value={amount || ''}
-                  // onChange={(e)=>{setAmount(e.target.value.trim())}}
+                  value={amount || 0}
                   onChange={(e) => {
                     setAmount(e.target.value.trim() * 1);
-                    console.log(
-                      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                      e.target.value
-                    );
                   }} //@@
-                  // ref={(input) => {setAmount(input.current.value)}}
                 />
               </div>
             </div>
