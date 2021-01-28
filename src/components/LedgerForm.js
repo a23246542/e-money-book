@@ -2,67 +2,54 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }) => {
-  //%%避免無傳入報錯
-  //畫面表單
-  const [title, setTitle] = React.useState('');
-  const [amount, setAmount] = React.useState(0);
-  const [date, setDate] = React.useState('');
-  // const [ title, setTitle ] = React.useState( (ledgerItem.id&&ledgerItem.title)||'');
-  // const [ amount, setAmount ] = React.useState((ledgerItem.id&&ledgerItem.amount)||'');//@但其實是數字
-  // const [ date, setDate ] = React.useState((ledgerItem.id&&ledgerItem.date)||'');
 
-  // const { title, amount, date } = ledgerItem;
-
-  //畫面資料狀態
-  const [validatePass, setValidatePass] = React.useState(true);
-  const [alertMessage, setAlertMessage] = React.useState('');
-  const isFirstRender = useRef(true);
-
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [date, setDate] = useState('');
+  const [formValidate,setFormValidate] = useState({
+    validatePass:true,
+    alertMessage:''
+  })
+ 
   useEffect(() => {
+
     if (!ledgerItem.id) { return; }
-    // if(isFirstRender.current) {
-    //   isFirstRender.current = false;
-    // } else {
 
     setTitle(ledgerItem.title);
     setAmount(ledgerItem.amount);
     setDate(ledgerItem.date);
-    // }
-    // }
+
   }, [ledgerItem]);
 
   const isValidDate = (inputDate) => {
     const nowTimeStamp = new Date();
     const selectTimeStamp = Date.parse(inputDate);
     return selectTimeStamp <= nowTimeStamp;
-    // date.split('-')
   };
 
   const submitForm = (e) => {
     e.preventDefault();
-    // if(title.trim()==='') {
-    // }
-    // const editMode = ledgerItem && !!ledgerItem.id;//%%%ledgerItem為{} 為true 傳後面變undefined
-    const isEditMode = !!ledgerItem.id; //!!這樣就行
-    // setTimeout(() =>{
-    // console.log('LedgerForm.js被觸發',title,amount,date,!!ledgerItem.id);
-    // },1000)
-    // console.log('submitForm的值',title,amount,date);
+ 
+    const isEditMode = !!ledgerItem.id; 
+    
     if (title && amount && date) {
       if (amount < 0) {
-        setValidatePass(false);
-        setAlertMessage('數字不能為負');
+        setFormValidate({
+          validatePass:false,
+          alertMessage:'數字不能為負'
+        })
       } else if (!isValidDate(date)) {
-        setValidatePass(false);
-        setAlertMessage('不能選擇未來的日期');
+        setFormValidate({
+          validatePass:false,
+          alertMessage:'不能選擇未來的日期'
+        })
       } else {
-        setAlertMessage('');
-        setValidatePass(true);
+        setFormValidate({
+          validatePass:true,
+          alertMessage:''
+        })
+
         if (isEditMode) {
-          console.log('通過編輯模式');
-          console.log(title, amount, date); //%%%旧资料
-          // onFormSubmit(...ledgerItem,title,amount,date);//%% @@TypeError: ledgerItem is not iterable
-          // setTimeout(()=>{
           onFormSubmit(
             {
               ...ledgerItem,
@@ -75,9 +62,7 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
           setTitle('');
           setAmount('');
           setDate('');
-          // },1000)
         } else {
-          console.log('通過創建模式');
           onFormSubmit(
             {
               title,
@@ -92,9 +77,10 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
         }
       }
     } else {
-      setValidatePass(false);
-      setAlertMessage('表格不能為空!');
-      console.log('不通過');
+      setFormValidate({
+        validatePass:false,
+        alertMessage:'表格不能為空'
+      })
     }
   };
 
@@ -102,8 +88,8 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
     e.preventDefault();
     onCancelSubmit();
   };
+
   return (
-    //!需要改input閉合 className htmlFor
     <div className="container">
       <form className="pt-5 px-2">
         <div className="form-group">
@@ -180,16 +166,12 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
             </div>
           </div>
         </div>
-        {/* <div className="form-group form-check">
-          <input type="checkbox" className="form-check-input" id="inputDate"/>
-          <label className="form-check-label" for="exampleCheck1">Check me out</label>
-        </div> */}
-        {/* { !validatePass&&alertMessage&& */}
-        {!validatePass && alertMessage && (
+        {!formValidate.validatePass && (
           <div className="alert alert-warning" role="alert">
-            {alertMessage}
+            {formValidate.alertMessage}
           </div>
-        )}
+          )
+        }
         {children}
         <button
           type="submit"
@@ -198,7 +180,6 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
           className="btn btn-primary mx-3"
           onClick={(e) => {
             submitForm(e);
-            console.log('bbbbbb');
           }}
         >
           提交
@@ -220,7 +201,7 @@ const LedgerForm = ({ ledgerItem = {} , onFormSubmit, onCancelSubmit, children }
 };
 
 LedgerForm.propTypes = {
-  ledgerItem: PropTypes.object.isRequired,
+  ledgerItem: PropTypes.object,
   onFormSubmit: PropTypes.func.isRequired,
   onCancelSubmit: PropTypes.func.isRequired,
 };

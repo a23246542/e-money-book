@@ -111,10 +111,10 @@ export const CreatePage = ({ match, history }) => {
         onFormSubmit={submitForm}
         onCancelSubmit={cancelSubmit}
         >
+        {!validationPassed && (
+          <div className="alert alert-warning">請選擇分類選項</div>
+        )}
       </LedgerForm>
-      {!validationPassed && (
-        <div className="alert alert-warning">請選擇分類選項</div>
-      )}
     </div>
   );
 };
