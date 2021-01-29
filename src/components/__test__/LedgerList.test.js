@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Ionicons from '../../plugin/ionicons';
 import IosPlane from 'react-ionicons/lib/IosPlane';
 import { flattenArr } from '../../utility';
 import { shallow, mount } from 'enzyme';
 import LedgerList from '../LedgerList';
 // import AppContext, { Provider } from '../../AppContext';
-import { testCategories } from '../../testData';
+import { testCategories, testItems } from '../../testData';
 import Icon from '../../components/common/Icon';
 
 const category = {
@@ -51,11 +50,10 @@ const items = [
   },
 ];
 
-const listWithCategory = items.map((item) => {
-  // item.category = category[item.categoryId];
+const listWithCategory = testItems.map((item) => {
   return {
-    ...items,
-    category: category[item.categoryId],
+    ...item,
+    category: flattenArr(testCategories)[item.cid],
   };
 });
 
@@ -70,25 +68,32 @@ let wrapper;
 describe('test LedgerList component', () => {
   beforeEach(() => {
     wrapper = mount(<LedgerList {...props} />);
-    // wrapper = mount(<LedgerList {...props}/>)
   });
+  afterEach(()=>{
+    jest.clearAllMocks();
+  })
 
   it('should render component to match snapshot', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('should render correct leger items length', () => {
-    expect(wrapper.find('.list-group-item').length).toEqual(
-      listWithCategory.length
-    );
+  it('should render correct ledger items length', () => {
+    expect(wrapper.find('.list-group-item').length).toEqual(listWithCategory.length);
   });
 
-  it('should render correct icon and price for each item', () => {
-    // const { IosPlane } = Ionicons;
-    // const icon = wrapper.find('.list-group-item').first().find(<IosPlane/>);
-    const iconList = wrapper.find('.list-group-item').first().find(Icon); //要直接蒐組件不能用mount 要用shallow
+  it('should render correct icon and ledger for each item', () => {
+    const iconList = wrapper.find('.list-group-item').first().find(Icon);
+    // console.log(iconList.first());
     expect(iconList.first().props().icon).toEqual(
       listWithCategory[0].category.iconName
     );
   });
+
+  it('should trigger the correct function callbacks', () => {
+    const firstItem = wrapper.find('.ledger-item').first();
+    firstItem.find('[data-test="editBtn"]').first().simulate('click', { preventDefault: () => {} })
+    expect(props.onModifyItem).toHaveBeenCalledWith(listWithCategory[0])
+    firstItem.find('[data-test="deleteBtn"]').first().simulate('click', { preventDefault: () => {} })
+    expect(props.onDeleteItem).toHaveBeenCalledWith(listWithCategory[0])
+  })
 });

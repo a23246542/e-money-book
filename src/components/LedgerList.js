@@ -27,6 +27,7 @@ const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
                 e.preventDefault();
                 onModifyItem(item);
               }}
+              data-test="editBtn"
               data-testid={`editBtn-${item.id}`}
             >
               <Icon
@@ -45,6 +46,7 @@ const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
                 e.preventDefault();
                 onDeleteItem(item);
               }}
+              data-test="deleteBtn"
             >
               <Icon
                 icon="IosCloseCircle"
