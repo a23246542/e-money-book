@@ -18,9 +18,10 @@ import { Tabs, Tab } from '../components/Tabs';
 import TotalNumber from '../components/TotalNumber';
 import CreateBtn from '../components/CreateBtn';
 import MonthPicker from '../components/MonthPicker';
-import AppContext from '../AppContext';
 import Loader from '../components/common/Loader';
 import PieChart from '../components/PieChart';
+import AppContext from '../AppContext';
+import AuthContext from '../contexts/AuthContext';
 
 /* @param
   ledgerList //帳目列表
@@ -39,12 +40,19 @@ const Home = ({ history, match }) => {
     actions,
   } = useContext(AppContext);
 
+  const {
+    fbResponse,
+    setFbResponse,
+    handleFBLogin,
+    handleFBLogout,
+  } = useContext(AuthContext);
+
   const [tabView, setTabView] = useState(LIST_VIEW);
   const tabsTexts = [LIST_VIEW, CHART_VIEW];
 
   useEffect(() => {
     actions.getInitData();
-  }, ['']);
+  }, []);
 
   const changeDate = (yearNum, monthNum) => {
     actions.selectNewMonth(yearNum, monthNum);
@@ -160,9 +168,7 @@ const Home = ({ history, match }) => {
   return (
     <Fragment>
       <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <button onClick={(e) => handleFBLogout(e)}>登出</button>
         <a
           className="App-link"
           href="https://reactjs.org"
