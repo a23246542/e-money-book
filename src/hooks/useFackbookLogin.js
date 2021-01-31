@@ -38,6 +38,7 @@ const useFackbookLogin = () => {
     e.preventDefault();
     window.FB.login(function (response) {
       console.log(response);
+      setFbResponse(response);
     });
   };
 
@@ -45,6 +46,7 @@ const useFackbookLogin = () => {
     e.preventDefault();
     window.FB.logout(function (response) {
       console.log(response);
+      setFbResponse(response);
     });
   };
 

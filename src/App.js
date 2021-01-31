@@ -1,5 +1,10 @@
 import { useState, useReducer, useRef } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+} from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './containers/Home';
@@ -223,6 +228,13 @@ function App() {
     }),
   });
 
+  if (!fbResponse) {
+    return <></>;
+  }
+  // if (fbResponse.status !== 'connected') {
+  //   return <Redirect to="/login" />;
+  // }
+
   return (
     <AuthContext.Provider
       value={{
@@ -244,7 +256,14 @@ function App() {
       >
         <Router>
           <div className="App">
-            <Route path="/" exact component={Home} />
+            <Route path="/" exact>
+              {console.log(fbResponse.status)}
+              {fbResponse.status === 'connected' ? (
+                <Home />
+              ) : (
+                <Redirect to="/login" />
+              )}
+            </Route>
             <Route path="/login">
               <Login />
             </Route>

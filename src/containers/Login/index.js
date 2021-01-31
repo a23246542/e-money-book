@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import style from './style.module.scss';
 import AuthContext from '../../contexts/AuthContext';
+import { Redirect } from 'react-router-dom';
 
 const Login = () => {
   const {
@@ -10,6 +11,11 @@ const Login = () => {
     handleFBLogin,
     handleFBLogout,
   } = useContext(AuthContext);
+
+  if (fbResponse.status === 'connected') {
+    return <Redirect to="/" />;
+  }
+
   return (
     <div className={style['form-container']}>
       <div className={style['form-content']}>
