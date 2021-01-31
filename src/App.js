@@ -1,17 +1,33 @@
 import { useState, useReducer, useRef } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  useRouteMatch,
+} from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './containers/Home';
 import Create from './containers/Create';
-import { Provider } from './AppContext';
+import Login from './containers/Login';
+import AppContext from './AppContext';
+import AuthContext from './contexts/AuthContext';
 import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
+import useFackbookLogin from './hooks/useFackbookLogin';
 import api from './api';
 
 function App() {
   const [categories, setCategories] = useState({});
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
+
+  const [fbResponse, handleFBLogin, handleFBLogout] = useFackbookLogin({
+    appId: process.env.REACT_APP_FB_APP_ID,
+    cookie: true,
+    xfbml: true,
+    version: process.env.REACT_APP_FB_APP_VERSION,
+  });
 
   const ledgerReducer = (state, action) => {
     const { type, payload } = action;
@@ -213,25 +229,53 @@ function App() {
     }),
   });
 
+  const isAtLoginPage = useRouteMatch('/login');
+  // 等待回傳
+  if (!fbResponse) {
+    return <></>;
+  }
+  // 處理使用者輸入其他網址
+  if (fbResponse.status !== 'connected' && !isAtLoginPage) {
+    return <Redirect to="/login" />;
+  }
+
   return (
-    <Provider
+    <AuthContext.Provider
       value={{
-        categories: categories,
-        ledgerStore,
-        // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
-        currentDate,
-        isLoading,
-        actions: actions.current,
+        status: fbResponse.status,
+        authResponse: fbResponse.authResponse,
+        handleFBLogin,
+        handleFBLogout,
       }}
     >
-      <Router>
+      <AppContext.Provider
+        value={{
+          categories: categories,
+          ledgerStore,
+          // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
+          currentDate,
+          isLoading,
+          actions: actions.current,
+        }}
+      >
+        {/* <Router> */}
         <div className="App">
-          <Route path="/" exact component={Home} />
+          <Route path="/" exact>
+            {fbResponse.status === 'connected' ? (
+              <Home />
+            ) : (
+              <Redirect to="/login" />
+            )}
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
           <Route path="/create" component={Create} />
           <Route path="/edit/:id" component={Create} />
         </div>
-      </Router>
-    </Provider>
+        {/* </Router> */}
+      </AppContext.Provider>
+    </AuthContext.Provider>
   );
 }
 
