@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 
-const useFackbookLogin = () => {
+const useFackbookLogin = ({ appId, cookie, xfbml, version }) => {
   const [fbResponse, setFbResponse] = useState();
 
   useEffect(() => {
     // 載入 Facebook SDK 並完成 init 的動作
     window.fbAsyncInit = function () {
       window.FB.init({
-        appId: '420878639160824',
-        cookie: true,
-        xfbml: true,
-        version: 'v9.0',
+        appId,
+        cookie,
+        xfbml,
+        version,
       });
       // 取得使用者登入狀態
       window.FB.getLoginStatus(function (response) {
@@ -50,7 +50,7 @@ const useFackbookLogin = () => {
     });
   };
 
-  return [fbResponse, setFbResponse, handleFBLogin, handleFBLogout];
+  return [fbResponse, handleFBLogin, handleFBLogout];
 };
 
 export default useFackbookLogin;

@@ -5,14 +5,9 @@ import AuthContext from '../../contexts/AuthContext';
 import { Redirect } from 'react-router-dom';
 
 const Login = () => {
-  const {
-    fbResponse,
-    setFbResponse,
-    handleFBLogin,
-    handleFBLogout,
-  } = useContext(AuthContext);
+  const { status, handleFBLogin, handleFBLogout } = useContext(AuthContext);
 
-  if (fbResponse.status === 'connected') {
+  if (status === 'connected') {
     return <Redirect to="/" />;
   }
 

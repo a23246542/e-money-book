@@ -40,12 +40,7 @@ const Home = ({ history, match }) => {
     actions,
   } = useContext(AppContext);
 
-  const {
-    fbResponse,
-    setFbResponse,
-    handleFBLogin,
-    handleFBLogout,
-  } = useContext(AuthContext);
+  const { handleFBLogout } = useContext(AuthContext);
 
   const [tabView, setTabView] = useState(LIST_VIEW);
   const tabsTexts = [LIST_VIEW, CHART_VIEW];

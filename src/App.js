@@ -22,12 +22,12 @@ function App() {
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
 
-  const [
-    fbResponse,
-    setFbResponse,
-    handleFBLogin,
-    handleFBLogout,
-  ] = useFackbookLogin();
+  const [fbResponse, handleFBLogin, handleFBLogout] = useFackbookLogin({
+    appId: process.env.REACT_APP_FB_APP_ID,
+    cookie: true,
+    xfbml: true,
+    version: process.env.REACT_APP_FB_APP_VERSION,
+  });
 
   const ledgerReducer = (state, action) => {
     const { type, payload } = action;
@@ -242,8 +242,8 @@ function App() {
   return (
     <AuthContext.Provider
       value={{
-        fbResponse,
-        setFbResponse,
+        status: fbResponse.status,
+        authResponse: fbResponse.authResponse,
         handleFBLogin,
         handleFBLogout,
       }}
