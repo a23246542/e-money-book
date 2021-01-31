@@ -44,3 +44,23 @@
   width: 100%;
   min-width: 800px;
 }
+
+/**
+/* utilities
+**/
+
+.btn-reset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 100%;
+  vertical-align: baseline;
+  font-family: inherit;
+  font-weight: inherit;
+  appearance: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: pointer;
+  outline: 0;
+}

@@ -4,14 +4,18 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './containers/Home';
 import Create from './containers/Create';
+import Login from './containers/Login';
 import { Provider } from './AppContext';
 import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
+import useFackbookLogin from './hooks/useFackbookLogin';
 import api from './api';
 
 function App() {
   const [categories, setCategories] = useState({});
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
+
+  const [fbResponse, handleFBLogin, handleFBLogout] = useFackbookLogin();
 
   const ledgerReducer = (state, action) => {
     const { type, payload } = action;
@@ -227,6 +231,12 @@ function App() {
       <Router>
         <div className="App">
           <Route path="/" exact component={Home} />
+          <Route path="/login">
+            <Login
+              handleFBLogin={handleFBLogin}
+              handleFBLogout={handleFBLogout}
+            />
+          </Route>
           <Route path="/create" component={Create} />
           <Route path="/edit/:id" component={Create} />
         </div>
