@@ -4,6 +4,7 @@ import {
   Route,
   Link,
   Redirect,
+  useRouteMatch,
 } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -228,12 +229,15 @@ function App() {
     }),
   });
 
+  const isAtLoginPage = useRouteMatch('/login');
+  // 等待回傳
   if (!fbResponse) {
     return <></>;
   }
-  // if (fbResponse.status !== 'connected') {
-  //   return <Redirect to="/login" />;
-  // }
+  // 處理使用者輸入其他網址
+  if (fbResponse.status !== 'connected' && !isAtLoginPage) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <AuthContext.Provider
@@ -254,23 +258,22 @@ function App() {
           actions: actions.current,
         }}
       >
-        <Router>
-          <div className="App">
-            <Route path="/" exact>
-              {console.log(fbResponse.status)}
-              {fbResponse.status === 'connected' ? (
-                <Home />
-              ) : (
-                <Redirect to="/login" />
-              )}
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/create" component={Create} />
-            <Route path="/edit/:id" component={Create} />
-          </div>
-        </Router>
+        {/* <Router> */}
+        <div className="App">
+          <Route path="/" exact>
+            {fbResponse.status === 'connected' ? (
+              <Home />
+            ) : (
+              <Redirect to="/login" />
+            )}
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/create" component={Create} />
+          <Route path="/edit/:id" component={Create} />
+        </div>
+        {/* </Router> */}
       </AppContext.Provider>
     </AuthContext.Provider>
   );
