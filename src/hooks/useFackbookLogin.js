@@ -48,7 +48,7 @@ const useFackbookLogin = () => {
     });
   };
 
-  return [fbResponse, handleFBLogin, handleFBLogout];
+  return [fbResponse, setFbResponse, handleFBLogin, handleFBLogout];
 };
 
 export default useFackbookLogin;

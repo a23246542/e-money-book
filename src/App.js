@@ -5,7 +5,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Home from './containers/Home';
 import Create from './containers/Create';
 import Login from './containers/Login';
-import { Provider } from './AppContext';
+import AppContext from './AppContext';
+import AuthContext from './contexts/AuthContext';
 import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
 import useFackbookLogin from './hooks/useFackbookLogin';
 import api from './api';
@@ -15,7 +16,12 @@ function App() {
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
 
-  const [fbResponse, handleFBLogin, handleFBLogout] = useFackbookLogin();
+  const [
+    fbResponse,
+    setFbResponse,
+    handleFBLogin,
+    handleFBLogout,
+  ] = useFackbookLogin();
 
   const ledgerReducer = (state, action) => {
     const { type, payload } = action;
@@ -218,30 +224,36 @@ function App() {
   });
 
   return (
-    <Provider
+    <AuthContext.Provider
       value={{
-        categories: categories,
-        ledgerStore,
-        // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
-        currentDate,
-        isLoading,
-        actions: actions.current,
+        fbResponse,
+        setFbResponse,
+        handleFBLogin,
+        handleFBLogout,
       }}
     >
-      <Router>
-        <div className="App">
-          <Route path="/" exact component={Home} />
-          <Route path="/login">
-            <Login
-              handleFBLogin={handleFBLogin}
-              handleFBLogout={handleFBLogout}
-            />
-          </Route>
-          <Route path="/create" component={Create} />
-          <Route path="/edit/:id" component={Create} />
-        </div>
-      </Router>
-    </Provider>
+      <AppContext.Provider
+        value={{
+          categories: categories,
+          ledgerStore,
+          // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
+          currentDate,
+          isLoading,
+          actions: actions.current,
+        }}
+      >
+        <Router>
+          <div className="App">
+            <Route path="/" exact component={Home} />
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/create" component={Create} />
+            <Route path="/edit/:id" component={Create} />
+          </div>
+        </Router>
+      </AppContext.Provider>
+    </AuthContext.Provider>
   );
 }
 

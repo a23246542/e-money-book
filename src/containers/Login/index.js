@@ -1,8 +1,15 @@
-import React from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import style from './style.module.scss';
+import AuthContext from '../../contexts/AuthContext';
 
-const Login = ({ handleFBLogin, handleFBLogout }) => {
+const Login = () => {
+  const {
+    fbResponse,
+    setFbResponse,
+    handleFBLogin,
+    handleFBLogout,
+  } = useContext(AuthContext);
   return (
     <div className={style['form-container']}>
       <div className={style['form-content']}>
