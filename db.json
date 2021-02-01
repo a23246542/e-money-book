@@ -155,8 +155,8 @@
     {
       "title": "入账工资",
       "amount": 2500,
-      "date": "2020-2-08",
-      "monthCategory": "2020-12",
+      "date": "2021-2-08",
+      "monthCategory": "2021-2",
       "timestamp": 1544227200000,
       "id": "_dotug7vnn",
       "cid": "10",
@@ -170,8 +170,8 @@
     {
       "title": "新的旅行条目",
       "amount": 10000,
-      "date": "2019-02-05",
-      "monthCategory": "2019-1",
+      "date": "2021-02-05",
+      "monthCategory": "2020-2",
       "timestamp": 1546646400000,
       "id": "_cg4a9gzya",
       "cid": "1"

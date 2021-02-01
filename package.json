@@ -1,8 +1,7 @@
 {
   "name": "e-money-book",
   "jest": {
-    "resetMocks": false,
-    "testEnvironment": "node"
+    "resetMocks": false
   },
   "version": "0.1.0",
   "private": true,
@@ -36,7 +35,7 @@
     "eject": "react-scripts eject",
     "format": "prettier src/**/*.{js,jsx,scss,css,md} --write && eslint src/**/*.{js,jsx} --fix",
     "lint": "eslint src/**/*.{jsx,js} --fix",
-    "mock": "json-server --watch db.json --port 3002"
+    "mock": "json-server --watch db.json --port 3003"
   },
   "standard": {
     "env": [

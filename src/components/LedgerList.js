@@ -3,7 +3,7 @@ import Icon from '../components/common/Icon';
 
 const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
   return (
-    <ul className="list-group">
+    <ul className="list-group" data-testid="ledgerList">
       {items.map((item) => {
         return (
           <li

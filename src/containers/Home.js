@@ -55,11 +55,7 @@ const Home = ({ history, match }) => {
     actions.selectNewMonth(yearNum, monthNum);
   };
 
-  const changeView = (view) => {
-    setTabView(view);
-  };
-
-  const changeView1 = (tabIndex) => {
+  const changeView = (tabIndex) => {
     setTabView(tabsTexts[tabIndex]);
   };
 
@@ -196,8 +192,8 @@ const Home = ({ history, match }) => {
         {isLoading && <Loader />}
         {!isLoading && (
           <Fragment>
-            <Tabs activeIndex={tabIndex} onTabChange={changeView1}>
-              <Tab>
+            <Tabs activeIndex={tabIndex} onTabChange={changeView}>
+              <Tab data-testid="listBtn">
                 <Icon
                   icon="IosPaper"
                   className="mr-2 align-bottom"
@@ -206,14 +202,14 @@ const Home = ({ history, match }) => {
                 />
                 列表模式
               </Tab>
-              <Tab>
+              <Tab data-testid="chartBtn">
                 <Icon
                   icon="IosPie"
                   className="mr-2 align-bottom"
                   fontSize="25px"
                   color="#007bff"
                 />
-                圖表
+                圖表模式
               </Tab>
             </Tabs>
             {/* <ViewTab activeTab={tabView} onTabChange={changeView} /> */}

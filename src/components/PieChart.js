@@ -51,7 +51,7 @@ const CustomPieChart = ({ title, type, chartData }) => {
   };
 
   return (
-    <div className="pie-chart-component">
+    <div className="pie-chart-component" data-testid="pieChart">
       <h3 className="text-center mt-5">{title}</h3>
       <ResponsiveContainer width={'100%'} height={300}>
         <PieChart>
@@ -80,7 +80,7 @@ const CustomPieChart = ({ title, type, chartData }) => {
 CustomPieChart.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  chartData: PropTypes.func.isRequired,
+  chartData: PropTypes.array.isRequired,
 };
 
 export default CustomPieChart;
