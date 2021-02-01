@@ -46,6 +46,8 @@ const Home = ({ history, match }) => {
   const tabsTexts = [LIST_VIEW, CHART_VIEW];
 
   useEffect(() => {
+    console.log('首頁useEffect', actions);
+
     actions.getInitData();
   }, []);
 

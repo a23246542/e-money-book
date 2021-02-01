@@ -22,12 +22,12 @@ function App() {
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
 
-  const [fbResponse, handleFBLogin, handleFBLogout] = useFackbookLogin({
-    appId: process.env.REACT_APP_FB_APP_ID,
-    cookie: true,
-    xfbml: true,
-    version: process.env.REACT_APP_FB_APP_VERSION,
-  });
+  // const [fbResponse, handleFBLogin, handleFBLogout] = useFackbookLogin({
+  //   appId: process.env.REACT_APP_FB_APP_ID,
+  //   cookie: true,
+  //   xfbml: true,
+  //   version: process.env.REACT_APP_FB_APP_VERSION,
+  // });
 
   const ledgerReducer = (state, action) => {
     const { type, payload } = action;
@@ -95,12 +95,15 @@ function App() {
     };
   };
 
-  const actions = useRef({
+  const actions = {
     getInitData: withLoader(async () => {
+      console.log('執行getInitData');
+
       const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'), api.get(getUrlWithData)];
       const [resCategory, resLedger] = await Promise.all(promiseArr);
 
+      console.log('獲取資料', resLedger.data);
       dispatchLedger({
         type: 'fetchItems',
         payload: flattenArr(resLedger.data),
@@ -227,55 +230,53 @@ function App() {
 
       return deleteItem;
     }),
-  });
+  };
 
-  const isAtLoginPage = useRouteMatch('/login');
-  // 等待回傳
-  if (!fbResponse) {
-    return <></>;
-  }
-  // 處理使用者輸入其他網址
-  if (fbResponse.status !== 'connected' && !isAtLoginPage) {
-    return <Redirect to="/login" />;
-  }
+  // const isAtLoginPage = useRouteMatch('/login');
+  // // 等待回傳
+  // if (!fbResponse) {
+  //   return <></>;
+  // }
+  // // 處理使用者輸入其他網址
+  // if (fbResponse.status !== 'connected' && !isAtLoginPage) {
+  //   return <Redirect to="/login" />;
+  // }
 
   return (
-    <AuthContext.Provider
+    // <AuthContext.Provider
+    //   value={{
+    //     status: fbResponse.status,
+    //     authResponse: fbResponse.authResponse,
+    //     handleFBLogin,
+    //     handleFBLogout,
+    //   }}
+    // >
+    <AppContext.Provider
       value={{
-        status: fbResponse.status,
-        authResponse: fbResponse.authResponse,
-        handleFBLogin,
-        handleFBLogout,
+        categories: categories,
+        ledgerStore,
+        // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
+        currentDate,
+        isLoading,
+        actions,
       }}
     >
-      <AppContext.Provider
-        value={{
-          categories: categories,
-          ledgerStore,
-          // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
-          currentDate,
-          isLoading,
-          actions: actions.current,
-        }}
-      >
-        {/* <Router> */}
-        <div className="App">
-          <Route path="/" exact>
-            {fbResponse.status === 'connected' ? (
-              <Home />
-            ) : (
-              <Redirect to="/login" />
-            )}
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/create" component={Create} />
-          <Route path="/edit/:id" component={Create} />
-        </div>
-        {/* </Router> */}
-      </AppContext.Provider>
-    </AuthContext.Provider>
+      {/* <Router> */}
+      <div className="App">
+        <Route path="/" exact>
+          {/* {fbResponse.status === 'connected' ? ( */}
+          {/* {2 === 2 ? <Home /> : <Redirect to="/login" />} */}
+          <Home />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/create" component={Create} />
+        <Route path="/edit/:id" component={Create} />
+      </div>
+      {/* </Router> */}
+    </AppContext.Provider>
+    // </AuthContext.Provider>
   );
 }
 

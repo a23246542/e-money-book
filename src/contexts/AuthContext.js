@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 const AuthContext = createContext({
-  status: null,
+  status: 'connected',
   authResponse: null,
   handleFBLogin: null,
   handleFBLogout: null,

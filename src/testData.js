@@ -64,15 +64,15 @@ export const testCategories = [
 ];
 
 export const testItems = [
-  {
-    title: '工资',
-    amount: 2000,
-    date: '2020-11-18',
-    monthCategory: '2020-11',
-    id: '_bd16bjeen',
-    cid: 10,
-    timestamp: 1534550400000,
-  },
+  // {
+  //   title: '工资',
+  //   amount: 2000,
+  //   date: '2020-11-18',
+  //   monthCategory: '2020-11',
+  //   id: '_bd16bjeen',
+  //   cid: 10,
+  //   timestamp: 1534550400000,
+  // },
   {
     title: '和哥们一起喝酒',
     amount: 300,
@@ -85,8 +85,8 @@ export const testItems = [
   {
     title: '抽奖',
     amount: 1000,
-    date: '2020-12-11',
-    monthCategory: '2020-12',
+    date: '2021-02-11',
+    monthCategory: '2021-02',
     id: '_1fg1wme63',
     cid: 11,
     timestamp: 1533945600000,

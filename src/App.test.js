@@ -10,14 +10,21 @@
 import React from 'react';
 import { testCategories, testItems, testItemsCopy } from './testData';
 import { mount } from 'enzyme';
-import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
+import {
+  render,
+  fireEvent,
+  cleanup,
+  waitFor,
+  screen,
+} from '@testing-library/react';
 import { toBeInTheDocument } from '@testing-library/jest-dom';
 import App, { actions } from './App';
 import {
-  BrowserRouter as Router,
+  Router,
   MemoryRouter,
   withRouter,
   Route,
+  BrowserRouter,
   // createHistory,
   // createMemorySource,
   // LocationProvider,
@@ -37,8 +44,9 @@ import {
 // import { findByTestAttr } from 'test/testUtils';
 
 // import mockAxios from './__mocks__/axios'
-import api from './api';
+// import api from './api';
 import { act } from 'react-dom/test-utils';
+import { router } from 'json-server';
 
 // jest.mock('./api');
 const testItem = JSON.parse(JSON.stringify(testItems[1]));
@@ -69,9 +77,15 @@ describe('test App component with real api', () => {
   // beforeEach(()=>{
   //   jest.clearAllMocks()
   // })
-
-  it.only('click the year&month item, should show the right ledgerItem', (done) => {
-    const wrapper = mount(<App />);
+  afterEach(cleanup);
+  it('click the year&month item, should show the right ledgerItem', (done) => {
+    // const script = document.createElement('script'); //避免parentNode undefined
+    // document.body.appendChild(script);
+    const wrapper = mount(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     wrapper.find('.dropdown-toggle').simulate('click');
     wrapper.find('.years-range .dropdown-item').at(3).simulate('click');
     wrapper.find('.months-range .dropdown-item').last().simulate('click');
@@ -97,59 +111,83 @@ describe('test App component init behavior', () => {
   afterEach(cleanup);
   beforeEach(() => {
     // api.get.mockImplementation(jest.fn((url) => { //無效
-    api.get = jest.fn().mockImplementation(
-      jest.fn((url) => {
-        console.log('log output from mock axios!!!!!!!!!');
-        if (url.indexOf('category') > -1) {
-          return Promise.resolve({
-            data: testCategories,
-          });
-        }
-        if (url.indexOf('ledger?') > -1) {
-          return Promise.resolve({
-            // data: testItems
-            data: testItems,
-          });
-        }
-        if (url.indexOf('ledger/') > -1) {
-          return Promise.resolve({
-            data: {
-              ...testItems[2],
-              // id: 'testId'
-            },
-          });
-        }
-      })
-    );
-    api.post = jest.fn().mockImplementation((url) => {
-      // return Promise.resolve({ data: {...testItems[0], id: 'new_created_id'}})
-      //~返回不需要拿id
-      return Promise.resolve({ data: { ...testItems[0] } });
-    });
-    api.put = jest.fn().mockImplementation((url, updateObj) => {
-      //尋找testItems陣列原本id的item
-      const modifiedItem = testItems.find((item) => item.id === updateObj.id);
-      return Promise.resolve({ data: { ...modifiedItem, ...updateObj } }); //返回覆蓋過後的
-    });
-    api.delete = jest.fn().mockImplementation((url) => {
-      // const id = url.match(/\w+/g)[1]
-      // const filteredItem = testItems.find((item) => item.id === id)
-      // return Promise.resolve({ data: filteredItem })
-      return Promise.resolve(); //這邊不需要用到回傳資料
-    });
+    // api.get = jest.fn().mockImplementation(
+    //   // jest.fn((url) => {
+    //   (url) => {
+    //     console.log('log output from mock axios!!!!!!!!!');
+    //     if (url.indexOf('category') > -1) {
+    //       return Promise.resolve({
+    //         data: testCategories,
+    //       });
+    //     }
+    //     if (url.indexOf('ledger?') > -1) {
+    //       return Promise.resolve({
+    //         // data: testItems
+    //         data: testItems,
+    //       });
+    //     }
+    //     if (url.indexOf('ledger/') > -1) {
+    //       return Promise.resolve({
+    //         data: {
+    //           ...testItems[2],
+    //           // id: 'testId'
+    //         },
+    //       });
+    //     }
+    //     // })
+    //   }
+    // );
+    // api.post = jest.fn().mockImplementation((url) => {
+    //   // return Promise.resolve({ data: {...testItems[0], id: 'new_created_id'}})
+    //   //~返回不需要拿id
+    //   return Promise.resolve({ data: { ...testItems[0] } });
+    // });
+    // api.put = jest.fn().mockImplementation((url, updateObj) => {
+    //   //尋找testItems陣列原本id的item
+    //   const modifiedItem = testItems.find((item) => item.id === updateObj.id);
+    //   return Promise.resolve({ data: { ...modifiedItem, ...updateObj } }); //返回覆蓋過後的
+    // });
+    // api.delete = jest.fn().mockImplementation((url) => {
+    //   // const id = url.match(/\w+/g)[1]
+    //   // const filteredItem = testItems.find((item) => item.id === id)
+    //   // return Promise.resolve({ data: filteredItem })
+    //   return Promise.resolve(); //這邊不需要用到回傳資料
+    // });
   });
 
   //app home加載過後 => app的state資料長度等於test資料長度
-  it('check App Home state with initial action', () => {
-    const wrapper = mount(<App />);
+  it('check App Home state with initial action', (done) => {
+    jest.setTimeout(8000);
+    const { debug } = render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+    // waitFor(() => {
     expect(api.get).toHaveBeenCalledTimes(2);
-    // await waitForAsync()
-    // const currentState = wrapper.instance().state
-    // expect(Object.keys(currentState.items).length).toEqual(testItems.length)
-    // expect(Object.keys(currentState.categories).length).toEqual(testCategories.length)
+    setTimeout(() => {
+      // debug();
+      expect(screen.getAllByText(/編輯/).length).toBe(4);
+      // console.log('長度~~~~', screen.getAllByText(/刪除/).length);
+      done();
+    }, 200);
+    // ---------------------------------------------------
+    // wrapper = mount(
+    //   <MemoryRouter>
+    //     <App />
+    //   </MemoryRouter>
+    // );
+
+    // setTimeout(() => {
+    //   wrapper.update();
+    //   console.log(wrapper.debug());
+    //   expect(wrapper.find('.ledger-item').length).toBe(testItems.length);
+    //   expect(api.get).toHaveBeenCalledTimes(2);
+    //   done();
+    // }, 0);
   });
 
-  it.only('check App Home change ViewTab and LedgerList should show right', (done) => {
+  it('check App Home change ViewTab and LedgerList should show right', (done) => {
     const wrapper = mount(<App />);
     setTimeout(() => {
       wrapper.update();
@@ -164,26 +202,31 @@ describe('test App component init behavior', () => {
   // ----
 
   //首頁加載過資料後 到創建頁呼叫getEditData => 不會再發新api.get，只有mount的兩次
-  it('test getEditData with initial data in create mode', async () => {
-    // const wrapper = mount(<App/>)
-    const { getByTestId, debug } = render(<App />);
-    // await act(async()=>{
-    //   await wrapper.instance().actions.getEditData()//@@
-    // // })
-    // console.log(wrapper.debug());
-    // debug()
-    await waitFor(() => {
+  it('test getEditData with initial data in create mode', (done) => {
+    cleanup();
+    const history = createMemoryHistory();
+    const { getByTestId, debug } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    // fireEvent.click(getByTestId('cancel')); //不按回去下一頁的url會不對
+    waitFor(() => {
       //!!!!需要不然會處在加載中找不到按鈕
-      fireEvent.click(getByTestId('createBtn'));
+      setTimeout(() => {
+        fireEvent.click(getByTestId('createBtn'));
+        expect(api.get).toHaveBeenCalledTimes(2);
+        expect(history.location.pathname).toBe('/create');
+        done();
+        // debug();
+      }, 200);
     });
-    // wrapper.find(CreateBtn).simulate('click');
-    expect(api.get).toHaveBeenCalledTimes(2);
-    fireEvent.click(getByTestId('cancel')); //不按回去下一頁的url會不對
   });
 
   //@@問題
   //沒有加載過資料，直接到達創建頁新建 =>api get會呼叫三次 ，一開始mount兩次清空後getEditData 創建再一次
-  it('test getEditData without initial data in create mode', () => {
+  it('test getEditData without initial data in create mode', (done) => {
+    cleanup();
     // jest.mock('react-router-dom',()=>({
     //   ...jest.requireActual('react-router-dom'),
     //   Route:MemoryRouter
@@ -210,17 +253,24 @@ describe('test App component init behavior', () => {
     //   }
     // }
 
-    const renderWithRouter = (ui, { route = '/' } = {}) => {
-      window.history.pushState({}, 'Test page', route);
+    // const renderWithRouter = (ui, { route = '/' } = {}) => {
+    //   window.history.pushState({}, 'Test page', route);
+    //   return render(ui, { wrapper: BrowserRouter });
+    //   // return render(ui, { wrapper: MemoryRouter });
+    // };
+    // const { container, debug, getByTestId } = renderWithRouter(<App />, {
+    //   route: '/create',
+    // });
 
-      // return render(ui, { wrapper: BrowserRouter })
-      return render(ui, { wrapper: MemoryRouter });
-    };
-
-    const { container, debug, getByTestId } = renderWithRouter(<App />, {
-      route: '/create',
-    });
-
+    const history = createMemoryHistory();
+    history.push('/create');
+    const { getByTestId, debug } = render(
+      // <Router history={history} initialEntries={['/create']}>
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    // debug();
     // wrapper.setState({
     //   categories: {},
     //   items: {},
@@ -229,20 +279,23 @@ describe('test App component init behavior', () => {
     //   await wrapper.instance().actions.getEditData()
     // })
     // expect(container.innerHTML).toMatch('取消');
-    expect(api.get).toHaveBeenCalledTimes(1);
-    fireEvent.click(getByTestId('cancel'));
+    setTimeout(() => {
+      expect(api.get).toHaveBeenCalledTimes(1);
+      done();
+    }, 100);
+    // fireEvent.click(getByTestId('cancel'));
     // debug();
     // expect(api.get).toHaveBeenLastCalledWith('/category')
   });
 
-  it.only('直接到達編輯頁', (done) => {
+  it('直接到達編輯頁', () => {
+    cleanup();
     const renderWithRouter = (ui, { route = '/' } = {}) => {
       window.history.pushState({}, 'Test page', route);
-
-      // return render(ui, { wrapper: BrowserRouter })
-      return render(ui, { wrapper: MemoryRouter });
+      // console.log('~~~route', route);
+      return render(ui, { wrapper: BrowserRouter });
+      // return render(ui, { wrapper: MemoryRouter });
     };
-
     const { container, debug, getByTestId, rerender } = renderWithRouter(
       <App />,
       {
@@ -250,35 +303,30 @@ describe('test App component init behavior', () => {
       }
     );
 
-    // debug();
+    debug();
     expect(api.get).toHaveBeenCalledTimes(2);
     expect(api.get).toHaveBeenNthCalledWith(1, '/category');
     expect(api.get).toHaveBeenNthCalledWith(2, '/ledger/_1fg1wme63');
-    setTimeout(async () => {
-      // rerender()
 
-      //@@還是沒有成功!!
-      fireEvent.change(getByTestId('inputTitle'), {
-        target: { value: '抽獎' },
-      });
-      fireEvent.change(getByTestId('inputAmount'), {
-        target: { value: '1000' },
-      });
-      fireEvent.change(getByTestId('inputDate'), {
-        target: { value: '2020-12-11' },
-      });
-      await waitFor(() => {
-        setTimeout(() => {
-          debug();
-          done();
-        }, 1000);
-      });
-    }, 2000);
-    // await waitFor(()=> {
-    //   debug()
-    // })
-    // expect(api.get).toHaveBeenCalledTimes(1);
-    // fireEvent.click(getByTestId('cancel'));
+    // setTimeout(async () => {
+    //   // rerender()
+    //   //@@還是沒有成功!!
+    //   fireEvent.change(getByTestId('inputTitle'), {
+    //     target: { value: '抽獎' },
+    //   });
+    //   fireEvent.change(getByTestId('inputAmount'), {
+    //     target: { value: '1000' },
+    //   });
+    //   fireEvent.change(getByTestId('inputDate'), {
+    //     target: { value: '2020-12-11' },
+    //   });
+    //   await waitFor(() => {
+    //     setTimeout(() => {
+    //       debug();
+    //       done();
+    //     }, 1000);
+    //   });
+    // }, 2000);
   });
 
   // -----
@@ -286,13 +334,24 @@ describe('test App component init behavior', () => {
   //首頁加載後，創建頁做編輯 ，api一樣只get兩次(items、categories) edit mode不會再發請求
   it('test getEditData with initial data in edit mode', async () => {
     // const wrapper = mount(<App/>)
-    const { getByTestId, debug, unmount } = render(<App />);
+    const history = createMemoryHistory();
+    const { getByTestId, debug, unmount } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
     // await act(async()=>{
     //   await wrapper.instance().actions.getEditData('_1fg1wme63')
     // })
+    debug();
     await waitFor(() => {
       // fireEvent.click(getByTestId('ledger-item-_bd16bjeen').getByText('編輯'));
-      fireEvent.click(getByTestId('editBtn-_bd16bjeen'));
+      console.log(
+        '=============================================================='
+      );
+
+      debug();
+      fireEvent.click(getByTestId('editBtn-_1fg1wme63'));
     });
     await waitFor(() => {
       // debug();
@@ -361,9 +420,14 @@ describe('test App component init behavior', () => {
   });
   //加載後 更新item
   // 觸發app create => put被觸發一次，新顯示的item是對的
-  it('test updateItem with initial data', (done) => {
+  it.only('test updateItem with initial data', (done) => {
     jest.clearAllMocks();
-    const wrapper = mount(<App />);
+    const history = createMemoryHistory();
+    const wrapper = mount(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
 
     // const singleItem = testItems.find((item) => item.id === '_1fg1wme63')
     //~直接拿testItem的第三項
@@ -392,7 +456,7 @@ describe('test App component init behavior', () => {
     setTimeout(() => {
       //@@多加這一層才取得...異不數據 //!!實測效果比setImmediate process.nextTick好
       wrapper.update();
-      // console.log(wrapper.debug());
+      console.log(wrapper.debug());
 
       wrapper.find('[data-testid="editBtn-_j0z9no9jk"]').simulate('click');
       act(() => {
@@ -452,4 +516,65 @@ describe('test App component init behavior', () => {
   //   expect(deletedItem).toBeUndefined()
   //   // expect(wrapper.find('.').length).toBe(0);
   // })
+});
+
+describe('real api', () => {
+  afterEach(cleanup); // 避免A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
+  it('test delete', async () => {
+    // api.get = jest.fn().mockImplementation(
+    //   jest.fn((url) => {
+    //     console.log('log output from mock axios!!!!!!!!!');
+    //     if (url.indexOf('category') > -1) {
+    //       return Promise.resolve({
+    //         data: testCategories,
+    //       });
+    //     }
+    //     if (url.indexOf('ledger?') > -1) {
+    //       return Promise.resolve({
+    //         // data: testItems
+    //         data: testItems,
+    //       });
+    //     }
+    //     if (url.indexOf('ledger/') > -1) {
+    //       return Promise.resolve({
+    //         data: {
+    //           ...testItems[2],
+    //           // id: 'testId'
+    //         },
+    //       });
+    //     }
+    //   })
+    // );
+    const script = document.createElement('script'); //避免parentNode undefined
+    document.body.appendChild(script);
+
+    const history = createMemoryHistory();
+    // history.push('/');
+    const { getByTestId, debug } = render(
+      <MemoryRouter history={history}>
+        <App />
+      </MemoryRouter>
+    );
+
+    // await waitFor(() => {
+    //   debug();
+    //   // console.log(screen.getAllByText(/紅包/));
+    //   // fireEvent.click()
+    // });
+
+    // await waitFor(() => {
+
+    //   debug();
+    // });
+    // await waitFor(() => {
+    //   // debug(getByTestId('ledger-item-_mb5h8q07z'));
+    //   debug();
+    // });
+    setTimeout(() => {
+      console.log('====================================');
+      console.log(api.get('/category'));
+      console.log('====================================');
+      debug();
+    }, 1000);
+  });
 });

@@ -155,7 +155,7 @@
     {
       "title": "入账工资",
       "amount": 2500,
-      "date": "2020-12-08",
+      "date": "2020-2-08",
       "monthCategory": "2020-12",
       "timestamp": 1544227200000,
       "id": "_dotug7vnn",
@@ -170,7 +170,7 @@
     {
       "title": "新的旅行条目",
       "amount": 10000,
-      "date": "2019-01-05",
+      "date": "2019-02-05",
       "monthCategory": "2019-1",
       "timestamp": 1546646400000,
       "id": "_cg4a9gzya",
@@ -179,11 +179,20 @@
     {
       "title": "kkbox",
       "amount": 150,
-      "date": "2020-12-28",
+      "date": "2020-2-28",
       "id": "_c1cq5lczp",
       "cid": "4",
       "monthCategory": "2020-12",
       "timestamp": 1609176047083
+    },
+    {
+      "title": "kkday",
+      "amount": 350,
+      "date": "2020-02-01",
+      "id": "__1fg1wme63",
+      "cid": "4",
+      "monthCategory": "2021-2",
+      "timestamp": 1609176047088
     },
     {
       "title": "紅包",
