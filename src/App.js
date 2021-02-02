@@ -14,7 +14,7 @@ import Login from './containers/Login';
 import AppContext from './AppContext';
 import AuthContext from './contexts/AuthContext';
 import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
-import useFackbookLogin from './hooks/useFackbookLogin';
+import useFacebookLogin from './hooks/useFacebookLogin';
 import api from './api';
 
 function App() {
@@ -22,12 +22,12 @@ function App() {
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
 
-  // const [fbResponse, handleFBLogin, handleFBLogout] = useFackbookLogin({
-  //   appId: process.env.REACT_APP_FB_APP_ID,
-  //   cookie: true,
-  //   xfbml: true,
-  //   version: process.env.REACT_APP_FB_APP_VERSION,
-  // });
+  const [fbResponse, handleFBLogin, handleFBLogout] = useFacebookLogin({
+    appId: process.env.REACT_APP_FB_APP_ID,
+    cookie: true,
+    xfbml: true,
+    version: process.env.REACT_APP_FB_APP_VERSION,
+  });
 
   const ledgerReducer = (state, action) => {
     const { type, payload } = action;
@@ -233,15 +233,15 @@ function App() {
     }),
   };
 
-  // const isAtLoginPage = useRouteMatch('/login');
-  // // 等待回傳
-  // if (!fbResponse) {
-  //   return <></>;
-  // }
-  // // 處理使用者輸入其他網址
-  // if (fbResponse.status !== 'connected' && !isAtLoginPage) {
-  //   return <Redirect to="/login" />;
-  // }
+  const isAtLoginPage = useRouteMatch('/login');
+  // 等待回傳
+  if (!fbResponse) {
+    return <></>;
+  }
+  // 處理使用者輸入其他網址
+  if (fbResponse.status !== 'connected' && !isAtLoginPage) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     // <AuthContext.Provider
@@ -265,9 +265,12 @@ function App() {
       {/* <Router> */}
       <div className="App">
         <Route path="/" exact>
-          {/* {fbResponse.status === 'connected' ? ( */}
-          {/* {2 === 2 ? <Home /> : <Redirect to="/login" />} */}
-          <Home />
+          {fbResponse.status === 'connected' ? (
+            <Home />
+          ) : (
+            <Redirect to="/login" />
+          )}
+          {/* <Home /> */}
         </Route>
         <Route path="/login">
           <Login />

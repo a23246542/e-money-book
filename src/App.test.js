@@ -47,6 +47,7 @@ import {
 import api from './api';
 import { act } from 'react-dom/test-utils';
 import { router } from 'json-server';
+import useFacebookLogin from './hooks/useFacebookLogin';
 
 // jest.mock('./api');
 const testItem = JSON.parse(JSON.stringify(testItems[1]));
@@ -73,10 +74,54 @@ const initData = {
   // actions:initActions
 };
 
+test.only('mock', () => {
+  // jest.mock('./hooks/useFacebookLogin', () => {
+  //   return {
+  //     __esModule: true,
+  //     default: jest.fn().mockReturnValue([
+  //       {
+  //         status: 'connected',
+  //       },
+  //       jest.fn(),
+  //       jest.fn(),
+  //     ]),
+  //   };
+  // });
+  // jest.doMock('./hooks/useFacebookLogin');
+  // useFacebookLogin.mockReturnValue([
+  //   {
+  //     status: 'connected',
+  //   },
+  //   jest.fn(),
+  //   jest.fn(),
+  // ]);
+  useFacebookLogin = jest.fn().mockReturnValue([
+    {
+      status: 'connected',
+    },
+    jest.fn(),
+    jest.fn(),
+  ]);
+  console.log(useFacebookLogin());
+});
+
 describe('test App component with real api', () => {
   const waitForAsync = () => new Promise((resolve) => setTimeout(resolve, 100));
+
   beforeEach(() => {
     jest.clearAllMocks();
+    // jest.mock('./hooks/useFackbookLogin', () => {
+    //   return {
+    //     __esModule: true,
+    //     default: jest.fn().mockReturnValue([
+    //       {
+    //         status: 'connected',
+    //       },
+    //       jest.fn(),
+    //       jest.fn(),
+    //     ]),
+    //   };
+    // });
   });
   afterEach(cleanup); // 避免A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
   it('click the year&month item, should show the right ledgerItem', (done) => {
@@ -213,9 +258,40 @@ describe('test App component with real api', () => {
   });
   //加載後 刪除item
   //觸發app的delete => api delete會呼叫一次，顯示的長度會比test資料少一個
-  it.only('test delete', async () => {
-    jest.clearAllMocks();
+  it('test delete', async () => {
+    // jest.clearAllMocks();
     cleanup();
+    // const script = document.createElement('script'); //避免parentNode undefined
+    // document.body.appendChild(script);
+    // jest.mock('./hooks/useFackbookLogin', () =>
+    //   jest.fn().mockReturnValue([
+    //     {
+    //       status: 'connected',
+    //     },
+    //     jest.fn(),
+    //     jest.fn(),
+    //   ])
+    // );
+    // jest.mock('./hooks/useFackbookLogin', () => {
+    //   return {
+    //     __esModule: true,
+    //     default: jest.fn().mockReturnValue([
+    //       {
+    //         status: 'connected',
+    //       },
+    //       jest.fn(),
+    //       jest.fn(),
+    //     ]),
+    //   };
+    // });
+    jest.mock('./hooks/useFackbookLogin');
+    useFackbookLogin.mockReturnValue([
+      {
+        status: 'connected',
+      },
+      jest.fn(),
+      jest.fn(),
+    ]);
     const history = createMemoryHistory();
     history.push('/');
     const { debug } = render(
@@ -224,14 +300,13 @@ describe('test App component with real api', () => {
       </Router>
     );
     await waitForAsync(); // 等待首頁加載
-    // debug(
-    //   screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
-    // );
+    debug();
+    // screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
     fireEvent.click(
       screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
     );
     await waitForAsync(); // api更新
-    // debug(screen.getByTestId('ledgerList'));
+    debug(screen.getByTestId('ledgerList'));
     await waitFor(() => {
       expect(screen.queryByTestId('ledger-item-__1fg1wme63')).toBeNull();
     });

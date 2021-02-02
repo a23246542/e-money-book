@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useFackbookLogin = ({ appId, cookie, xfbml, version }) => {
+const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
   const [fbResponse, setFbResponse] = useState();
 
   useEffect(() => {
@@ -53,4 +53,4 @@ const useFackbookLogin = ({ appId, cookie, xfbml, version }) => {
   return [fbResponse, handleFBLogin, handleFBLogout];
 };
 
-export default useFackbookLogin;
+export default useFacebookLogin;
