@@ -41,7 +41,7 @@ const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
               編輯
             </button>
             <button
-              className="col-1 btn d-flex justify-content-center align-items-center"
+              className="col-1 btn btn-delete d-flex justify-content-center align-items-center"
               onClick={(e) => {
                 e.preventDefault();
                 onDeleteItem(item);

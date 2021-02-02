@@ -42,7 +42,7 @@ export const CreatePage = ({ match, history }) => {
 
   const submitForm = (formData, isEditMode) => {
     // if(!selectedCategory.id) {//@@@ 會因為null.id報錯
-    console.log('submitForm~~~~~~~~~~');
+    console.log('submitForm~~~~~~~~~~', formData, selectedCategory, isEditMode);
     if (!selectedCategory) {
       setValidation(false);
       return;

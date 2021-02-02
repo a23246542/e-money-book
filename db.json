@@ -145,7 +145,7 @@
     },
     {
       "title": "购买 iphone XR",
-      "amount": 6500,
+      "amount": 6000,
       "date": "2020-12-03",
       "monthCategory": "2020-12",
       "timestamp": 1543795200000,
@@ -153,42 +153,36 @@
       "cid": "4"
     },
     {
-      "title": "入账工资",
+      "title": "春节礼金",
       "amount": 2500,
-      "date": "2021-2-08",
+      "date": "2021-2-02",
       "monthCategory": "2021-2",
-      "timestamp": 1544227200000,
+      "timestamp": 1544227200005,
       "id": "_dotug7vnn",
-      "cid": "10",
-      "category": {
-        "name": "工资",
-        "iconName": "ios-card",
-        "id": "10",
-        "type": "income"
-      }
+      "cid": "10"
     },
     {
-      "title": "新的旅行条目",
+      "title": "旅行条目",
       "amount": 10000,
-      "date": "2021-02-05",
-      "monthCategory": "2020-2",
-      "timestamp": 1546646400000,
+      "date": "2021-02-02",
+      "monthCategory": "2021-2",
+      "timestamp": 1546646400008,
       "id": "_cg4a9gzya",
       "cid": "1"
     },
     {
       "title": "kkbox",
       "amount": 150,
-      "date": "2020-2-28",
+      "date": "2021-2-28",
       "id": "_c1cq5lczp",
       "cid": "4",
-      "monthCategory": "2020-12",
+      "monthCategory": "2021-2",
       "timestamp": 1609176047083
     },
     {
       "title": "kkday",
-      "amount": 350,
-      "date": "2020-02-01",
+      "amount": 370,
+      "date": "2021-02-01",
       "id": "__1fg1wme63",
       "cid": "4",
       "monthCategory": "2021-2",

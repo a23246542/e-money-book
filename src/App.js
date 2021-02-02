@@ -205,6 +205,7 @@ function App() {
         // timestamp,//%%會不小心把排序提升 創建有就好
         monthCategory: `${dateObj.year}-${dateObj.month}`,
       };
+      console.log('APP~~~', newCategoryId, updatedItem);
       const { data: modifiedItem } = await api.put(
         `ledger/${formData.id}`,
         updatedItem
