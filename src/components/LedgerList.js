@@ -21,7 +21,7 @@ const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
             </span>
             <span className="col-2">{item.date}</span>
             <button
-              className="col-1 btn d-flex justify-content-center align-items-center"
+              className="col-1 btn btn-edit d-flex justify-content-center align-items-center"
               // style={{backgroundColor:'#28a745'}}
               onClick={(e) => {
                 e.preventDefault();

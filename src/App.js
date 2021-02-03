@@ -103,7 +103,7 @@ function App() {
       const promiseArr = [api.get('/category'), api.get(getUrlWithData)];
       const [resCategory, resLedger] = await Promise.all(promiseArr);
 
-      console.log('獲取資料~~~', resLedger);
+      console.log('獲取資料~~~', resLedger.data);
       dispatchLedger({
         type: 'fetchItems',
         payload: flattenArr(resLedger.data),

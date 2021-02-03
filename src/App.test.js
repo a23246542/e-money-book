@@ -47,17 +47,20 @@ import {
 import api from './api';
 import { act } from 'react-dom/test-utils';
 import { router } from 'json-server';
+jest.mock('./hooks/useFacebookLogin');
 import useFacebookLogin from './hooks/useFacebookLogin';
+// import * as mockUseFacebookLogin from './hooks/useFacebookLogin';
+// import * as useCustomHook from './hooks/useFacebookLogin';
 
 // jest.mock('./api');
-const testItem = JSON.parse(JSON.stringify(testItems[1]));
-const match = {
-  params: {
-    id: '_jjfice21k',
-  },
-};
-const createMatch = { params: { id: '' } };
-const history = { push: () => {} };
+// const testItem = JSON.parse(JSON.stringify(testItems[1]));
+// const match = {
+//   params: {
+//     id: '_jjfice21k',
+//   },
+// };
+// const createMatch = { params: { id: '' } };
+// const history = { push: () => {} };
 
 // const actions = {
 //   getEditData: jest.fn().mockResolvedValue({ editItem: undefined, categories: flattenArr(testCategories)}),
@@ -75,6 +78,7 @@ const initData = {
 };
 
 test.only('mock', () => {
+  // 方法1 工厂 失败
   // jest.mock('./hooks/useFacebookLogin', () => {
   //   return {
   //     __esModule: true,
@@ -87,7 +91,27 @@ test.only('mock', () => {
   //     ]),
   //   };
   // });
-  // jest.doMock('./hooks/useFacebookLogin');
+
+  // 方法2 可以
+  useFacebookLogin.mockReturnValue([
+    {
+      status: 'connected',
+    },
+    jest.fn(),
+    jest.fn(),
+  ]);
+
+  // 方法 3 单纯import进来重新指定 失败  "useFacebookLogin" is read-only.
+  // useFacebookLogin = jest.fn().mockReturnValue([
+  //   {
+  //     status: 'connected',
+  //   },
+  //   jest.fn(),
+  //   jest.fn(),
+  // ]);
+
+  // 方法 4
+  // const useFacebookLogin = jest.spyOn(mockUseFacebookLogin, 'default');
   // useFacebookLogin.mockReturnValue([
   //   {
   //     status: 'connected',
@@ -95,14 +119,12 @@ test.only('mock', () => {
   //   jest.fn(),
   //   jest.fn(),
   // ]);
-  useFacebookLogin = jest.fn().mockReturnValue([
-    {
-      status: 'connected',
-    },
-    jest.fn(),
-    jest.fn(),
-  ]);
-  console.log(useFacebookLogin());
+
+  // 方法5 mocks资料夹 失败
+
+  // console.log(useFacebookLogin());
+
+  console.log('呼叫hooks~~~', useFacebookLogin());
 });
 
 describe('test App component with real api', () => {
@@ -110,18 +132,13 @@ describe('test App component with real api', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // jest.mock('./hooks/useFackbookLogin', () => {
-    //   return {
-    //     __esModule: true,
-    //     default: jest.fn().mockReturnValue([
-    //       {
-    //         status: 'connected',
-    //       },
-    //       jest.fn(),
-    //       jest.fn(),
-    //     ]),
-    //   };
-    // });
+    useFacebookLogin.mockReturnValue([
+      {
+        status: 'connected',
+      },
+      jest.fn(),
+      jest.fn(),
+    ]);
   });
   afterEach(cleanup); // 避免A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
   it('click the year&month item, should show the right ledgerItem', (done) => {
@@ -153,18 +170,11 @@ describe('test App component with real api', () => {
     history.go(0);
     // -------------------------------------------
     wrapper = mount(<App />);
-    // await waitForAsync()
-    // await act(async()=>{
-    //   await wrapper.instance().actions.createData({}, 2)
-    // })
-    // console.log('testItems11111111111',testItems);
     process.nextTick(() => {
-      // act(()=>{
       wrapper.update();
       console.log('test createItem with initial data', wrapper.debug());
       wrapper.find(CreateBtn).simulate('click');
       wrapper.find('.category-item').first().simulate('click');
-      //   // console.log(wrapper.debug());
       wrapper.find(LedgerForm).invoke('onFormSubmit')(
         {
           title: 'new title',
@@ -177,16 +187,34 @@ describe('test App component with real api', () => {
         expect(api.post).toHaveBeenCalledTimes(1);
         done();
       }, 100);
-      // done()
-      // })
     });
-    // setTimeout(()=>{
-    //   wrapper.update();
-    //
-    //   done()
-    // },100)
-    // const currentState = wrapper.instance().state
-    // expect(Object.keys(currentState.items).length).toEqual(testItems.length + 1)
+  });
+
+  it('test create', async () => {
+    const history = createMemoryHistory();
+    history.push('/');
+    const { debug, getByTestId } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    await waitForAsync();
+    fireEvent.click(getByTestId('createBtn'));
+    await waitForAsync();
+    fireEvent.click(screen.getByText(/旅行/i));
+    fireEvent.change(screen.getByTestId('inputTitle'), {
+      target: { value: 'new title' },
+    });
+    fireEvent.change(screen.getByTestId('inputAmount'), {
+      target: { value: 300 },
+    });
+    fireEvent.change(screen.getByTestId('inputDate'), {
+      target: { value: '2021-02-02' },
+    });
+    fireEvent.click(screen.getByTestId('submit'));
+    await waitForAsync();
+    screen.debug();
+    expect(screen.getByText('new title')).toBeInTheDocument();
   });
 
   //加載後 更新item
@@ -256,42 +284,36 @@ describe('test App component with real api', () => {
     // })
     // })
   });
+  it.only('test update', async () => {
+    const history = createMemoryHistory();
+    history.push('/');
+    const { debug, getByTestId, getByText } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    await waitForAsync();
+    // fireEvent.click(screen.getByText(/旅行条目/i).querySelector('.btn-edit'));
+    // debug(screen.getByTestId('ledgerList'));
+    // debug(screen.getByText('旅行条目'));//下面沒有編輯
+    // fireEvent.click(screen.getByText('kkbox').querySelector('.btn-edit'));
+    fireEvent.click(
+      getByTestId('ledger-item-_cg4a9gzya').querySelector('.btn-edit')
+    );
+    await waitForAsync();
+    fireEvent.change(screen.getByTestId('inputTitle'), {
+      target: { value: '去宜蘭玩' },
+    });
+    fireEvent.click(screen.getByTestId('submit'));
+    await waitForAsync();
+    // debug(screen.getByTestId('ledgerList'));
+    expect(screen.queryByText('去宜蘭玩')).toBeInTheDocument();
+  });
   //加載後 刪除item
   //觸發app的delete => api delete會呼叫一次，顯示的長度會比test資料少一個
   it('test delete', async () => {
     // jest.clearAllMocks();
     cleanup();
-    // const script = document.createElement('script'); //避免parentNode undefined
-    // document.body.appendChild(script);
-    // jest.mock('./hooks/useFackbookLogin', () =>
-    //   jest.fn().mockReturnValue([
-    //     {
-    //       status: 'connected',
-    //     },
-    //     jest.fn(),
-    //     jest.fn(),
-    //   ])
-    // );
-    // jest.mock('./hooks/useFackbookLogin', () => {
-    //   return {
-    //     __esModule: true,
-    //     default: jest.fn().mockReturnValue([
-    //       {
-    //         status: 'connected',
-    //       },
-    //       jest.fn(),
-    //       jest.fn(),
-    //     ]),
-    //   };
-    // });
-    jest.mock('./hooks/useFackbookLogin');
-    useFackbookLogin.mockReturnValue([
-      {
-        status: 'connected',
-      },
-      jest.fn(),
-      jest.fn(),
-    ]);
     const history = createMemoryHistory();
     history.push('/');
     const { debug } = render(
@@ -300,13 +322,14 @@ describe('test App component with real api', () => {
       </Router>
     );
     await waitForAsync(); // 等待首頁加載
-    debug();
-    // screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
+    // debug(
+    //   screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
+    // );
     fireEvent.click(
       screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
     );
     await waitForAsync(); // api更新
-    debug(screen.getByTestId('ledgerList'));
+    // debug(screen.getByTestId('ledgerList'));
     await waitFor(() => {
       expect(screen.queryByTestId('ledger-item-__1fg1wme63')).toBeNull();
     });
@@ -323,6 +346,13 @@ describe('test App component init behavior', () => {
   });
   afterEach(cleanup);
   beforeEach(() => {
+    useFacebookLogin.mockReturnValue([
+      {
+        status: 'connected',
+      },
+      jest.fn(),
+      jest.fn(),
+    ]);
     // api.get.mockImplementation(jest.fn((url) => { //無效
     api.get = jest.fn().mockImplementation(
       // jest.fn((url) => {
