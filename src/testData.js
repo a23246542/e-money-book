@@ -64,15 +64,15 @@ export const testCategories = [
 ];
 
 export const testItems = [
-  // {
-  //   title: '工资',
-  //   amount: 2000,
-  //   date: '2020-11-18',
-  //   monthCategory: '2020-11',
-  //   id: '_bd16bjeen',
-  //   cid: 10,
-  //   timestamp: 1534550400000,
-  // },
+  {
+    title: '工资',
+    amount: 2000,
+    date: '2020-11-18',
+    monthCategory: '2020-11',
+    id: '_bd16bjeen',
+    cid: 10,
+    timestamp: 1534550400000,
+  },
   {
     title: '和哥们一起喝酒',
     amount: 300,
