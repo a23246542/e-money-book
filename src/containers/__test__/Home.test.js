@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { MemoryRouter, BrowserRouter as Router } from 'react-router-dom';
-import Home from '../Home';
+// import { MemoryRouter, BrowserRouter as Router } from 'react-router-dom';
+import { MemoryRouter, Router } from 'react-router-dom';
+import Home, { HomePage } from '../Home';
 import {
   parseToYearsAndMonth,
   flattenArr,
@@ -25,9 +26,9 @@ const actions = {
 const initData = {
   categories: {},
   ledgerStore: {},
-  isLoading: false,
-  categoriesIsLoaded: false,
   currentDate: parseToYearsAndMonth(),
+  isLoading: false,
+  // categoriesIsLoaded: false,
   actions,
 };
 const withLoadingData = {
@@ -37,53 +38,54 @@ const withLoadingData = {
 const withLoadedData = {
   categories: flattenArr(testCategories),
   ledgerStore: flattenArr(testItems),
-  isLoading: false,
   currentDate: parseToYearsAndMonth(),
+  isLoading: false,
   actions,
 };
 
 let wrapper;
 
-//一開始沒有記帳紀錄
-it('test home container first render, without any data, getInitData should be called', () => {
-  wrapper = mount(
-    <Router>
-      <AppContext.Provider value={initData}>
-        <Home />
-      </AppContext.Provider>
-    </Router>
-  );
-  expect(actions.getInitData).toHaveBeenCalled();
-  expect(wrapper.find('.no-record').length).toEqual(1);
-});
+describe('test Home component init behavior', () => {
+  //一開始沒有記帳紀錄
+  it('test home container first render, without any data, getInitData should be called', () => {
+    wrapper = mount(
+      <MemoryRouter>
+        <AppContext.Provider value={initData}>
+          <HomePage />
+        </AppContext.Provider>
+      </MemoryRouter>
+    );
+    expect(actions.getInitData).toHaveBeenCalled();
+    expect(wrapper.find('.no-record').length).toEqual(1);
+  });
 
-//拿資料有loading狀態
-it('test home container with loading state, loading icon should show up', () => {
-  wrapper = mount(
-    <Router>
-      <AppContext.Provider value={withLoadingData}>
-        <Home />
-      </AppContext.Provider>
-    </Router>
-  );
-  expect(wrapper.find(Loader).length).toEqual(1);
+  //拿資料有loading狀態
+  it('test home container with loading state, loading icon should show up', () => {
+    wrapper = mount(
+      <MemoryRouter>
+        <AppContext.Provider value={withLoadingData}>
+          <HomePage />
+        </AppContext.Provider>
+      </MemoryRouter>
+    );
+    expect(wrapper.find(Loader).length).toEqual(1);
+  });
 });
 
 //首頁拿到資料後
-describe('test home container with loaded data', () => {
+describe('test home component with loaded data', () => {
   const wrapper = mount(
-    <Router>
+    <MemoryRouter>
       <AppContext.Provider value={withLoadedData}>
         <Home />
       </AppContext.Provider>
-    </Router>
+    </MemoryRouter>
   );
-  const wrapperInstance = wrapper.find(Home).instance(); //@@
+  // const wrapperInstance = wrapper.find(Home).instance(); //
   //一開始顯示list條目及tab
   it('should show price list and view tab', () => {
     expect(wrapper.find(LedgerList).length).toEqual(1);
     expect(wrapper.find(ViewTab).length).toEqual(1);
-    // expect(wrapperInstance.state.tabView).toEqual(LIST_VIEW)
     expect(wrapper.find(Loader).length).toEqual(0);
   });
   //點擊年月正確觸發回調
@@ -109,7 +111,6 @@ describe('test home container with loaded data', () => {
     expect(actions.deleteData).toHaveBeenCalledWith(testItems[0]); //@@
   });
 
-  //點擊tab view有改變 算集成了?
   it('click the the tab should change the view and state', () => {
     wrapper.find('.nav-tabs .nav-item button').at(1).simulate('click');
     expect(wrapper.find(LedgerList).length).toEqual(0);

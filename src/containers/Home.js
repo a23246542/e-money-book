@@ -31,7 +31,7 @@ import AuthContext from '../contexts/AuthContext';
   帳目表的分類資訊跟月份資訊
 */
 
-const Home = ({ history, match }) => {
+export const HomePage = ({ history, match }) => {
   const {
     categories,
     ledgerStore,
@@ -39,6 +39,7 @@ const Home = ({ history, match }) => {
     isLoading,
     actions,
   } = useContext(AppContext);
+  console.log('home頁資料', categories, ledgerStore);
 
   const { handleFBLogout } = useContext(AuthContext);
 
@@ -84,6 +85,7 @@ const Home = ({ history, match }) => {
     let cloneObj = JSON.parse(JSON.stringify(ledgerStore));
 
     return ledgerIdList.map((id) => {
+      console.log();
       cloneObj[id].category = categories[ledgerStore[id].cid];
       return cloneObj[id];
     });
@@ -94,7 +96,6 @@ const Home = ({ history, match }) => {
     let totalIncome = 0,
       totalOutcome = 0;
     // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
-
     if (!listWithCategory.length > 0) {
       return {
         totalIncome: 0,
@@ -103,6 +104,9 @@ const Home = ({ history, match }) => {
     }
 
     listWithCategory.forEach((item) => {
+      console.log('listWithCategory的長度', listWithCategory);
+      console.log('listWithCategory的item.cid', item.cid);
+      console.log('categories[item.cid].type', categories);
       try {
         if (categories[item.cid].type === 'outcome') {
           totalOutcome += item.amount;
@@ -110,7 +114,6 @@ const Home = ({ history, match }) => {
           totalIncome += item.amount;
         }
       } catch {
-        console.log(item);
         throw new Error(item);
       }
     });
@@ -178,7 +181,7 @@ const Home = ({ history, match }) => {
                   year={currentDate.year}
                   month={currentDate.month}
                   choiceDate={changeDate}
-                  path={match.path}
+                  // path={match.path}
                 />
               </div>
               <div className="col-12 col-sm-6">
@@ -193,7 +196,7 @@ const Home = ({ history, match }) => {
         {!isLoading && (
           <Fragment>
             <Tabs activeIndex={tabIndex} onTabChange={changeView}>
-              <Tab data-testid="listBtn">
+              <Tab>
                 <Icon
                   icon="IosPaper"
                   className="mr-2 align-bottom"
@@ -202,7 +205,7 @@ const Home = ({ history, match }) => {
                 />
                 列表模式
               </Tab>
-              <Tab data-testid="chartBtn">
+              <Tab>
                 <Icon
                   icon="IosPie"
                   className="mr-2 align-bottom"
@@ -247,9 +250,9 @@ const Home = ({ history, match }) => {
   );
 };
 
-Home.propTypes = {
+HomePage.propTypes = {
   match: PropTypes.object,
   history: PropTypes.object,
 };
 
-export default withRouter(Home);
+export default withRouter(HomePage);
