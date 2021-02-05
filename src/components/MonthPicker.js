@@ -50,11 +50,12 @@ const MonthPicker = ({ year, month, choiceDate }) => {
   const yearRange = makeArrByRange(9, -4).map((number) => number + year);
 
   return (
-    <div className="dropdown" ref={nodeMonthPicker}>
+    <div className="dropdown" ref={nodeMonthPicker} data-testid="MonthPicker">
       <p>請選擇</p>
       <button
         className="btn btn-primary dropdown-toggle"
         onClick={toggleDropdown}
+        data-testid="MonthPicker-button"
       >
         {`${selectedYear}年 ${padLeft(selectedMonth)}月`}
       </button>
@@ -81,6 +82,7 @@ const MonthPicker = ({ year, month, choiceDate }) => {
                   onClick={(e) => {
                     selectYear(e, yearNum);
                   }}
+                  data-testid={`MonthPicker-year-${yearNum}`}
                 >
                   {`${yearNum}年`}
                 </a>
@@ -100,6 +102,7 @@ const MonthPicker = ({ year, month, choiceDate }) => {
                   onClick={(e) => {
                     selectMonth(e, monthNum);
                   }}
+                  data-testid={`MonthPicker-month-${padLeft(monthNum)}`}
                 >
                   {`${padLeft(monthNum)}月`}
                 </a>

@@ -1,14 +1,5 @@
-// import { render, screen } from '@testing-library/react';
-// import App from './App';
-
-// test('renders learn react link', () => {
-//   render(<App />);
-//   const linkElement = screen.getByText(/learn react/i);
-//   expect(linkElement).toBeInTheDocument();
-// });
-
 import React from 'react';
-import { testCategories, testItems, testItemsCopy } from './testData';
+import { testCategories, testItems } from './testData';
 import { mount } from 'enzyme';
 import {
   render,
@@ -22,16 +13,11 @@ import App, { actions } from './App';
 import {
   Router,
   MemoryRouter,
-  withRouter,
-  Route,
   BrowserRouter,
   // createHistory,
   // createMemorySource,
   // LocationProvider,
 } from 'react-router-dom';
-import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
-import AppContext from './AppContext';
-import { CreatePage } from './containers/Create';
 import CreateBtn from './components/CreateBtn';
 import LedgerForm from './components/LedgerForm';
 import LedgerList from './components/LedgerList';
@@ -43,39 +29,14 @@ import {
 } from '@reach/router';
 // import { findByTestAttr } from 'test/testUtils';
 
-// import mockAxios from './__mocks__/axios'
 import api from './api';
 import { act } from 'react-dom/test-utils';
-import { router } from 'json-server';
 jest.mock('./hooks/useFacebookLogin');
 import useFacebookLogin from './hooks/useFacebookLogin';
 // import * as mockUseFacebookLogin from './hooks/useFacebookLogin';
 // import * as useCustomHook from './hooks/useFacebookLogin';
 
 // jest.mock('./api');
-// const testItem = JSON.parse(JSON.stringify(testItems[1]));
-// const match = {
-//   params: {
-//     id: '_jjfice21k',
-//   },
-// };
-// const createMatch = { params: { id: '' } };
-// const history = { push: () => {} };
-
-// const actions = {
-//   getEditData: jest.fn().mockResolvedValue({ editItem: undefined, categories: flattenArr(testCategories)}),
-//   createData: jest.fn().mockReturnValue(Promise.resolve('')),
-//   editData: jest.fn().mockReturnValue(Promise.resolve(''))
-// }
-
-const initData = {
-  ledgerStore: {},
-  categories: {}, //%% 要給否則category-item會空的
-  isLoading: false,
-  currentDate: parseToYearsAndMonth(),
-  // actions
-  // actions:initActions
-};
 
 test.only('mock', () => {
   // 方法1 工厂 失败
@@ -122,8 +83,6 @@ test.only('mock', () => {
 
   // 方法5 mocks资料夹 失败
 
-  // console.log(useFacebookLogin());
-
   console.log('呼叫hooks~~~', useFacebookLogin());
 });
 
@@ -141,57 +100,28 @@ describe('test App component with real api', () => {
     ]);
   });
   afterEach(cleanup); // 避免A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
-  it('click the year&month item, should show the right ledgerItem', (done) => {
-    // const script = document.createElement('script'); //避免parentNode undefined
-    // document.body.appendChild(script);
-    const wrapper = mount(
-      <MemoryRouter>
+  afterAll(jest.restoreAllMocks);
+
+  it.only('click the year&month item, should show the right ledgerItem', async () => {
+    jest.spyOn(api, 'get');
+    const history = createMemoryHistory();
+    const { debug, getByTestId, getByText } = render(
+      <Router history={history}>
         <App />
-      </MemoryRouter>
+      </Router>
     );
-    wrapper.find('.dropdown-toggle').simulate('click');
-    wrapper.find('.years-range .dropdown-item').at(3).simulate('click');
-    wrapper.find('.months-range .dropdown-item').last().simulate('click');
-    console.log('====================================');
-    console.log(wrapper.debug());
-    console.log('====================================');
-    setTimeout(() => {
-      wrapper.update();
-      expect(wrapper.find('.ledger-item').length).toBe(5);
-      done();
-    }, 100);
+    await waitForAsync();
+    fireEvent.click(getByTestId('MonthPicker-button'));
+    fireEvent.click(getByTestId('MonthPicker-year-2021'));
+    fireEvent.click(getByTestId('MonthPicker-month-02'));
+    await waitForAsync();
+    expect(screen.getAllByTitle('ledger-item').length).toBe(4);
+    expect(api.get).toHaveBeenCalledTimes(3);
   });
 
   //觸發app create =>post被觸發一次，之後items增加一個
-  it('test createItem with initial data', (done) => {
-    // --------------------重置url無效-----------------------
-    const history = createMemoryHistory();
-    console.log('historyhistory', history.location);
-    window.location.reload();
-    history.go(0);
-    // -------------------------------------------
-    wrapper = mount(<App />);
-    process.nextTick(() => {
-      wrapper.update();
-      console.log('test createItem with initial data', wrapper.debug());
-      wrapper.find(CreateBtn).simulate('click');
-      wrapper.find('.category-item').first().simulate('click');
-      wrapper.find(LedgerForm).invoke('onFormSubmit')(
-        {
-          title: 'new title',
-          amount: 300,
-          date: '2021-01-01',
-        },
-        false
-      );
-      setTimeout(() => {
-        expect(api.post).toHaveBeenCalledTimes(1);
-        done();
-      }, 100);
-    });
-  });
-
   it('test create', async () => {
+    jest.spyOn(api, 'post');
     const history = createMemoryHistory();
     history.push('/');
     const { debug, getByTestId } = render(
@@ -202,7 +132,7 @@ describe('test App component with real api', () => {
     await waitForAsync();
     fireEvent.click(getByTestId('createBtn'));
     await waitForAsync();
-    fireEvent.click(screen.getByText(/旅行/i));
+    fireEvent.click(screen.getByText(/旅行/));
     fireEvent.change(screen.getByTestId('inputTitle'), {
       target: { value: 'new title' },
     });
@@ -214,29 +144,24 @@ describe('test App component with real api', () => {
     });
     fireEvent.click(screen.getByTestId('submit'));
     await waitForAsync();
-    screen.debug();
+    expect(api.post).toHaveBeenCalledTimes(1);
     expect(screen.getByText('new title')).toBeInTheDocument();
   });
 
   //加載後 更新item
   // 觸發app create => put被觸發一次，新顯示的item是對的
   it('test updateItem with initial data', (done) => {
-    jest.clearAllMocks();
-    cleanup();
+    jest.spyOn(api, 'patch');
     const history = createMemoryHistory();
-    history.push('/');
     const wrapper = mount(
       <Router history={history}>
         <App />
       </Router>
     );
 
-    // console.log('~~~~~~', wrapper.debug());
-    // const singleItem = testItems.find((item) => item.id === '_1fg1wme63')
-    //~直接拿testItem的第三項
-    // const singleItem = testItems[0];//id為__bd16bjeen
+    // const singleItem = testItems.find((item) => item.id === '_cg4a9gzya');
     const singleItem = {
-      title: '旅行条目',
+      title: '旅行',
       amount: 10000,
       date: '2021-02-05',
       monthCategory: '2021-2',
@@ -245,48 +170,28 @@ describe('test App component with real api', () => {
       cid: '1',
     };
     const modifiedItem = { ...singleItem, title: '去宜蘭玩' };
-
-    // const waitForAsync = () => new Promise(resolve=>setImmediate(resolve))
-    // await waitForAsync();
-    // process.nextTick(()=>{
     setTimeout(() => {
-      //@@多加這一層才取得...異不數據 //!!實測效果比setImmediate process.nextTick好
       wrapper.update();
-
       wrapper.find('[data-testid="editBtn-_cg4a9gzya"]').simulate('click');
       setTimeout(() => {
         wrapper.update();
-        console.log(wrapper.debug());
-        // wrapper.find('.category-item').first().simulate('click'); //可不按
         wrapper.find(LedgerForm).invoke('onFormSubmit')(modifiedItem, true);
-
         setTimeout(() => {
-          //%%debug看有差
-          wrapper.update(); //%%常忘記
-          console.log('================回到首頁===================');
-          // console.log(wrapper.debug());
+          wrapper.update();
           const newItemTitle = wrapper
             .find('[data-testid="ledger-item-_cg4a9gzya"]')
             .children('.ledger-title')
             .text();
           expect(newItemTitle).toEqual('去宜蘭玩');
-          // console.log(wrapper.debug());
-          // console.log(wrapper.find('.ledger-title').first().text());
-          console.log('===================首頁結束================');
-          console.log('--集成測試難點 mock假api 沒辦法確認首頁dom是對的--');
-          //下面測試無效 只能測測看context變化
-
+          expect(api.patch).toHaveBeenCalledTimes(1);
           done();
-        }, 1000);
+        }, 100);
       }, 100);
-
-      // })
     }, 100);
-    // })
-    // })
   });
 
   it('test update', async () => {
+    jest.spyOn(api, 'patch');
     const history = createMemoryHistory();
     history.push('/');
     const { debug, getByTestId, getByText } = render(
@@ -295,27 +200,23 @@ describe('test App component with real api', () => {
       </Router>
     );
     await waitForAsync();
-    // fireEvent.click(screen.getByText(/旅行条目/i).querySelector('.btn-edit'));
-    // debug(screen.getByTestId('ledgerList'));
-    // debug(screen.getByText('旅行条目'));//下面沒有編輯
-    // fireEvent.click(screen.getByText('kkbox').querySelector('.btn-edit'));
     fireEvent.click(
       getByTestId('ledger-item-_cg4a9gzya').querySelector('.btn-edit')
     );
     await waitForAsync();
     fireEvent.change(screen.getByTestId('inputTitle'), {
-      target: { value: '去宜蘭玩' },
+      target: { value: '去彰化玩' },
     });
     fireEvent.click(screen.getByTestId('submit'));
     await waitForAsync();
     // debug(screen.getByTestId('ledgerList'));
-    expect(screen.queryByText('去宜蘭玩')).toBeInTheDocument();
+    expect(api.patch).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText('去彰化玩')).toBeInTheDocument();
   });
   //加載後 刪除item
   //觸發app的delete => api delete會呼叫一次，顯示的長度會比test資料少一個
   it('test delete', async () => {
-    // jest.clearAllMocks();
-    cleanup();
+    jest.spyOn(api, 'delete');
     const history = createMemoryHistory();
     history.push('/');
     const { debug } = render(
@@ -324,22 +225,18 @@ describe('test App component with real api', () => {
       </Router>
     );
     await waitForAsync(); // 等待首頁加載
-    // debug(
-    //   screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
-    // );
     fireEvent.click(
       screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
     );
     await waitForAsync(); // api更新
-    // debug(screen.getByTestId('ledgerList'));
     await waitFor(() => {
+      expect(api.delete).toHaveBeenCalledTimes(1);
       expect(screen.queryByTestId('ledger-item-__1fg1wme63')).toBeNull();
     });
   });
 });
-// https://github.com/facebook/jest/issues/2157#issuecomment-279171856
-// const waitForAsync = () => new Promise(resolve => setImmediate(resolve))
-describe('test App component init behavior', () => {
+
+describe.only('test App component init behavior', () => {
   let wrapper;
   beforeAll(() => {
     useFacebookLogin.mockReturnValue([
@@ -358,7 +255,6 @@ describe('test App component init behavior', () => {
       }
       if (url.indexOf('ledger?') > -1) {
         return Promise.resolve({
-          // data: testItems
           data: testItems,
         });
       }
@@ -366,7 +262,6 @@ describe('test App component init behavior', () => {
         return Promise.resolve({
           data: {
             ...testItems[2],
-            // id: 'testId'
           },
         });
       }
@@ -376,7 +271,7 @@ describe('test App component init behavior', () => {
       return Promise.resolve({ data: { ...testItems[0] } });
     });
     // api.put = jest.fn().mockImplementation((url, updateObj) => {
-    jest.spyOn(api, 'put').mockImplementation((url, updateObj) => {
+    jest.spyOn(api, 'patch').mockImplementation((url, updateObj) => {
       //尋找testItems陣列原本id的item
       const modifiedItem = testItems.find((item) => item.id === updateObj.id);
       return Promise.resolve({ data: { ...modifiedItem, ...updateObj } }); //返回覆蓋過後的
@@ -401,21 +296,20 @@ describe('test App component init behavior', () => {
   });
 
   //app home加載過後 => app的state資料長度等於test資料長度
-  it.only('check App Home state with initial action', (done) => {
+  it('check App Home state with initial action', (done) => {
     const history = createMemoryHistory();
     const { debug } = render(
       <Router history={history}>
         <App />
       </Router>
     );
-    // waitFor(() => {
     expect(api.get).toHaveBeenCalledTimes(2);
     setTimeout(() => {
       expect(screen.getAllByText(/編輯/).length).toBe(testItems.length); //
       done();
     }, 100);
     // --------------------------------------------------
-    //enzyme版本
+    //enzyme版本 ok
     // wrapper = mount(
     //   <MemoryRouter>
     //     <App />
@@ -431,52 +325,48 @@ describe('test App component init behavior', () => {
     // }, 0);
   });
 
-  it.only('check App Home change ViewTab and LedgerList should show right', (done) => {
+  it('check App Home change ViewTab and LedgerList should show right', (done) => {
+    const history = createMemoryHistory();
+    const { debug } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    setTimeout(() => {
+      fireEvent.click(screen.getByText(/圖表/));
+      expect(screen.queryByTestId('ledgerList')).toBeNull();
+      fireEvent.click(screen.getByText(/列表/));
+      expect(screen.queryByTestId('ledgerList')).toBeInTheDocument();
+      done();
+    }, 100);
+
+    //enzyme版本 ok
     // const history = createMemoryHistory();
-    // const { debug } = render(
+    // const wrapper = mount(
     //   <Router history={history}>
     //     <App />
     //   </Router>
     // );
     // setTimeout(() => {
-    //   console.log('返回的mock', api.get('category'));
-
-    //   fireEvent.click(screen.getByText(/圖表/));
-    //   expect(screen.queryByTestId('ledgerList')).toBeNull();
-    //   fireEvent.click(screen.getByText(/列表/));
-    //   expect(screen.queryByTestId('ledgerList')).toBeInTheDocument();
+    //   wrapper.update();
+    //   console.log(wrapper.debug());
+    //   wrapper.find('[data-testid="tab-1"]').simulate('click');
+    //   expect(wrapper.find(LedgerList).length).toEqual(0);
+    //   wrapper.find('[data-testid="tab-0"]').simulate('click');
+    //   expect(wrapper.find(LedgerList).length).toBe(1);
     //   done();
     // }, 100);
-
-    //enzyme版本
-    const wrapper = mount(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
-    setTimeout(() => {
-      wrapper.update();
-      // wrapper.find('[data-testid="chartBtn"]').simulate('click');
-      wrapper.find('.nav-item').at(1).simulate('click');
-      console.log(wrapper.debug());
-      expect(wrapper.find(LedgerList).length).toBe(0);
-      // wrapper.find('[data-testid="listBtn"]').simulate('click');
-      wrapper.find('.nav-item').at(0).simulate('click');
-      expect(wrapper.find(LedgerList).length).toBe(1);
-      done();
-    }, 100);
   });
   // ----
 
   //首頁加載過資料後 到創建頁呼叫getEditData => 不會再發新api.get，只有mount的兩次
-  it.only('test getEditData with initial data in create mode', (done) => {
+  it('test getEditData with initial data in create mode', (done) => {
     const history = createMemoryHistory();
     const { getByTestId, debug } = render(
       <Router history={history}>
         <App />
       </Router>
     );
-    // fireEvent.click(getByTestId('cancel')); //不按回去下一頁的url會不對
     setTimeout(() => {
       fireEvent.click(getByTestId('createBtn'));
       expect(api.get).toHaveBeenCalledTimes(2);
@@ -486,51 +376,31 @@ describe('test App component init behavior', () => {
   });
 
   //沒有加載過資料，直接到達創建頁新建
-  it.only('test getEditData without initial data in create mode', (done) => {
-    expect.assertions(2);
-    // const history = createMemoryHistory();
-    // history.push('/create');
-    // const { getByTestId, debug } = render(
-    //   // <Router history={history} initialEntries={['/create']}> // 無效
-    //   <Router history={history}>
-    //     <App />
-    //   </Router>
-    // );
-    // // expect(container.innerHTML).toMatch('取消');
-    // setTimeout(() => {
-    //   expect(api.get).toHaveBeenCalledTimes(1);
-    //   expect(api.get).toHaveBeenCalledWith('/category');
-    //   done();
-    // }, 100);
-    // // fireEvent.click(getByTestId('cancel'));
-
-    // function renderWithRouter(
-    //   ui,
-    //   { route = '/', history = createHistory(createMemorySource(route)) } = {}
-    // ) {
-    //   return {
-    //     ...render(<LocationProvider history={history}>{ui}</LocationProvider>),
-    //     // adding `history` to the returned utilities to allow us
-    //     // to reference it in our tests (just try to avoid using
-    //     // this to test implementation details).
-    //     history,
-    //   };
-    // }
-
-    const renderWithRouter = (ui, { route = '/' } = {}) => {
-      window.history.pushState({}, 'Test page', route);
-      return render(ui, { wrapper: BrowserRouter });
-      // return render(ui, { wrapper: MemoryRouter });
-    };
-    const { container, debug, getByTestId } = renderWithRouter(<App />, {
-      route: '/create',
-    });
+  it('test getEditData without initial data in create mode', () => {
+    // expect.assertions(2);
+    const history = createMemoryHistory();
+    history.push('/create');
+    const { getByTestId, debug } = render(
+      // <Router history={history} initialEntries={['/create']}> // 無效
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    //方式二成功
+    // const renderWithRouter = (ui, { route = '/' } = {}) => {
+    //   window.history.pushState({}, 'Test page', route);
+    //   return render(ui, { wrapper: BrowserRouter });
+    //   // return render(ui, { wrapper: MemoryRouter });
+    // };
+    // const { container, debug, getByTestId } = renderWithRouter(<App />, {
+    //   route: '/create',
+    // });
     expect(api.get).toHaveBeenCalledTimes(1);
     expect(api.get).toHaveBeenCalledWith('/category');
   });
 
   //首頁加載後，創建頁做編輯 ，api一樣只get兩次(items、categories) edit mode不會再發請求
-  it.only('test getEditData with initial data in edit mode', async () => {
+  it('test getEditData with initial data in edit mode', async () => {
     const history = createMemoryHistory();
     const { getByTestId, debug } = render(
       <Router history={history}>
@@ -551,8 +421,8 @@ describe('test App component init behavior', () => {
   });
 
   //直接到達編輯頁
-  it.only('test getEditData without initial data in edit mode', () => {
-    expect.assertions(3);
+  it('test getEditData without initial data in edit mode', () => {
+    // expect.assertions(3);//非同步需要
     const renderWithRouter = (ui, { route = '/' } = {}) => {
       window.history.pushState({}, 'Test page', route);
       return render(ui, { wrapper: BrowserRouter });
@@ -564,8 +434,6 @@ describe('test App component init behavior', () => {
         route: '/edit/_1fg1wme63',
       }
     );
-    // console.log('~~~~~直接到達編輯頁 加載中');
-    // debug();
     expect(api.get).toHaveBeenCalledTimes(2);
     expect(api.get).toHaveBeenNthCalledWith(1, '/category');
     expect(api.get).toHaveBeenNthCalledWith(2, '/ledger/_1fg1wme63');

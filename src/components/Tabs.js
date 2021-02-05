@@ -12,12 +12,13 @@ const Tabs = ({ children, activeIndex, onTabChange }) => {
         const activeClassName =
           index === activeIndex ? 'nav-link active' : 'nav-link';
         return (
-          <li className="nav-item" data-test="navItem">
+          <li className="nav-item">
             <a
               className={activeClassName}
               onClick={(e) => {
                 selectTab(e, index);
               }}
+              data-testid={`tab-${index}`}
               role="button"
             >
               {item}

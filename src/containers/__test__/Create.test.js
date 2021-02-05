@@ -100,7 +100,7 @@ describe('test Create component init behavior', () => {
     wrapper.find(selector).instance().value = newValue;
   };
 
-  it('test Create page for the first render，getEditData should be called with right params', (done) => {
+  it.only('test Create page for the first render，getEditData should be called with right params', (done) => {
     // console.log('Create.test.js match',match);
     // jest.mock('react-router-dom', () => ({
     //   ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
@@ -201,7 +201,7 @@ describe('test component when in create mode', () => {
   // })
 
   // jest.setTimeout(100000);
-  it.only('改test-library測試', (done) => {
+  it('改test-library測試', (done) => {
     // it('改test-library測試', async(done) => {// %%%%async不能隨便加上 會超時!!!!
     // beforeEach(cleanup)
     // expect.assertions(1);

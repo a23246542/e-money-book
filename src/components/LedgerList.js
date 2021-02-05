@@ -10,6 +10,7 @@ const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
             className="ledger-item list-group-item d-flex align-items-center"
             key={item.id}
             data-testid={`ledger-item-${item.id}`}
+            title="ledger-item"
           >
             <span className="col-1 badge badge-primary">
               {<Icon icon={item.category.iconName} color="#fff" />}

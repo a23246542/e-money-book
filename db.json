@@ -7,19 +7,19 @@
       "type": "outcome"
     },
     {
-      "name": "餐饮",
+      "name": "餐飲",
       "iconName": "IosRestaurant",
       "id": "2",
       "type": "outcome"
     },
     {
-      "name": "购物",
+      "name": "購物",
       "iconName": "IosBasket",
       "id": "3",
       "type": "outcome"
     },
     {
-      "name": "数码",
+      "name": "3C",
       "iconName": "IosPhonePortrait",
       "id": "4",
       "type": "outcome"
@@ -31,31 +31,31 @@
       "type": "outcome"
     },
     {
-      "name": "娱乐",
+      "name": "娛樂",
       "iconName": "IosBeer",
       "id": "6",
       "type": "outcome"
     },
     {
-      "name": "汽车",
+      "name": "汽車",
       "iconName": "IosCar",
       "id": "7",
       "type": "outcome"
     },
     {
-      "name": "医疗",
+      "name": "醫療",
       "iconName": "IosMedkit",
       "id": "8",
       "type": "outcome"
     },
     {
-      "name": "体育",
+      "name": "體育",
       "iconName": "IosFootball",
       "id": "14",
       "type": "outcome"
     },
     {
-      "name": "宠物",
+      "name": "寵物",
       "iconName": "IosPaw",
       "id": "9",
       "type": "outcome"
@@ -67,25 +67,25 @@
       "type": "outcome"
     },
     {
-      "name": "工资",
+      "name": "薪水",
       "iconName": "IosCard",
       "id": "10",
       "type": "income"
     },
     {
-      "name": "兼职",
+      "name": "兼職",
       "iconName": "IosCash",
       "id": "11",
       "type": "income"
     },
     {
-      "name": "理财",
+      "name": "理財",
       "iconName": "LogoYen",
       "id": "12",
       "type": "income"
     },
     {
-      "name": "礼金",
+      "name": "禮金",
       "iconName": "LogoYen",
       "id": "13",
       "type": "income"
@@ -99,101 +99,101 @@
   ],
   "ledger": [
     {
-      "title": "再次更新标题",
-      "amount": 2000,
+      "title": "看電影",
+      "amount": 700,
       "date": "2020-09-15",
       "monthCategory": "2020-9",
       "id": "_qmatbbwq0",
-      "cid": "6",
+      "cid": 6,
       "timestamp": 1536969600000
     },
     {
-      "title": "请别人喝茶",
+      "title": "請飲料",
       "amount": 300,
       "date": "2020-11-15",
       "monthCategory": "2020-11",
       "id": "_qryggm533",
-      "cid": "3",
+      "cid": 14,
       "timestamp": 1534291200000
     },
     {
-      "title": "收入",
+      "title": "發票中獎",
       "amount": 100,
       "date": "2020-12-05",
       "monthCategory": "2020-12",
       "timestamp": 1543968000000,
       "id": "_znmwyaciy",
-      "cid": "12"
+      "cid": 15
     },
     {
-      "title": "汽车保养",
+      "title": "汽車保養",
       "amount": 500,
       "date": "2020-12-09",
       "monthCategory": "2020-12",
       "timestamp": 1544313600000,
       "id": "_2c96vz8d7",
-      "cid": "7"
+      "cid": 7
     },
     {
-      "title": "updated title",
+      "title": "買新襯衫",
       "amount": 1250,
       "date": "2021-01-04",
       "monthCategory": "2021-1",
       "timestamp": 1543881600000,
       "id": "_j0z9no9jk",
-      "cid": "3"
+      "cid": 3
     },
     {
-      "title": "购买 iphone XR",
+      "title": "換液晶螢幕",
       "amount": 6000,
       "date": "2020-12-03",
       "monthCategory": "2020-12",
       "timestamp": 1543795200000,
       "id": "_yiwdttati",
-      "cid": "4"
+      "cid": 4
     },
     {
-      "title": "春节礼金",
+      "title": "春節禮金",
       "amount": 2500,
       "date": "2021-02-02",
       "monthCategory": "2021-2",
       "timestamp": 1544227200005,
       "id": "_dotug7vnn",
-      "cid": "10"
+      "cid": 10
     },
     {
-      "title": "旅行条目",
+      "title": "出去玩",
       "amount": 10000,
       "date": "2021-02-02",
       "monthCategory": "2021-2",
       "timestamp": 1546646400008,
       "id": "_cg4a9gzya",
-      "cid": "1"
+      "cid": 1
     },
     {
       "title": "kkbox",
       "amount": 150,
       "date": "2021-02-28",
       "id": "_c1cq5lczp",
-      "cid": "4",
+      "cid": 6,
       "monthCategory": "2021-2",
       "timestamp": 1609176047083
     },
     {
-      "title": "kkday",
+      "title": "Accupass票券",
       "amount": 370,
       "date": "2021-02-01",
       "id": "__1fg1wme63",
-      "cid": "4",
+      "cid": 6,
       "monthCategory": "2021-2",
       "timestamp": 1609176047088
     },
     {
       "title": "紅包",
-      "amount": 175,
+      "amount": 2600,
       "date": "2021-01-12",
       "id": "_mb5h8q07z",
-      "cid": "13",
+      "cid": 13,
       "monthCategory": "2021-1",
       "timestamp": 1609113600000
     }

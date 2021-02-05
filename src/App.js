@@ -206,7 +206,7 @@ function App() {
         monthCategory: `${dateObj.year}-${dateObj.month}`,
       };
       console.log('APP~~~', newCategoryId, updatedItem);
-      const { data: modifiedItem } = await api.put(
+      const { data: modifiedItem } = await api.patch(
         `ledger/${formData.id}`,
         updatedItem
       );
@@ -244,43 +244,43 @@ function App() {
   }
 
   return (
-    // <AuthContext.Provider
-    //   value={{
-    //     status: fbResponse.status,
-    //     authResponse: fbResponse.authResponse,
-    //     handleFBLogin,
-    //     handleFBLogout,
-    //   }}
-    // >
-    <AppContext.Provider
+    <AuthContext.Provider
       value={{
-        categories: categories,
-        ledgerStore,
-        // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
-        currentDate,
-        isLoading,
-        actions,
+        status: fbResponse.status,
+        authResponse: fbResponse.authResponse,
+        handleFBLogin,
+        handleFBLogout,
       }}
     >
-      {/* <Router> */}
-      <div className="App">
-        <Route path="/" exact>
-          {fbResponse.status === 'connected' ? (
-            <Home />
-          ) : (
-            <Redirect to="/login" />
-          )}
-          {/* <Home /> */}
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/create" component={Create} />
-        <Route path="/edit/:id" component={Create} />
-      </div>
-      {/* </Router> */}
-    </AppContext.Provider>
-    // </AuthContext.Provider>
+      <AppContext.Provider
+        value={{
+          categories: categories,
+          ledgerStore,
+          // dispatchLedger, //~~因為在父層做，幾乎不用 資料狀態在父層改變傳下去就好
+          currentDate,
+          isLoading,
+          actions,
+        }}
+      >
+        {/* <Router> */}
+        <div className="App">
+          <Route path="/" exact>
+            {fbResponse.status === 'connected' ? (
+              <Home />
+            ) : (
+              <Redirect to="/login" />
+            )}
+            {/* <Home /> */}
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/create" component={Create} />
+          <Route path="/edit/:id" component={Create} />
+        </div>
+        {/* </Router> */}
+      </AppContext.Provider>
+    </AuthContext.Provider>
   );
 }
 
