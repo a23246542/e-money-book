@@ -5,11 +5,11 @@ import AuthContext from '../../contexts/AuthContext';
 import { Redirect } from 'react-router-dom';
 
 const Login = () => {
-  const { status, handleFBLogin, handleFBLogout } = useContext(AuthContext);
+  // const { status, handleFBLogin, handleFBLogout } = useContext(AuthContext);
 
-  if (status === 'connected') {
-    return <Redirect to="/" />;
-  }
+  // if (status === 'connected') {
+  //   return <Redirect to="/" />;
+  // }
 
   return (
     <div className={style['form-container']}>
@@ -72,18 +72,18 @@ const Login = () => {
           />
           <button
             className={`${style['fb-button']} ${'btn-reset'}`}
-            onClick={(e) => {
-              handleFBLogin(e);
-            }}
+            // onClick={(e) => {
+            //   handleFBLogin(e);
+            // }}
           >
             {' '}
             使用 Facebook 登入{' '}
           </button>
           <button
             className={`${style['fb-button']} ${'btn-reset'}`}
-            onClick={(e) => {
-              handleFBLogout(e);
-            }}
+            // onClick={(e) => {
+            //   handleFBLogout(e);
+            // }}
           >
             {' '}
             使用 Facebook 登出{' '}
