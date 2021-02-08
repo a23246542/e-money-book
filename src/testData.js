@@ -39,6 +39,36 @@ export const testCategories = [
     type: 'outcome',
   },
   {
+    name: '交通',
+    iconName: 'IosTrain',
+    id: 5,
+    type: 'outcome',
+  },
+  {
+    name: '娛樂',
+    iconName: 'IosBeer',
+    id: 6,
+    type: 'outcome',
+  },
+  {
+    name: '汽車',
+    iconName: 'IosCar',
+    id: 7,
+    type: 'outcome',
+  },
+  {
+    name: '醫療',
+    iconName: 'IosMedkit',
+    id: 8,
+    type: 'outcome',
+  },
+  {
+    name: '寵物',
+    iconName: 'IosPaw',
+    id: 9,
+    type: 'outcome',
+  },
+  {
     name: '薪水',
     iconName: 'IosCard',
     id: 10,
@@ -54,6 +84,30 @@ export const testCategories = [
     name: '理財',
     iconName: 'LogoYen',
     id: 12,
+    type: 'income',
+  },
+  {
+    name: '禮金',
+    iconName: 'LogoYen',
+    id: 13,
+    type: 'income',
+  },
+  {
+    name: '體育',
+    iconName: 'IosFootball',
+    id: 14,
+    type: 'outcome',
+  },
+  {
+    name: '其他',
+    iconName: 'IosApps',
+    id: 15,
+    type: 'outcome',
+  },
+  {
+    name: '其他',
+    iconName: 'IosApps',
+    id: 16,
     type: 'income',
   },
 ];
@@ -84,7 +138,7 @@ export const testItems = [
     monthCategory: '2020-12',
     timestamp: 1543968000000,
     id: '_znmwyaciy',
-    cid: 15,
+    cid: 16,
   },
   {
     title: '汽車保養',

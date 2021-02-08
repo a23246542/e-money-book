@@ -31,12 +31,12 @@ const match = {
 const createMatch = { params: { id: '' } };
 const history = { push: () => {} };
 
-const initActions = {
-  // getEditData: jest.fn().mockReturnValue(Promise.resolve('')),
-  getEditData: jest.fn().mockResolvedValue({}),
-  createData: jest.fn().mockReturnValue(Promise.resolve('')),
-  editData: jest.fn().mockReturnValue(Promise.resolve('')),
-};
+// const initActions = {
+//   // getEditData: jest.fn().mockReturnValue(Promise.resolve('')),
+//   getEditData: jest.fn().mockResolvedValue({}),
+//   createData: jest.fn().mockReturnValue(Promise.resolve('')),
+//   editData: jest.fn().mockReturnValue(Promise.resolve('')),
+// };
 
 const actions = {
   getEditData: jest.fn().mockResolvedValue({
@@ -49,7 +49,7 @@ const actions = {
 
 const initData = {
   ledgerStore: {},
-  categories: flattenArr(testCategories), //%% 要給否則category-item會空的
+  categories: {},
   isLoading: false,
   currentDate: parseToYearsAndMonth(),
   actions,
@@ -68,10 +68,10 @@ const withLoadedData = {
   actions,
 };
 
-const fakeData = {
-  categories: flattenArr(testCategories),
-  editItem: testItem,
-};
+// const fakeData = {
+//   categories: flattenArr(testCategories),
+//   editItem: testItem,
+// };
 
 let wrapper;
 
@@ -100,7 +100,7 @@ describe('test Create component init behavior', () => {
     wrapper.find(selector).instance().value = newValue;
   };
 
-  it.only('test Create page for the first render，getEditData should be called with right params', (done) => {
+  it('test Create page for the first render，getEditData should be called with right params', (done) => {
     // console.log('Create.test.js match',match);
     // jest.mock('react-router-dom', () => ({
     //   ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
@@ -201,12 +201,12 @@ describe('test component when in create mode', () => {
   // })
 
   // jest.setTimeout(100000);
-  it('改test-library測試', (done) => {
+  it('創建測試用test-library-react', (done) => {
     // it('改test-library測試', async(done) => {// %%%%async不能隨便加上 會超時!!!!
     // beforeEach(cleanup)
     // expect.assertions(1);
     const { getByTestId, getByText, container, debug } = render(
-      <AppContext.Provider value={initData}>
+      <AppContext.Provider value={withLoadedData}>
         <CreatePage match={createMatch} history={history} />
       </AppContext.Provider>
     );
@@ -289,6 +289,8 @@ describe('test component when in edit mode', () => {
 
   it('modify some inputs and submit the form, modifyItem should be called', () => {
     // setInputValue('#title', 'new title')
+    console.log(wrapper.debug());
+
     wrapper
       .find('#inputTitle')
       .simulate('change', { target: { value: 'new title' } });

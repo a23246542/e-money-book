@@ -11,7 +11,7 @@ import {
 } from '../../utility';
 import Loader from '../../components/common/Loader';
 import LedgerList from '../../components/LedgerList';
-import Tabs from '../../components/Tabs';
+import { Tabs } from '../../components/Tabs';
 import ViewTab from '../../components/ViewTab';
 // import PieChart from '../../components/PieChart'
 import AppContext from '../../AppContext';
@@ -85,7 +85,7 @@ describe('test home component with loaded data', () => {
   //一開始顯示list條目及tab
   it('should show price list and view tab', () => {
     expect(wrapper.find(LedgerList).length).toEqual(1);
-    expect(wrapper.find(ViewTab).length).toEqual(1);
+    expect(wrapper.find(Tabs).length).toEqual(1);
     expect(wrapper.find(Loader).length).toEqual(0);
   });
   //點擊年月正確觸發回調
@@ -100,19 +100,35 @@ describe('test home component with loaded data', () => {
   //點擊刪除正確觸發回調
   it('click the item delete button should trigger the deleteItem callback', () => {
     const firstItem = wrapper.find('.list-group .list-group-item').first();
+
     firstItem.find('.btn').last().simulate('click');
     testItems[0].category = {
-      iconName: 'IosCard',
-      id: '10',
-      name: '工资',
-      type: 'income',
+      name: '娛樂',
+      iconName: 'IosBeer',
+      id: 6,
+      type: 'outcome',
     };
-    // expect(actions.deleteData).toHaveBeenCalledWith(testItems[0])//@@
+    // const deleteItem = {
+    //   title: '看電影',
+    //   amount: 700,
+    //   date: '2020-09-15',
+    //   monthCategory: '2020-9',
+    //   id: '_qmatbbwq0',
+    //   cid: 6,
+    //   timestamp: 1536969600000,
+    //   category: {
+    //     name: '娛樂',
+    //     iconName: 'IosBeer',
+    //     id: 6,
+    //     type: 'outcome',
+    //   },
+    // };
     expect(actions.deleteData).toHaveBeenCalledWith(testItems[0]); //@@
+    // expect(actions.deleteData).toHaveBeenCalledWith(deleteItem); //@@ 攏長
   });
 
   it('click the the tab should change the view and state', () => {
-    wrapper.find('.nav-tabs .nav-item button').at(1).simulate('click');
+    wrapper.find('.nav-tabs .nav-link').at(1).simulate('click');
     expect(wrapper.find(LedgerList).length).toEqual(0);
     // expect(wrapper.find(PieChart).length).toEqual(2)//todo
     // expect(wrapperInstance.state.tabView).toEqual(CHART_VIEW)

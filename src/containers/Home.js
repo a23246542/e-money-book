@@ -50,7 +50,7 @@ export const HomePage = ({ history, match }) => {
     console.log('首頁useEffect', actions);
 
     actions.getInitData();
-  }, []);
+  }, [actions]);
 
   const changeDate = (yearNum, monthNum) => {
     actions.selectNewMonth(yearNum, monthNum);
@@ -85,7 +85,7 @@ export const HomePage = ({ history, match }) => {
     let cloneObj = JSON.parse(JSON.stringify(ledgerStore));
 
     return ledgerIdList.map((id) => {
-      console.log();
+      console.log('category等於', categories);
       cloneObj[id].category = categories[ledgerStore[id].cid];
       return cloneObj[id];
     });

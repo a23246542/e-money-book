@@ -49,21 +49,9 @@
       "type": "outcome"
     },
     {
-      "name": "體育",
-      "iconName": "IosFootball",
-      "id": "14",
-      "type": "outcome"
-    },
-    {
       "name": "寵物",
       "iconName": "IosPaw",
       "id": "9",
-      "type": "outcome"
-    },
-    {
-      "name": "其他",
-      "iconName": "IosApps",
-      "id": "14",
       "type": "outcome"
     },
     {
@@ -91,9 +79,21 @@
       "type": "income"
     },
     {
+      "name": "體育",
+      "iconName": "IosFootball",
+      "id": "14",
+      "type": "outcome"
+    },
+    {
       "name": "其他",
       "iconName": "IosApps",
       "id": "15",
+      "type": "outcome"
+    },
+    {
+      "name": "其他",
+      "iconName": "IosApps",
+      "id": "16",
       "type": "income"
     }
   ],
@@ -123,7 +123,7 @@
       "monthCategory": "2020-12",
       "timestamp": 1543968000000,
       "id": "_znmwyaciy",
-      "cid": 15
+      "cid": 16
     },
     {
       "title": "汽車保養",
