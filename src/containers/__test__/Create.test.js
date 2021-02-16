@@ -23,20 +23,14 @@ import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
 
 const testItem = testItems[1];
-const match = {
+
+const createMatch = { params: { id: '' } };
+const editMatch = {
   params: {
-    id: '_jjfice21k',
+    id: testItem.id,
   },
 };
-const createMatch = { params: { id: '' } };
 const history = { push: () => {} };
-
-// const initActions = {
-//   // getEditData: jest.fn().mockReturnValue(Promise.resolve('')),
-//   getEditData: jest.fn().mockResolvedValue({}),
-//   createData: jest.fn().mockReturnValue(Promise.resolve('')),
-//   editData: jest.fn().mockReturnValue(Promise.resolve('')),
-// };
 
 const actions = {
   getEditData: jest.fn().mockResolvedValue({
@@ -53,8 +47,8 @@ const initData = {
   isLoading: false,
   currentDate: parseToYearsAndMonth(),
   actions,
-  // actions:initActions
 };
+
 const loadingData = {
   ...initData,
   isLoading: true,
@@ -68,12 +62,10 @@ const withLoadedData = {
   actions,
 };
 
-// const fakeData = {
-//   categories: flattenArr(testCategories),
-//   editItem: testItem,
-// };
-
 let wrapper;
+// const setInputValue = (selector, newValue) => {
+//   wrapper.find(selector).instance().value = newValue;
+// };
 
 describe('test Create component init behavior', () => {
   beforeEach(() => {
@@ -95,10 +87,6 @@ describe('test Create component init behavior', () => {
     //   //   wrapper.update();
     //   // });
   });
-
-  const setInputValue = (selector, newValue) => {
-    wrapper.find(selector).instance().value = newValue;
-  };
 
   it('test Create page for the first render，getEditData should be called with right params', (done) => {
     // console.log('Create.test.js match',match);
@@ -156,9 +144,9 @@ describe('test component when in create mode', () => {
       </AppContext.Provider>
     );
   });
-  const setInputValue = (selector, newValue) => {
-    wrapper.find(selector).instance().value = newValue;
-  };
+  // const setInputValue = (selector, newValue) => {
+  //   wrapper.find(selector).instance().value = newValue;
+  // };
 
   it('should pass the null to props selectedCategory for CategorySelect', () => {
     expect(wrapper.find(CategorySelect).props().selectedCategory).toEqual(null);
@@ -174,45 +162,47 @@ describe('test component when in create mode', () => {
     expect(actions.createData).not.toHaveBeenCalled();
   });
 
-  // it('fill all inputs, and select the category, submit the form, addItem should be called', (done) => {
-  //   act(() => {
-  //     // setInputValue('#inputTitle', 'new title')
-  //     // setInputValue('#inputAmount', '200')
-  //     // setInputValue('#inputDate', '2021-01-02')
-  //     //%%%因為是取state的值 畫面上跟state不一樣
-  //     wrapper.find('#inputTitle').simulate('change',{ target:{value:'new title'}});
-  //     wrapper.find('#inputAmount').simulate('change',{ target:{value:'200'}});
-  //     wrapper.find('#inputDate').simulate('change',{ target:{value:'2021-01-02'}});
-  //     wrapper.find('.category-item').first().simulate('click')
-  //   })
-  //   setTimeout(() => {
-  //     wrapper.update();
-  //     console.log(wrapper.debug());
-  //   // wrapper.find('form').simulate('submit')//%%已經preventDefault
-  //     wrapper.find('#submit').simulate('click');
-  //     setTimeout(() => {
-  //       const testData = {title: 'new title', price: 200 , date: '2021-01-02'}
-  //     // process.nextTick(() => {
-  //       console.log(actions.createData.mock);
-  //       expect(actions.createData).toHaveBeenCalledWith(testData, testCategories[0].id)
-  //       done();//%%不能亂加
-  //     },100)
-  //   },1000)
-  // })
+  it('fill all inputs, and select the category, submit the form, addItem should be called', (done) => {
+    setTimeout(() => {
+      wrapper.update();
+      wrapper.find('.category-item').first().simulate('click');
+      wrapper
+        .find('#inputTitle')
+        .simulate('change', { target: { value: 'new title' } });
+      wrapper
+        .find('#inputAmount')
+        .simulate('change', { target: { value: '200' } });
+      wrapper
+        .find('#inputDate')
+        .simulate('change', { target: { value: '2021-01-02' } });
+    }, 100);
+    setTimeout(() => {
+      wrapper.update();
+      // wrapper.find('form').simulate('submit')//%%已經preventDefault
+      wrapper.find('#submit').simulate('click');
+      setTimeout(() => {
+        const testData = { title: 'new title', price: 200, date: '2021-01-02' };
+        // process.nextTick(() => {
+        console.log(actions.createData.mock);
+        expect(actions.createData).toHaveBeenCalledWith(
+          testData,
+          testCategories[0].id
+        );
+        done(); //%%不能亂加
+      }, 100);
+    }, 1000);
+  });
 
   // jest.setTimeout(100000);
-  it('創建測試用test-library-react', (done) => {
-    // it('改test-library測試', async(done) => {// %%%%async不能隨便加上 會超時!!!!
-    // beforeEach(cleanup)
-    // expect.assertions(1);
+  it('fill all inputs, and select the category, submit the form, addItem should be called with test-library-react', () => {
     const { getByTestId, getByText, container, debug } = render(
       <AppContext.Provider value={withLoadedData}>
         <CreatePage match={createMatch} history={history} />
       </AppContext.Provider>
     );
-
-    // await act(()=>{
-    fireEvent.click(getByTestId('1'), { preventDefault: () => {} });
+    console.log('測試create-2');
+    debug(getByTestId('category-select'));
+    fireEvent.click(getByText('旅行'), { preventDefault: () => {} });
     fireEvent.change(getByTestId('inputTitle'), {
       target: { value: 'new title' },
     });
@@ -220,58 +210,27 @@ describe('test component when in create mode', () => {
     fireEvent.change(getByTestId('inputDate'), {
       target: { value: '2021-01-02' },
     });
-    // console.log(container.querySelector('.category-item'));
-    // fireEvent.click(container.querySelector('.category-item').first);//%%
-    // console.log('====================================');
-    // console.log(getByTestId('category-select').querySelector('.category-item').firstChild);
-    // console.log('====================================');
-    // // fireEvent.click(screen.getByText('旅行'));//%%
-    // fireEvent.click(getByTestId('category-select').querySelector('.category-item').firstChild)
-    // console.log('getget',getByTestId("inputAmount"));
-
-    // })
-    // setTimeout(()=>{
-    // await waitFor(()=>{
-    // container.update();
-    // console.log(container.debug());
-    debug();
     fireEvent.click(getByTestId('submit'));
-    // expect(actions.createData.mock.calls).toHaveBeenCalledWith(testData, testCategories[0].id)
-    // done()
-    // },100)
-    // })
+
     const testData = { title: 'new title', amount: 200, date: '2021-01-02' };
-    console.log(actions.createData.mock.calls);
-    // done();
-    // expect(actions.createData).toHaveBeenCalled();
     expect(actions.createData.mock.calls[0]).toEqual([
       testData,
       testCategories[0].id,
     ]);
-    // expect(actions.createData.mock.calls[0][1]).toEqual(testCategories[0].id);
-    done(); //%%%這邊done要加
     cleanup();
   });
 });
 
 describe('test component when in edit mode', () => {
-  beforeEach(async () => {
-    // jest.mock('actions');
-    // actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
-    // jest.mock('match')
-    // match = { params:{ id:"_jjfice21k" }}
+  beforeEach(() => {
     wrapper = mount(
       // <Router>//%%%
       <AppContext.Provider value={withLoadedData}>
-        <CreatePage match={match} history={history} />
+        <CreatePage match={editMatch} history={history} />
       </AppContext.Provider>
       // </Router>
     );
   });
-
-  const setInputValue = (selector, newValue) => {
-    wrapper.find(selector).instance().value = newValue;
-  }; //%%%
 
   const selectedCategory = testCategories.find(
     (category) => testItem.cid === category.id
@@ -279,6 +238,7 @@ describe('test component when in edit mode', () => {
 
   it('should pass the right category to props selectedCategory for CategorySelect', (done) => {
     setTimeout(() => {
+      //等待getEditDate
       wrapper.update();
       expect(wrapper.find(CategorySelect).props().selectedCategory).toEqual(
         selectedCategory
@@ -287,21 +247,21 @@ describe('test component when in edit mode', () => {
     }, 100);
   });
 
-  it('modify some inputs and submit the form, modifyItem should be called', () => {
-    // setInputValue('#title', 'new title')
-    console.log(wrapper.debug());
-
-    wrapper
-      .find('#inputTitle')
-      .simulate('change', { target: { value: 'new title' } });
-    wrapper.update();
+  it('modify some inputs and submit the form, modifyItem should be called', (done) => {
     setTimeout(() => {
+      wrapper.update();
+      wrapper
+        .find('#inputTitle')
+        .simulate('change', { target: { value: 'new title' } });
       wrapper.find('#submit').simulate('click');
       const testData = { ...testItem, title: 'new title' };
       expect(actions.editData).toHaveBeenCalledWith(
         testData,
         selectedCategory.id
       );
-    }, 0);
+      done();
+    }, 100);
   });
+
+  //MemoyRouter 是否可以跳頁
 });

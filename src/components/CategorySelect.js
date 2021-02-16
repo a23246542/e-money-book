@@ -31,7 +31,7 @@ const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
               <div
                 className={activeClassName}
                 key={item.id}
-                data-testid={item.id}
+                data-testid={`category-item-${item.id}`}
                 role="button"
                 onClick={(e) => {
                   selectCategory(e, item);
