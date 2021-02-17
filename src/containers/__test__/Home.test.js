@@ -13,7 +13,7 @@ import Loader from '../../components/common/Loader';
 import LedgerList from '../../components/LedgerList';
 import { Tabs } from '../../components/Tabs';
 import ViewTab from '../../components/ViewTab';
-// import PieChart from '../../components/PieChart'
+import PieChart from '../../components/PieChart';
 import AppContext from '../../AppContext';
 import { testCategories, testItems } from '../../testData';
 
@@ -51,7 +51,7 @@ describe('test Home component init behavior', () => {
     wrapper = mount(
       <MemoryRouter>
         <AppContext.Provider value={initData}>
-          <HomePage />
+          <Home />
         </AppContext.Provider>
       </MemoryRouter>
     );
@@ -64,7 +64,7 @@ describe('test Home component init behavior', () => {
     wrapper = mount(
       <MemoryRouter>
         <AppContext.Provider value={withLoadingData}>
-          <HomePage />
+          <Home />
         </AppContext.Provider>
       </MemoryRouter>
     );
@@ -81,7 +81,6 @@ describe('test home component with loaded data', () => {
       </AppContext.Provider>
     </MemoryRouter>
   );
-  // const wrapperInstance = wrapper.find(Home).instance(); //
   //一開始顯示list條目及tab
   it('should show price list and view tab', () => {
     expect(wrapper.find(LedgerList).length).toEqual(1);
@@ -108,31 +107,13 @@ describe('test home component with loaded data', () => {
       id: 6,
       type: 'outcome',
     };
-    // const deleteItem = {
-    //   title: '看電影',
-    //   amount: 700,
-    //   date: '2020-09-15',
-    //   monthCategory: '2020-9',
-    //   id: '_qmatbbwq0',
-    //   cid: 6,
-    //   timestamp: 1536969600000,
-    //   category: {
-    //     name: '娛樂',
-    //     iconName: 'IosBeer',
-    //     id: 6,
-    //     type: 'outcome',
-    //   },
-    // };
-    expect(actions.deleteData).toHaveBeenCalledWith(testItems[0]); //@@
-    // expect(actions.deleteData).toHaveBeenCalledWith(deleteItem); //@@ 攏長
+    expect(actions.deleteData).toHaveBeenCalledWith(testItems[0]);
   });
 
   it('click the the tab should change the view and state', () => {
     wrapper.find('.nav-tabs .nav-link').at(1).simulate('click');
     expect(wrapper.find(LedgerList).length).toEqual(0);
-    // expect(wrapper.find(PieChart).length).toEqual(2)//todo
-    // expect(wrapperInstance.state.tabView).toEqual(CHART_VIEW)
-    // expect(wrapper.find('.nav-tabs .nav-item').at(1)).hasClass('active');//%%
+    expect(wrapper.find(PieChart).length).toEqual(2);
     expect(
       wrapper.find('.nav-tabs .nav-link').at(1).hasClass('active')
     ).toEqual(true); //如果是Tabs自己有寫測試了

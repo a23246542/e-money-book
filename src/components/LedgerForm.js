@@ -35,15 +35,6 @@ const LedgerForm = ({
     e.preventDefault();
 
     const isEditMode = !!ledgerItem.id;
-    console.log(
-      'submitForm~~~~~~',
-      {
-        title,
-        amount,
-        date,
-      },
-      isEditMode
-    );
     if (title && amount && date) {
       if (amount < 0) {
         setFormValidate({

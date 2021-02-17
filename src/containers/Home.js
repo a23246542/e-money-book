@@ -39,7 +39,6 @@ export const HomePage = ({ history, match }) => {
     isLoading,
     actions,
   } = useContext(AppContext);
-  console.log('home頁資料', categories, ledgerStore);
 
   const { handleFBLogout } = useContext(AuthContext);
 
@@ -47,8 +46,6 @@ export const HomePage = ({ history, match }) => {
   const tabsTexts = [LIST_VIEW, CHART_VIEW];
 
   useEffect(() => {
-    console.log('首頁useEffect', actions);
-
     actions.getInitData();
   }, [actions]);
 
@@ -85,7 +82,6 @@ export const HomePage = ({ history, match }) => {
     let cloneObj = JSON.parse(JSON.stringify(ledgerStore));
 
     return ledgerIdList.map((id) => {
-      console.log('category等於', categories);
       cloneObj[id].category = categories[ledgerStore[id].cid];
       return cloneObj[id];
     });
@@ -104,9 +100,6 @@ export const HomePage = ({ history, match }) => {
     }
 
     listWithCategory.forEach((item) => {
-      console.log('listWithCategory的長度', listWithCategory);
-      console.log('listWithCategory的item.cid', item.cid);
-      console.log('categories[item.cid].type', categories);
       try {
         if (categories[item.cid].type === 'outcome') {
           totalOutcome += item.amount;

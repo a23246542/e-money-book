@@ -97,13 +97,10 @@ function App() {
 
   const actions = {
     getInitData: withLoader(async () => {
-      console.log('執行getInitData');
-
       const getUrlWithData = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
       const promiseArr = [api.get('/category'), api.get(getUrlWithData)];
       const [resCategory, resLedger] = await Promise.all(promiseArr);
 
-      console.log('獲取分類資料~~~', resCategory.data);
       dispatchLedger({
         type: 'fetchItems',
         payload: flattenArr(resLedger.data),
@@ -205,7 +202,6 @@ function App() {
         // timestamp,//%%會不小心把排序提升 創建有就好
         monthCategory: `${dateObj.year}-${dateObj.month}`,
       };
-      console.log('APP~~~', newCategoryId, updatedItem);
       const { data: modifiedItem } = await api.patch(
         `ledger/${formData.id}`,
         updatedItem

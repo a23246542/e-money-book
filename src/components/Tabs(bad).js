@@ -13,8 +13,6 @@ const Tabs = ({ children, selectedTab, onTabChange }) => {
 };
 
 const Tab = ({ children }) => {
-  console.log(view);
-
   const activeClassName = view === 'chart' ? 'nav-link active' : 'nav-link';
   return (
     <li className="nav-item">

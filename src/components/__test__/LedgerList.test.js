@@ -69,21 +69,22 @@ describe('test LedgerList component', () => {
   beforeEach(() => {
     wrapper = mount(<LedgerList {...props} />);
   });
-  afterEach(()=>{
+  afterEach(() => {
     jest.clearAllMocks();
-  })
+  });
 
   it('should render component to match snapshot', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
   it('should render correct ledger items length', () => {
-    expect(wrapper.find('.list-group-item').length).toEqual(listWithCategory.length);
+    expect(wrapper.find('.list-group-item').length).toEqual(
+      listWithCategory.length
+    );
   });
 
   it('should render correct icon and ledger for each item', () => {
     const iconList = wrapper.find('.list-group-item').first().find(Icon);
-    // console.log(iconList.first());
     expect(iconList.first().props().icon).toEqual(
       listWithCategory[0].category.iconName
     );
@@ -91,9 +92,15 @@ describe('test LedgerList component', () => {
 
   it('should trigger the correct function callbacks', () => {
     const firstItem = wrapper.find('.ledger-item').first();
-    firstItem.find('[data-test="editBtn"]').first().simulate('click', { preventDefault: () => {} })
-    expect(props.onModifyItem).toHaveBeenCalledWith(listWithCategory[0])
-    firstItem.find('[data-test="deleteBtn"]').first().simulate('click', { preventDefault: () => {} })
-    expect(props.onDeleteItem).toHaveBeenCalledWith(listWithCategory[0])
-  })
+    firstItem
+      .find('[data-test="editBtn"]')
+      .first()
+      .simulate('click', { preventDefault: () => {} });
+    expect(props.onModifyItem).toHaveBeenCalledWith(listWithCategory[0]);
+    firstItem
+      .find('[data-test="deleteBtn"]')
+      .first()
+      .simulate('click', { preventDefault: () => {} });
+    expect(props.onDeleteItem).toHaveBeenCalledWith(listWithCategory[0]);
+  });
 });

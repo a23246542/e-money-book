@@ -83,7 +83,7 @@ test.only('mock', () => {
 
   // 方法5 mocks资料夹 失败
 
-  console.log('呼叫hooks~~~', useFacebookLogin());
+  console.log('呼叫useFacebookLogin hooks~~~', useFacebookLogin());
 });
 
 describe('test App component with real api', () => {
@@ -102,7 +102,7 @@ describe('test App component with real api', () => {
   afterEach(cleanup); // 避免A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
   afterAll(jest.restoreAllMocks);
 
-  it.only('click the year&month item, should show the right ledgerItem', async () => {
+  it('click the year&month item, should show the right ledgerItem', async () => {
     jest.spyOn(api, 'get');
     const history = createMemoryHistory();
     const { debug, getByTestId, getByText } = render(
@@ -120,7 +120,7 @@ describe('test App component with real api', () => {
   });
 
   //觸發app create =>post被觸發一次，之後items增加一個
-  it('test create', async () => {
+  it('test createItem with initial data', async () => {
     jest.spyOn(api, 'post');
     const history = createMemoryHistory();
     history.push('/');
@@ -150,7 +150,31 @@ describe('test App component with real api', () => {
 
   //加載後 更新item
   // 觸發app create => put被觸發一次，新顯示的item是對的
-  it('test updateItem with initial data', (done) => {
+  it('test updateItem with initial data', async () => {
+    jest.spyOn(api, 'patch');
+    const history = createMemoryHistory();
+    history.push('/');
+    const { debug, getByTestId, getByText } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    await waitForAsync();
+    fireEvent.click(
+      getByTestId('ledger-item-_cg4a9gzya').querySelector('.btn-edit')
+    );
+    await waitForAsync();
+    fireEvent.change(screen.getByTestId('inputTitle'), {
+      target: { value: '去彰化玩' },
+    });
+    fireEvent.click(screen.getByTestId('submit'));
+    await waitForAsync();
+    // debug(screen.getByTestId('ledgerList'));
+    expect(api.patch).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText('去彰化玩')).toBeInTheDocument();
+  });
+
+  it('test updateItem with initial data by using enzyme', (done) => {
     jest.spyOn(api, 'patch');
     const history = createMemoryHistory();
     const wrapper = mount(
@@ -190,32 +214,9 @@ describe('test App component with real api', () => {
     }, 100);
   });
 
-  it('test update', async () => {
-    jest.spyOn(api, 'patch');
-    const history = createMemoryHistory();
-    history.push('/');
-    const { debug, getByTestId, getByText } = render(
-      <Router history={history}>
-        <App />
-      </Router>
-    );
-    await waitForAsync();
-    fireEvent.click(
-      getByTestId('ledger-item-_cg4a9gzya').querySelector('.btn-edit')
-    );
-    await waitForAsync();
-    fireEvent.change(screen.getByTestId('inputTitle'), {
-      target: { value: '去彰化玩' },
-    });
-    fireEvent.click(screen.getByTestId('submit'));
-    await waitForAsync();
-    // debug(screen.getByTestId('ledgerList'));
-    expect(api.patch).toHaveBeenCalledTimes(1);
-    expect(screen.queryByText('去彰化玩')).toBeInTheDocument();
-  });
   //加載後 刪除item
   //觸發app的delete => api delete會呼叫一次，顯示的長度會比test資料少一個
-  it('test delete', async () => {
+  it('test deleteItem with initial data', async () => {
     jest.spyOn(api, 'delete');
     const history = createMemoryHistory();
     history.push('/');

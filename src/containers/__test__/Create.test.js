@@ -69,59 +69,17 @@ let wrapper;
 
 describe('test Create component init behavior', () => {
   beforeEach(() => {
-    //   // expect.assertions(1);
-    //   // jest.mock('./actions');
-    //   // jest.mock('actions');
-    //   // actions.getEditData.mockResolvedValue({editItem: testItem, categories: flattenArr(testCategories)});
-    //   jest.spyOn(actions, 'getEditData').mockImplementation((id) =>Promise.resolve(fakeData));
-    //   // actions.getEditData = jest.fn().mockResolvedValue({ editItem: testItem, categories: flattenArr(testCategories)})
     wrapper = mount(
       <AppContext.Provider value={initData}>
         <CreatePage match={createMatch} history={history} />
       </AppContext.Provider>
     );
-    //   // await act(async () => {
-    //   //   await Promise.resolve(wrapper);
-    //   //   await new Promise(resolve => setTimeout(resolve, 0));
-    //   //   // await new Promise(resolve => setImmediate(resolve));
-    //   //   wrapper.update();
-    //   // });
   });
 
   it('test Create page for the first render，getEditData should be called with right params', (done) => {
-    // console.log('Create.test.js match',match);
-    // jest.mock('react-router-dom', () => ({
-    //   ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
-    //   useParams: () => ({
-    //     id: '_jjfice21k',
-    //   }),
-    //   useRouteMatch: () => ({ url: '/company/company-id1/team/team-id1' }),
-    // }));
-    // jest.spyOn(match, 'params').mockReturnValue("_jjfice21k")
-    // wrapper = mount(
-    //   // <MemoryRouter initialEntries={["/create/id=_jjfice21k"]}>
-    //     <AppContext.Provider value={initData}>
-    //       {/* <Route path='/create'> */}
-    //         <CreatePage match={match} history={history} />
-    //       {/* </Route> */}
-    //     </AppContext.Provider>
-    //   // </MemoryRouter>
-    // )
-    // wrapper.setProps(match);
-    // https://enzymejs.github.io/enzyme/docs/api/ReactWrapper/setProps.html
-
     setTimeout(() => {
-      console.log('准备expect');
-      // setImmediate(()=>{
-      // wrapper.update();
-      // console.log(actions.getEditData);
-      // console.log(actions.getEditData.mock);
-      // expect(actions.getEditData.mock.calls.length).toBe(1);
-      expect(actions.getEditData).toHaveBeenCalled();
-      // expect(actions.getEditData).toHaveBeenCalledWith(testItem.id);
-      // expect(actions.getEditData).toHaveBeenCalledWith('测试id');
+      expect(actions.getEditData.mock.calls.length).toBe(1);
       done();
-      // })
     }, 0);
   });
 
@@ -136,17 +94,13 @@ describe('test Create component init behavior', () => {
 });
 
 describe('test component when in create mode', () => {
-  // jest.setTimeout(20000);//超時的時間可在加上
   beforeEach(() => {
     wrapper = mount(
-      <AppContext.Provider value={initData}>
+      <AppContext.Provider value={withLoadedData}>
         <CreatePage match={createMatch} history={history} />
       </AppContext.Provider>
     );
   });
-  // const setInputValue = (selector, newValue) => {
-  //   wrapper.find(selector).instance().value = newValue;
-  // };
 
   it('should pass the null to props selectedCategory for CategorySelect', () => {
     expect(wrapper.find(CategorySelect).props().selectedCategory).toEqual(null);
@@ -175,33 +129,32 @@ describe('test component when in create mode', () => {
       wrapper
         .find('#inputDate')
         .simulate('change', { target: { value: '2021-01-02' } });
-    }, 100);
-    setTimeout(() => {
-      wrapper.update();
-      // wrapper.find('form').simulate('submit')//%%已經preventDefault
-      wrapper.find('#submit').simulate('click');
       setTimeout(() => {
-        const testData = { title: 'new title', price: 200, date: '2021-01-02' };
-        // process.nextTick(() => {
-        console.log(actions.createData.mock);
-        expect(actions.createData).toHaveBeenCalledWith(
-          testData,
-          testCategories[0].id
-        );
-        done(); //%%不能亂加
+        wrapper.update();
+        wrapper.find('#submit').simulate('click');
+        setTimeout(() => {
+          const testData = {
+            title: 'new title',
+            amount: 200,
+            date: '2021-01-02',
+          };
+          expect(actions.createData).toHaveBeenCalledWith(
+            testData,
+            testCategories[0].id
+          );
+          done();
+        }, 100);
       }, 100);
-    }, 1000);
+    }, 100);
   });
 
-  // jest.setTimeout(100000);
   it('fill all inputs, and select the category, submit the form, addItem should be called with test-library-react', () => {
     const { getByTestId, getByText, container, debug } = render(
       <AppContext.Provider value={withLoadedData}>
         <CreatePage match={createMatch} history={history} />
       </AppContext.Provider>
     );
-    console.log('測試create-2');
-    debug(getByTestId('category-select'));
+    // debug(getByTestId('category-select'));
     fireEvent.click(getByText('旅行'), { preventDefault: () => {} });
     fireEvent.change(getByTestId('inputTitle'), {
       target: { value: 'new title' },
@@ -224,11 +177,9 @@ describe('test component when in create mode', () => {
 describe('test component when in edit mode', () => {
   beforeEach(() => {
     wrapper = mount(
-      // <Router>//%%%
       <AppContext.Provider value={withLoadedData}>
         <CreatePage match={editMatch} history={history} />
       </AppContext.Provider>
-      // </Router>
     );
   });
 
@@ -263,5 +214,5 @@ describe('test component when in edit mode', () => {
     }, 100);
   });
 
-  //MemoyRouter 是否可以跳頁
+  //MemoyRouter跳頁
 });
