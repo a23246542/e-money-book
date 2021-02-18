@@ -47,7 +47,7 @@ export const HomePage = ({ history, match }) => {
 
   useEffect(() => {
     actions.getInitData();
-  }, [actions]);
+  }, []);
 
   const changeDate = (yearNum, monthNum) => {
     actions.selectNewMonth(yearNum, monthNum);
