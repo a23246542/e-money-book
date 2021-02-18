@@ -10,7 +10,6 @@ const AppContext = createContext({
   isLoading: true,
   actions: {},
 });
-// export const { Provider } = AppContext;
 
 export const AppProvider = ({ children }) => {
   const [categories, setCategories] = useState({});

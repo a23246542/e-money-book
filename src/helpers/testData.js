@@ -198,7 +198,7 @@ export const testItems = [
     title: 'Accupass票券',
     amount: 370,
     date: '2021-02-01',
-    id: '__1fg1wme63',
+    id: '_1fg1wme63',
     cid: 6,
     monthCategory: '2021-2',
     timestamp: 1609176047088,

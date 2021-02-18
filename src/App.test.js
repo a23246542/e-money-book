@@ -38,7 +38,7 @@ import useFacebookLogin from './hooks/useFacebookLogin';
 
 // jest.mock('./api');
 
-test.only('mock', () => {
+test('mock', () => {
   // 方法1 工厂 失败
   // jest.mock('./hooks/useFacebookLogin', () => {
   //   return {
@@ -84,157 +84,6 @@ test.only('mock', () => {
   // 方法5 mocks资料夹 失败
 
   console.log('呼叫useFacebookLogin hooks~~~', useFacebookLogin());
-});
-
-describe('test App component with real api', () => {
-  const waitForAsync = () => new Promise((resolve) => setTimeout(resolve, 100));
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-    useFacebookLogin.mockReturnValue([
-      {
-        status: 'connected',
-      },
-      jest.fn(),
-      jest.fn(),
-    ]);
-  });
-  afterEach(cleanup); // 避免A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
-  afterAll(jest.restoreAllMocks);
-
-  it('click the year&month item, should show the right ledgerItem', async () => {
-    jest.spyOn(api, 'get');
-    const history = createMemoryHistory();
-    const { debug, getByTestId, getByText } = render(
-      <Router history={history}>
-        <App />
-      </Router>
-    );
-    await waitForAsync();
-    fireEvent.click(getByTestId('MonthPicker-button'));
-    fireEvent.click(getByTestId('MonthPicker-year-2021'));
-    fireEvent.click(getByTestId('MonthPicker-month-02'));
-    await waitForAsync();
-    expect(screen.getAllByTitle('ledger-item').length).toBe(4);
-    expect(api.get).toHaveBeenCalledTimes(3);
-  });
-
-  //觸發app create =>post被觸發一次，之後items增加一個
-  it('test createItem with initial data', async () => {
-    jest.spyOn(api, 'post');
-    const history = createMemoryHistory();
-    history.push('/');
-    const { debug, getByTestId } = render(
-      <Router history={history}>
-        <App />
-      </Router>
-    );
-    await waitForAsync();
-    fireEvent.click(getByTestId('createBtn'));
-    await waitForAsync();
-    fireEvent.click(screen.getByText(/旅行/));
-    fireEvent.change(screen.getByTestId('inputTitle'), {
-      target: { value: 'new title' },
-    });
-    fireEvent.change(screen.getByTestId('inputAmount'), {
-      target: { value: 300 },
-    });
-    fireEvent.change(screen.getByTestId('inputDate'), {
-      target: { value: '2021-02-02' },
-    });
-    fireEvent.click(screen.getByTestId('submit'));
-    await waitForAsync();
-    expect(api.post).toHaveBeenCalledTimes(1);
-    expect(screen.getByText('new title')).toBeInTheDocument();
-  });
-
-  //加載後 更新item
-  // 觸發app create => put被觸發一次，新顯示的item是對的
-  it('test updateItem with initial data', async () => {
-    jest.spyOn(api, 'patch');
-    const history = createMemoryHistory();
-    history.push('/');
-    const { debug, getByTestId, getByText } = render(
-      <Router history={history}>
-        <App />
-      </Router>
-    );
-    await waitForAsync();
-    fireEvent.click(
-      getByTestId('ledger-item-_cg4a9gzya').querySelector('.btn-edit')
-    );
-    await waitForAsync();
-    fireEvent.change(screen.getByTestId('inputTitle'), {
-      target: { value: '去彰化玩' },
-    });
-    fireEvent.click(screen.getByTestId('submit'));
-    await waitForAsync();
-    // debug(screen.getByTestId('ledgerList'));
-    expect(api.patch).toHaveBeenCalledTimes(1);
-    expect(screen.queryByText('去彰化玩')).toBeInTheDocument();
-  });
-
-  it('test updateItem with initial data by using enzyme', (done) => {
-    jest.spyOn(api, 'patch');
-    const history = createMemoryHistory();
-    const wrapper = mount(
-      <Router history={history}>
-        <App />
-      </Router>
-    );
-
-    // const singleItem = testItems.find((item) => item.id === '_cg4a9gzya');
-    const singleItem = {
-      title: '旅行',
-      amount: 10000,
-      date: '2021-02-05',
-      monthCategory: '2021-2',
-      timestamp: 1546646400000,
-      id: '_cg4a9gzya',
-      cid: '1',
-    };
-    const modifiedItem = { ...singleItem, title: '去宜蘭玩' };
-    setTimeout(() => {
-      wrapper.update();
-      wrapper.find('[data-testid="editBtn-_cg4a9gzya"]').simulate('click');
-      setTimeout(() => {
-        wrapper.update();
-        wrapper.find(LedgerForm).invoke('onFormSubmit')(modifiedItem, true);
-        setTimeout(() => {
-          wrapper.update();
-          const newItemTitle = wrapper
-            .find('[data-testid="ledger-item-_cg4a9gzya"]')
-            .children('.ledger-title')
-            .text();
-          expect(newItemTitle).toEqual('去宜蘭玩');
-          expect(api.patch).toHaveBeenCalledTimes(1);
-          done();
-        }, 100);
-      }, 100);
-    }, 100);
-  });
-
-  //加載後 刪除item
-  //觸發app的delete => api delete會呼叫一次，顯示的長度會比test資料少一個
-  it('test deleteItem with initial data', async () => {
-    jest.spyOn(api, 'delete');
-    const history = createMemoryHistory();
-    history.push('/');
-    const { debug } = render(
-      <Router history={history}>
-        <App />
-      </Router>
-    );
-    await waitForAsync(); // 等待首頁加載
-    fireEvent.click(
-      screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
-    );
-    await waitForAsync(); // api更新
-    await waitFor(() => {
-      expect(api.delete).toHaveBeenCalledTimes(1);
-      expect(screen.queryByTestId('ledger-item-__1fg1wme63')).toBeNull();
-    });
-  });
 });
 
 describe.only('test App component init behavior', () => {
@@ -401,18 +250,20 @@ describe.only('test App component init behavior', () => {
   });
 
   //首頁加載後，創建頁做編輯 ，api一樣只get兩次(items、categories) edit mode不會再發請求
-  it('test getEditData with initial data in edit mode', async () => {
+  it.only('test getEditData with initial data in edit mode', async () => {
     const history = createMemoryHistory();
     const { getByTestId, debug } = render(
       <Router history={history}>
         <App />
       </Router>
     );
-    await waitFor(() => {
+    await waitFor(async () => {
+      // act(() => {
       fireEvent.click(
-        getByTestId('ledger-item-_1fg1wme63').querySelector('.btn-edit')
+        await getByTestId('ledger-item-_1fg1wme63').querySelector('.btn-edit')
       );
       // fireEvent.click(getByTestId('editBtn-_1fg1wme63'));//也可
+      // });
     });
     await waitFor(() => {
       expect(getByTestId('submit')).toBeInTheDocument();
@@ -438,5 +289,156 @@ describe.only('test App component init behavior', () => {
     expect(api.get).toHaveBeenCalledTimes(2);
     expect(api.get).toHaveBeenNthCalledWith(1, '/category');
     expect(api.get).toHaveBeenNthCalledWith(2, '/ledger/_1fg1wme63');
+  });
+});
+
+describe('test App component with json-server api', () => {
+  const waitForAsync = () => new Promise((resolve) => setTimeout(resolve, 100));
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useFacebookLogin.mockReturnValue([
+      {
+        status: 'connected',
+      },
+      jest.fn(),
+      jest.fn(),
+    ]);
+  });
+  afterEach(cleanup); // 避免A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
+  afterAll(jest.restoreAllMocks);
+
+  it('click the year&month item, should show the right ledgerItem', async () => {
+    jest.spyOn(api, 'get');
+    const history = createMemoryHistory();
+    const { debug, getByTestId, getByText } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    await waitForAsync();
+    fireEvent.click(getByTestId('MonthPicker-button'));
+    fireEvent.click(getByTestId('MonthPicker-year-2021'));
+    fireEvent.click(getByTestId('MonthPicker-month-02'));
+    await waitForAsync();
+    expect(screen.getAllByTitle('ledger-item').length).toBe(4);
+    expect(api.get).toHaveBeenCalledTimes(3);
+  });
+
+  //觸發app create =>post被觸發一次，之後items增加一個
+  it('test createItem with initial data', async () => {
+    jest.spyOn(api, 'post');
+    const history = createMemoryHistory();
+    history.push('/');
+    const { debug, getByTestId } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    await waitForAsync();
+    fireEvent.click(getByTestId('createBtn'));
+    await waitForAsync();
+    fireEvent.click(screen.getByText(/旅行/));
+    fireEvent.change(screen.getByTestId('inputTitle'), {
+      target: { value: 'new title' },
+    });
+    fireEvent.change(screen.getByTestId('inputAmount'), {
+      target: { value: 300 },
+    });
+    fireEvent.change(screen.getByTestId('inputDate'), {
+      target: { value: '2021-02-02' },
+    });
+    fireEvent.click(screen.getByTestId('submit'));
+    await waitForAsync();
+    expect(api.post).toHaveBeenCalledTimes(1);
+    expect(screen.getByText('new title')).toBeInTheDocument();
+  });
+
+  //加載後 更新item
+  // 觸發app create => put被觸發一次，新顯示的item是對的
+  it('test updateItem with initial data', async () => {
+    jest.spyOn(api, 'patch');
+    const history = createMemoryHistory();
+    history.push('/');
+    const { debug, getByTestId, getByText } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    await waitForAsync();
+    fireEvent.click(
+      getByTestId('ledger-item-_cg4a9gzya').querySelector('.btn-edit')
+    );
+    await waitForAsync();
+    fireEvent.change(screen.getByTestId('inputTitle'), {
+      target: { value: '去彰化玩' },
+    });
+    fireEvent.click(screen.getByTestId('submit'));
+    await waitForAsync();
+    // debug(screen.getByTestId('ledgerList'));
+    expect(api.patch).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText('去彰化玩')).toBeInTheDocument();
+  });
+
+  it('test updateItem with initial data by using enzyme', (done) => {
+    jest.spyOn(api, 'patch');
+    const history = createMemoryHistory();
+    const wrapper = mount(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+
+    // const singleItem = testItems.find((item) => item.id === '_cg4a9gzya');
+    const singleItem = {
+      title: '旅行',
+      amount: 10000,
+      date: '2021-02-05',
+      monthCategory: '2021-2',
+      timestamp: 1546646400000,
+      id: '_cg4a9gzya',
+      cid: '1',
+    };
+    const modifiedItem = { ...singleItem, title: '去宜蘭玩' };
+    setTimeout(() => {
+      wrapper.update();
+      wrapper.find('[data-testid="editBtn-_cg4a9gzya"]').simulate('click');
+      setTimeout(() => {
+        wrapper.update();
+        wrapper.find(LedgerForm).invoke('onFormSubmit')(modifiedItem, true);
+        setTimeout(() => {
+          wrapper.update();
+          const newItemTitle = wrapper
+            .find('[data-testid="ledger-item-_cg4a9gzya"]')
+            .children('.ledger-title')
+            .text();
+          expect(newItemTitle).toEqual('去宜蘭玩');
+          expect(api.patch).toHaveBeenCalledTimes(1);
+          done();
+        }, 100);
+      }, 100);
+    }, 100);
+  });
+
+  //加載後 刪除item
+  //觸發app的delete => api delete會呼叫一次，顯示的長度會比test資料少一個
+  it('test deleteItem with initial data', async () => {
+    jest.spyOn(api, 'delete');
+    const history = createMemoryHistory();
+    history.push('/');
+    const { debug } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+    await waitForAsync(); // 等待首頁加載
+    fireEvent.click(
+      screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
+    );
+    await waitForAsync(); // api更新
+    await waitFor(() => {
+      expect(api.delete).toHaveBeenCalledTimes(1);
+      expect(screen.queryByTestId('ledger-item-__1fg1wme63')).toBeNull();
+    });
   });
 });
