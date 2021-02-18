@@ -9,8 +9,13 @@ import {
 import PropTypes from 'prop-types';
 import { useRouteMatch, withRouter } from 'react-router-dom';
 
-import { LIST_VIEW, CHART_VIEW, TYPE_OUTCOME, TYPE_INCOME } from '../constants';
-import { parseToYearsAndMonth, padLeft } from '../utility';
+import {
+  LIST_VIEW,
+  CHART_VIEW,
+  TYPE_OUTCOME,
+  TYPE_INCOME,
+} from '../helpers/constants';
+import { parseToYearsAndMonth, padLeft } from '../helpers/utility';
 import Icon from '../components/common/Icon';
 import LedgerList from '../components/LedgerList';
 import ViewTab from '../components/ViewTab';
@@ -20,7 +25,7 @@ import CreateBtn from '../components/CreateBtn';
 import MonthPicker from '../components/MonthPicker';
 import Loader from '../components/common/Loader';
 import PieChart from '../components/PieChart';
-import AppContext from '../AppContext';
+import AppContext from '../contexts/AppContext';
 import AuthContext from '../contexts/AuthContext';
 
 /* @param

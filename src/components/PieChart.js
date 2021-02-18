@@ -9,8 +9,8 @@ import {
   LabelList,
   Label,
 } from 'recharts';
-import { PieColor } from '../utility';
-import { TYPE_OUTCOME } from '../constants';
+import { PieColor } from '../helpers/utility';
+import { TYPE_OUTCOME } from '../helpers/constants';
 
 const CustomPieChart = ({ title, type, chartData }) => {
   const colorsArr =

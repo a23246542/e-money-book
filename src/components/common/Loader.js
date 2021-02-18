@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from './Icon';
-import { Color } from '../../utility';
+import { Color } from '../../helpers/utility';
 
 const Loader = (props) => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from './common/Icon';
-import { Color } from '../utility';
+import { Color } from '../helpers/utility';
 
 const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
   // const [selectedCategory,setSelectedCategory] = useState(selectedCategory)//@@會重複宣告

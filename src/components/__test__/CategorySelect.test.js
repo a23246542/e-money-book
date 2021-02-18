@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import CategorySelect from '../CategorySelect';
 import Icon from '../common/Icon';
-import { testCategories } from '../../testData';
+import { testCategories } from '../../helpers/testData';
 // import "jest-fix-undefined";
 
 export const categories = [
@@ -29,12 +29,12 @@ export const categories = [
 ];
 
 const props = {
-  categories:testCategories,
+  categories: testCategories,
   onSelectCategory: jest.fn(),
 };
 
 const props_with_category = {
-  categories:testCategories,
+  categories: testCategories,
   selectedCategory: testCategories[0],
   onSelectCategory: jest.fn(),
 };
@@ -42,10 +42,9 @@ const props_with_category = {
 let wrapper;
 
 describe('test CategorySelect component', () => {
-
-  afterEach(()=>{
-    jest.clearAllMocks()
-  })
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('should render the component to match the snapshot', () => {
     wrapper = shallow(<CategorySelect {...props_with_category} />);
@@ -65,20 +64,26 @@ describe('test CategorySelect component', () => {
 
   it('render with selectedCategory should highlight the correct item', () => {
     wrapper = shallow(<CategorySelect {...props_with_category} />);
-    expect(wrapper.find('.category-item').first().hasClass('active')).toBe(true);
+    expect(wrapper.find('.category-item').first().hasClass('active')).toBe(
+      true
+    );
   });
 
   it('click the item should add active class and trigger the callback', () => {
     wrapper = shallow(<CategorySelect {...props_with_category} />);
 
-    wrapper.find('.category-item').at(1).simulate('click', { preventDefault: () => {} });
-    expect(props_with_category.onSelectCategory).toHaveBeenCalledWith(props_with_category.categories[1]);
+    wrapper
+      .find('.category-item')
+      .at(1)
+      .simulate('click', { preventDefault: () => {} });
+    expect(props_with_category.onSelectCategory).toHaveBeenCalledWith(
+      props_with_category.categories[1]
+    );
 
     wrapper.setProps({
-      selectedCategory:testCategories[1]
-    })
+      selectedCategory: testCategories[1],
+    });
     expect(wrapper.find('.category-item').at(0).hasClass('active')).toBe(false);
     expect(wrapper.find('.category-item').at(1).hasClass('active')).toBe(true);
-
   });
 });

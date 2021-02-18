@@ -1,5 +1,5 @@
 import React from 'react';
-import { testCategories, testItems } from './testData';
+import { testCategories, testItems } from './helpers/testData';
 import { mount } from 'enzyme';
 import {
   render,

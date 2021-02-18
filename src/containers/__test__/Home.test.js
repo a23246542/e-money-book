@@ -8,14 +8,14 @@ import {
   flattenArr,
   LIST_VIEW,
   CHART_VIEW,
-} from '../../utility';
+} from '../../helpers/utility';
 import Loader from '../../components/common/Loader';
 import LedgerList from '../../components/LedgerList';
 import { Tabs } from '../../components/Tabs';
 import ViewTab from '../../components/ViewTab';
 import PieChart from '../../components/PieChart';
-import AppContext from '../../AppContext';
-import { testCategories, testItems } from '../../testData';
+import AppContext from '../../contexts/AppContext';
+import { testCategories, testItems } from '../../helpers/testData';
 
 const actions = {
   getInitData: jest.fn(),

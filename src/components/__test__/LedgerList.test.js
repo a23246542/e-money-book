@@ -5,7 +5,7 @@ import { flattenArr } from '../../utility';
 import { shallow, mount } from 'enzyme';
 import LedgerList from '../LedgerList';
 // import AppContext, { Provider } from '../../AppContext';
-import { testCategories, testItems } from '../../testData';
+import { testCategories, testItems } from '../../helpers/testData';
 import Icon from '../../components/common/Icon';
 
 const category = {

@@ -2,13 +2,13 @@ import React, { useState, useMemo, useEffect, useContext } from 'react';
 import { withRouter, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from '../components/Tabs';
-import { TYPE_OUTCOME, TYPE_INCOME } from '../constants';
+import { TYPE_OUTCOME, TYPE_INCOME } from '../helpers/constants';
 import Icon from '../components/common/Icon';
 import CategorySelect from '../components/CategorySelect';
 import LedgerForm from '../components/LedgerForm';
 import Loader from '../components/common/Loader';
-import { testTabs, testCategories, testItems } from '../testData';
-import AppContext from '../AppContext';
+import { testTabs, testCategories, testItems } from '../helpers/testData';
+import AppContext from '../contexts/AppContext';
 
 export const CreatePage = ({ match, history }) => {
   const { categories, ledgerStore, isLoading, actions } = useContext(

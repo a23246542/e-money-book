@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { testItems } from '../../testData';
+import { testItems } from '../../helpers/testData';
 import LedgerForm from '../LedgerForm';
 import { act } from 'react-dom/test-utils';
 

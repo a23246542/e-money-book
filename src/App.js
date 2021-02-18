@@ -11,9 +11,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Home from './containers/Home';
 import Create from './containers/Create';
 import Login from './containers/Login';
-import AppContext from './AppContext';
+import AppContext from './contexts/AppContext';
 import AuthContext from './contexts/AuthContext';
-import { flattenArr, parseToYearsAndMonth, makeID } from './utility';
+import { flattenArr, parseToYearsAndMonth, makeID } from './helpers/utility';
 import useFacebookLogin from './hooks/useFacebookLogin';
 import useLedger from './hooks/useLedger';
 import api from './api';
@@ -22,13 +22,6 @@ function App() {
   const [categories, setCategories] = useState({});
   const [currentDate, setCurrentDate] = useState(() => parseToYearsAndMonth());
   const [isLoading, setIsLoading] = useState(false);
-
-  // const [fbResponse, handleFBLogin, handleFBLogout] = useFacebookLogin({
-  //   appId: process.env.REACT_APP_FB_APP_ID,
-  //   cookie: true,
-  //   xfbml: true,
-  //   version: process.env.REACT_APP_FB_APP_VERSION,
-  // });
 
   const { ledgerStore, dispatchLedger } = useLedger();
 
@@ -173,6 +166,12 @@ function App() {
     }),
   };
 
+  // const [fbResponse, handleFBLogin, handleFBLogout] = useFacebookLogin({
+  //   appId: process.env.REACT_APP_FB_APP_ID,
+  //   cookie: true,
+  //   xfbml: true,
+  //   version: process.env.REACT_APP_FB_APP_VERSION,
+  // });
   // const isAtLoginPage = useRouteMatch('/login');
   // // 等待回傳
   // if (!fbResponse) {

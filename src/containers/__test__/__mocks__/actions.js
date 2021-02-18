@@ -1,5 +1,5 @@
-import { testCategories, testItems } from '../../../testData';
-import { flattenArr } from '../../../utility';
+import { testCategories, testItems } from '../../../helpers/testData';
+import { flattenArr } from '../../../helpers/utility';
 
 export const actions = {
   getEditData: jest.fn().mockResolvedValue({

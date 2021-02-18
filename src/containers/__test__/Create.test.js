@@ -12,13 +12,13 @@ import {
   parseToYearsAndMonth,
   flattenArr,
   makeArrByRange,
-} from '../../utility';
+} from '../../helpers/utility';
 import Loader from '../../components/common/Loader';
 import { Tabs } from '../../components/Tabs';
 import CategorySelect from '../../components/CategorySelect';
 import LedgerForm from '../../components/LedgerForm';
-import { testCategories, testItems } from '../../testData';
-import AppContext, { Provider } from '../../AppContext';
+import { testCategories, testItems } from '../../helpers/testData';
+import AppContext, { Provider } from '../../contexts/AppContext';
 import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
 

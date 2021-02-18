@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import Ionicons from '../plugin/ionicons';
-import { LIST_VIEW, CHART_VIEW } from '../constants';
+import { LIST_VIEW, CHART_VIEW } from '../helpers/constants';
 
 const ViewTab = ({ activeTab, onTabChange }) => {
   const generateLinkClass = (current, view) => {
