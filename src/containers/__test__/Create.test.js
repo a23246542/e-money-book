@@ -1,24 +1,16 @@
-import React, { useState, useMemo, useEffect, useContext } from 'react';
+import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
-import {
-  BrowserRouter as Router,
-  MemoryRouter,
-  withRouter,
-  Route,
-} from 'react-router-dom';
-import Create, { CreatePage } from '../Create';
+import { CreatePage } from '@/containers/Create';
 import {
   parseToYearsAndMonth,
   flattenArr,
   makeArrByRange,
-} from '../../helpers/utility';
-import Loader from '../../components/common/Loader';
-import { Tabs } from '../../components/Tabs';
-import CategorySelect from '../../components/CategorySelect';
-import LedgerForm from '../../components/LedgerForm';
-import { testCategories, testItems } from '../../helpers/testData';
-import AppContext, { Provider } from '../../contexts/AppContext';
+} from '@/helpers/utility';
+import { CategorySelect, LedgerForm, Tabs, Tab } from '@/components';
+import { Loader } from '@/components/common';
+import { testCategories, testItems } from '@/helpers/testData';
+import AppContext, { Provider } from '@/contexts/AppContext';
 import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
 

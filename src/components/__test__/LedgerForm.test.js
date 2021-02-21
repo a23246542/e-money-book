@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { testItems } from '../../helpers/testData';
-import LedgerForm from '../LedgerForm';
+import { testItems } from '@/helpers/testData';
+import { LedgerForm } from '@/components';
 import { act } from 'react-dom/test-utils';
 
 // 需求分析

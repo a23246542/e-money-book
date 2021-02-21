@@ -1,8 +1,7 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
-import MonthPicker from '../MonthPicker';
+import { MonthPicker } from '@/components';
 
 let props = {
   year: 2020,
@@ -55,11 +54,12 @@ describe('test MonthPicker component', () => {
   it('click the year&month item, should trigger the right status change', () => {
     wrapper.find('.dropdown-toggle').simulate('click');
     wrapper.find('.years-range .dropdown-item').first().simulate('click');
-    expect(wrapper.find('.years-range .dropdown-item').first().hasClass('active'))
-    .toBe(true);
+    expect(
+      wrapper.find('.years-range .dropdown-item').first().hasClass('active')
+    ).toBe(true);
     wrapper.find('.months-range .dropdown-item').first().simulate('click');
     expect(wrapper.find('.dropdown-menu').length).toBe(0);
-    expect(wrapper.find('.dropdown-toggle').text()).toBe('2016年 01月')
+    expect(wrapper.find('.dropdown-toggle').text()).toBe('2016年 01月');
     expect(wrapper.props().choiceDate).toHaveBeenCalledWith(2016, 1);
   });
 

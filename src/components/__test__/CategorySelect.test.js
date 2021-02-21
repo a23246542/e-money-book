@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import CategorySelect from '../CategorySelect';
-import Icon from '../common/Icon';
-import { testCategories } from '../../helpers/testData';
+import { CategorySelect } from '@/components';
+import { IconItem } from '@/components/common';
+import { testCategories } from '@/helpers/testData';
 // import "jest-fix-undefined";
 
 export const categories = [
@@ -57,7 +57,7 @@ describe('test CategorySelect component', () => {
     expect(wrapper.find('.category-item').length).toBe(testCategories.length);
     expect(wrapper.find('.category.active').length).toBe(0);
 
-    const firstIcon = wrapper.find(Icon).first();
+    const firstIcon = wrapper.find(IconItem).first();
     expect(firstIcon.length).toBe(1);
     expect(firstIcon.props().icon).toBe(testCategories[0].iconName);
   });

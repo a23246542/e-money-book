@@ -1,7 +1,10 @@
 {
   "name": "e-money-book",
   "jest": {
-    "resetMocks": false
+    "resetMocks": false,
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   },
   "version": "0.1.0",
   "private": true,

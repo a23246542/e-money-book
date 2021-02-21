@@ -1,15 +1,9 @@
 import React from 'react';
-import { testCategories, testItems } from './helpers/testData';
 import { mount } from 'enzyme';
-import {
-  render,
-  fireEvent,
-  cleanup,
-  waitFor,
-  screen,
-} from '@testing-library/react';
-import { toBeInTheDocument } from '@testing-library/jest-dom';
-import App, { actions } from './App';
+import App from '@/App';
+import { LedgerForm } from '@/components';
+import { testCategories, testItems } from '@/helpers/testData';
+import api from '@/api';
 import {
   Router,
   MemoryRouter,
@@ -18,18 +12,20 @@ import {
   // createMemorySource,
   // LocationProvider,
 } from 'react-router-dom';
-import CreateBtn from './components/CreateBtn';
-import LedgerForm from './components/LedgerForm';
-import LedgerList from './components/LedgerList';
+import {
+  render,
+  fireEvent,
+  cleanup,
+  waitFor,
+  screen,
+} from '@testing-library/react';
+import { toBeInTheDocument } from '@testing-library/jest-dom';
 import { createMemoryHistory } from 'history';
 import {
   createHistory,
   createMemorySource,
   LocationProvider,
 } from '@reach/router';
-// import { findByTestAttr } from 'test/testUtils';
-
-import api from './api';
 import { act } from 'react-dom/test-utils';
 jest.mock('./hooks/useFacebookLogin');
 import useFacebookLogin from './hooks/useFacebookLogin';
@@ -250,7 +246,7 @@ describe.only('test App component init behavior', () => {
   });
 
   //首頁加載後，創建頁做編輯 ，api一樣只get兩次(items、categories) edit mode不會再發請求
-  it.only('test getEditData with initial data in edit mode', async () => {
+  it('test getEditData with initial data in edit mode', async () => {
     const history = createMemoryHistory();
     const { getByTestId, debug } = render(
       <Router history={history}>

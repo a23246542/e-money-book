@@ -11,9 +11,8 @@ export const Tabs = ({ children, activeIndex, onTabChange }) => {
       {React.Children.map(children, (item, index) => {
         const activeClassName =
           index === activeIndex ? 'nav-link active' : 'nav-link';
-        console.log(item);
         return (
-          <li className="nav-item">
+          <li className="nav-item" data-test="tabItem">
             <a
               className={activeClassName}
               onClick={(e) => {

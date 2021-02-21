@@ -1,12 +1,9 @@
 import React from 'react';
-import Ionicons from '../../plugin/ionicons';
-import IosPlane from 'react-ionicons/lib/IosPlane';
-import { flattenArr } from '../../utility';
+import { flattenArr } from '@/helpers/utility';
 import { shallow, mount } from 'enzyme';
-import LedgerList from '../LedgerList';
-// import AppContext, { Provider } from '../../AppContext';
-import { testCategories, testItems } from '../../helpers/testData';
-import Icon from '../../components/common/Icon';
+import { LedgerList } from '@/components';
+import { testCategories, testItems } from '@/helpers/testData';
+import { IconItem } from '@/components/common';
 
 const category = {
   1: {
@@ -84,7 +81,7 @@ describe('test LedgerList component', () => {
   });
 
   it('should render correct icon and ledger for each item', () => {
-    const iconList = wrapper.find('.list-group-item').first().find(Icon);
+    const iconList = wrapper.find('.list-group-item').first().find(IconItem);
     expect(iconList.first().props().icon).toEqual(
       listWithCategory[0].category.iconName
     );

@@ -2,20 +2,17 @@ import React from 'react';
 import { mount } from 'enzyme';
 // import { MemoryRouter, BrowserRouter as Router } from 'react-router-dom';
 import { MemoryRouter, Router } from 'react-router-dom';
-import Home, { HomePage } from '../Home';
+import Home, { HomePage } from '@/containers/Home';
 import {
   parseToYearsAndMonth,
   flattenArr,
   LIST_VIEW,
   CHART_VIEW,
-} from '../../helpers/utility';
-import Loader from '../../components/common/Loader';
-import LedgerList from '../../components/LedgerList';
-import { Tabs } from '../../components/Tabs';
-import ViewTab from '../../components/ViewTab';
-import PieChart from '../../components/PieChart';
-import AppContext from '../../contexts/AppContext';
-import { testCategories, testItems } from '../../helpers/testData';
+} from '@/helpers/utility';
+import { LedgerList, Tabs, PieChartItem } from '@/components';
+import { Loader } from '@/components/common';
+import AppContext from '@/contexts/AppContext';
+import { testCategories, testItems } from '@/helpers/testData';
 
 const actions = {
   getInitData: jest.fn(),
@@ -113,7 +110,7 @@ describe('test home component with loaded data', () => {
   it('click the the tab should change the view and state', () => {
     wrapper.find('.nav-tabs .nav-link').at(1).simulate('click');
     expect(wrapper.find(LedgerList).length).toEqual(0);
-    expect(wrapper.find(PieChart).length).toEqual(2);
+    expect(wrapper.find(PieChartItem).length).toEqual(2);
     expect(
       wrapper.find('.nav-tabs .nav-link').at(1).hasClass('active')
     ).toEqual(true); //如果是Tabs自己有寫測試了
