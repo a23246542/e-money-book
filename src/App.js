@@ -1,11 +1,5 @@
 import { useState, useReducer, useRef } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  useRouteMatch,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import '@/App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from '@/containers/Home';
@@ -46,19 +40,26 @@ function App() {
     // >
     <AppProvider>
       <div className="App">
-        <Route path="/" exact>
-          {/* {fbResponse.status === 'connected' ? (
+        <Switch>
+          <Route path="/" exact>
+            {/* {fbResponse.status === 'connected' ? (
             <Home />
           ) : (
             <Redirect to="/login" />
           )} */}
-          <Home />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/create" component={Create} />
-        <Route path="/edit/:id" component={Create} />
+            <Home />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/create">
+            <Create />
+          </Route>
+          <Route path="/edit/:id">
+            <Create />
+          </Route>
+          <Route render={() => <h1>404 not found 頁面去火星了</h1>} />
+        </Switch>
       </div>
     </AppProvider>
     // </AuthContext.Provider>
