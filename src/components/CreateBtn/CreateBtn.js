@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Ionicons from '../plugin/ionicons';
+import Ionicons from '../../plugin/ionicons';
 
-const CreateBtn = ({ onCreateItem }) => {
+export const CreateBtn = ({ onCreateItem }) => {
   const { IosAddCircle } = Ionicons;
   return (
     <div

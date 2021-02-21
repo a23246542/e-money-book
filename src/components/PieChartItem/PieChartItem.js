@@ -9,10 +9,10 @@ import {
   LabelList,
   Label,
 } from 'recharts';
-import { PieColor } from '../helpers/utility';
-import { TYPE_OUTCOME } from '../helpers/constants';
+import { PieColor } from '../../helpers/utility';
+import { TYPE_OUTCOME } from '../../helpers/constants';
 
-const CustomPieChart = ({ title, type, chartData }) => {
+export const PieChartItem = ({ title, type, chartData }) => {
   const colorsArr =
     type === TYPE_OUTCOME
       ? Object.keys(PieColor).map((color, index) => PieColor[color])
@@ -77,10 +77,10 @@ const CustomPieChart = ({ title, type, chartData }) => {
   );
 };
 
-CustomPieChart.propTypes = {
+PieChartItem.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   chartData: PropTypes.array.isRequired,
 };
 
-export default CustomPieChart;
+export default PieChartItem;

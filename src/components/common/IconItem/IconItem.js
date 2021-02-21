@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ionicons from '../../plugin/ionicons';
+import ionicons from '@/plugin/ionicons';
 
 // %%% props會undefined
 // const Icon = ({icon, fontSize, color}) => {
-const Icon = ({ icon, ...props }) => {
+export const IconItem = ({ icon, ...props }) => {
   const IconComponent = ionicons[icon]; // %%icon要是字串讀取物件屬性
   return <IconComponent {...props} />;
 };
 
-Icon.propTypes = {};
+IconItem.propTypes = {};
 
-export default Icon;
+export default IconItem;

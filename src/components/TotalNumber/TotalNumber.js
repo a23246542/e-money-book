@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const TotalNumber = ({ income, outcome }) => {
+export const TotalNumber = ({ income, outcome }) => {
   return (
     <div className="container">
       <ul className="row justify-content-center">

@@ -15,7 +15,7 @@
 
 .App-header {
   /* background-color: #282c34; */
-  background-image: url('./images/Padle-Background-Vector.jpg');
+  background-image: url('@/assets/images/Padle-Background-Vector.jpg');
   background-size: cover;
   /* min-height: 100vh; */
   display: flex;

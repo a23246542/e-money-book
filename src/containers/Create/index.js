@@ -1,14 +1,14 @@
 import React, { useState, useMemo, useEffect, useContext } from 'react';
 import { withRouter, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Tabs, Tab } from '../components/Tabs';
-import { TYPE_OUTCOME, TYPE_INCOME } from '../helpers/constants';
-import Icon from '../components/common/Icon';
-import CategorySelect from '../components/CategorySelect';
-import LedgerForm from '../components/LedgerForm';
-import Loader from '../components/common/Loader';
-import { testTabs, testCategories, testItems } from '../helpers/testData';
-import AppContext from '../contexts/AppContext';
+// import { Tabs, Tab } from '../../components/Tabs/Tabs';
+import { TYPE_OUTCOME, TYPE_INCOME } from '@/helpers/constants';
+import { Loader, IconItem } from '@/components/common';
+// import { Icon } from '../../components/common/Icon';
+// import Icon from '../../components/common/Icon.js';
+import { CategorySelect, LedgerForm, Tabs, Tab } from '@/components';
+import { testTabs, testCategories, testItems } from '@/helpers/testData';
+import AppContext from '@/contexts/AppContext';
 
 export const CreatePage = ({ match, history }) => {
   const { categories, ledgerStore, isLoading, actions } = useContext(
@@ -83,7 +83,7 @@ export const CreatePage = ({ match, history }) => {
         {testTabs.map((item, index) => {
           return (
             <Tab key={index}>
-              {<Icon icon={item.iconName} />}
+              {<IconItem icon={item.iconName} />}
               {item.text}
             </Tab>
           );

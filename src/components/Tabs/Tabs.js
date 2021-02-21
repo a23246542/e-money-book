@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Tabs = ({ children, activeIndex, onTabChange }) => {
+export const Tabs = ({ children, activeIndex, onTabChange }) => {
   const selectTab = (e, index) => {
     e.preventDefault();
     onTabChange(index);
@@ -11,6 +11,7 @@ const Tabs = ({ children, activeIndex, onTabChange }) => {
       {React.Children.map(children, (item, index) => {
         const activeClassName =
           index === activeIndex ? 'nav-link active' : 'nav-link';
+        console.log(item);
         return (
           <li className="nav-item">
             <a
@@ -30,7 +31,7 @@ const Tabs = ({ children, activeIndex, onTabChange }) => {
   );
 };
 
-const Tab = ({ children }) => {
+export const Tab = ({ children }) => {
   return <React.Fragment>{children}</React.Fragment>;
 };
 
@@ -38,5 +39,3 @@ Tabs.propTypes = {
   activeIndex: PropTypes.number.isRequired,
   onTabChange: PropTypes.func.isRequired,
 };
-
-export { Tabs, Tab };

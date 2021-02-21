@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const LedgerForm = ({
+export const LedgerForm = ({
   ledgerItem = {},
   onFormSubmit,
   onCancelSubmit,

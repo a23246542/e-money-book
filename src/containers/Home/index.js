@@ -14,19 +14,28 @@ import {
   CHART_VIEW,
   TYPE_OUTCOME,
   TYPE_INCOME,
-} from '../helpers/constants';
-import { parseToYearsAndMonth, padLeft } from '../helpers/utility';
-import Icon from '../components/common/Icon';
-import LedgerList from '../components/LedgerList';
-import ViewTab from '../components/ViewTab';
-import { Tabs, Tab } from '../components/Tabs';
-import TotalNumber from '../components/TotalNumber';
-import CreateBtn from '../components/CreateBtn';
-import MonthPicker from '../components/MonthPicker';
-import Loader from '../components/common/Loader';
-import PieChart from '../components/PieChart';
-import AppContext from '../contexts/AppContext';
-import AuthContext from '../contexts/AuthContext';
+} from '../../helpers/constants';
+import { parseToYearsAndMonth, padLeft } from '../../helpers/utility';
+// import Icon from '../../components/common/Icon';
+// import LedgerList from '../../components/LedgerList';
+// import ViewTab from '../../components/ViewTab';
+// import { Tabs, Tab } from '../../components/Tabs';
+// import TotalNumber from '../../components/TotalNumber';
+// import CreateBtn from '../../components/CreateBtn';
+// import MonthPicker from '../../components/MonthPicker';
+// import PieChart from '../../components/PieChart';
+import { Loader, IconItem } from '@/components/common';
+import {
+  MonthPicker,
+  TotalNumber,
+  Tabs,
+  Tab,
+  CreateBtn,
+  PieChartItem,
+  LedgerList,
+} from '@/components';
+import AppContext from '../../contexts/AppContext';
+import AuthContext from '../../contexts/AuthContext';
 
 /* @param
   ledgerList //帳目列表
@@ -195,7 +204,7 @@ export const HomePage = ({ history, match }) => {
           <Fragment>
             <Tabs activeIndex={tabIndex} onTabChange={changeView}>
               <Tab>
-                <Icon
+                <IconItem
                   icon="IosPaper"
                   className="mr-2 align-bottom"
                   fontSize="25px"
@@ -204,7 +213,7 @@ export const HomePage = ({ history, match }) => {
                 列表模式
               </Tab>
               <Tab>
-                <Icon
+                <IconItem
                   icon="IosPie"
                   className="mr-2 align-bottom"
                   fontSize="25px"
@@ -229,12 +238,12 @@ export const HomePage = ({ history, match }) => {
             )}
             {tabView === CHART_VIEW && (
               <Fragment>
-                <PieChart
+                <PieChartItem
                   title="本月支出"
                   type={TYPE_OUTCOME}
                   chartData={chartOutcomeDataByCategory}
                 />
-                <PieChart
+                <PieChartItem
                   title="本月收入"
                   type={TYPE_INCOME}
                   chartData={chartIncomeDataByCategory}

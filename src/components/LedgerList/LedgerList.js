@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import Icon from '../components/common/Icon';
+import { IconItem } from '@/components/common';
 
-const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
+export const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
   return (
     <ul className="list-group" data-testid="ledgerList">
       {items.map((item) => {
@@ -13,7 +13,7 @@ const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
             title="ledger-item"
           >
             <span className="col-1 badge badge-primary">
-              {<Icon icon={item.category.iconName} color="#fff" />}
+              {<IconItem icon={item.category.iconName} color="#fff" />}
             </span>
             <span className="col-5 ledger-title">{item.title}</span>
             <span className="col-2 font-weight-bold">
@@ -31,7 +31,7 @@ const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
               data-test="editBtn"
               data-testid={`editBtn-${item.id}`}
             >
-              <Icon
+              <IconItem
                 icon="IosCreate"
                 fontSize="35px"
                 color="#28a745"
@@ -49,7 +49,7 @@ const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
               }}
               data-test="deleteBtn"
             >
-              <Icon
+              <IconItem
                 icon="IosCloseCircle"
                 fontSize="30px"
                 color="#dc3545"

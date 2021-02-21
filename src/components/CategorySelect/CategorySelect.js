@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from './common/Icon';
-import { Color } from '../helpers/utility';
+import { IconItem } from '@/components/common';
+import { Color } from '@/helpers/utility';
 
-const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
+export const CategorySelect = ({
+  categories,
+  selectedCategory,
+  onSelectCategory,
+}) => {
   // const [selectedCategory,setSelectedCategory] = useState(selectedCategory)//@@會重複宣告
 
   const selectCategory = (event, category) => {
@@ -38,7 +42,7 @@ const CategorySelect = ({ categories, selectedCategory, onSelectCategory }) => {
                 }}
               >
                 {
-                  <Icon
+                  <IconItem
                     icon={item.iconName}
                     className="rounded-circle"
                     style={{

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { padLeft, makeArrByRange } from '../helpers/utility';
+import { padLeft, makeArrByRange } from '../../helpers/utility';
 
-const MonthPicker = ({ year, month, choiceDate }) => {
+export const MonthPicker = ({ year, month, choiceDate }) => {
   const [isOpen, setOpen] = useState(false);
   const [selectedYear, setYear] = useState(year);
   const [selectedMonth, setMonth] = useState(month);

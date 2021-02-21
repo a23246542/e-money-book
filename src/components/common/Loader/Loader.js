@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from './Icon';
-import { Color } from '../../helpers/utility';
+import { IconItem } from '@/components/common';
+import { Color } from '@/helpers/utility';
 
-const Loader = (props) => {
+export const Loader = (props) => {
   return (
     <div className="loading-component">
-      <Icon
+      <IconItem
         icon="IosRefresh"
         fontSize="50px"
         color={Color.blue}
