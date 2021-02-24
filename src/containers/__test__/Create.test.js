@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
-import { CreatePage } from '@/containers/Create';
+import { CreatePageComponent } from '@/containers';
 import {
   parseToYearsAndMonth,
   flattenArr,
   makeArrByRange,
 } from '@/helpers/utility';
-import { CategorySelect, LedgerForm, Tabs, Tab } from '@/components';
+import { CategorySelect, LedgerForm, Tabs } from '@/components';
 import { Loader } from '@/components/common';
 import { testCategories, testItems } from '@/helpers/testData';
-import AppContext, { Provider } from '@/contexts/AppContext';
+import AppContext from '@/contexts/AppContext';
 import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
 
@@ -63,7 +63,7 @@ describe('test Create component init behavior', () => {
   beforeEach(() => {
     wrapper = mount(
       <AppContext.Provider value={initData}>
-        <CreatePage match={createMatch} history={history} />
+        <CreatePageComponent match={createMatch} history={history} />
       </AppContext.Provider>
     );
   });
@@ -78,7 +78,7 @@ describe('test Create component init behavior', () => {
   it('should show loading component when isLoading is true', () => {
     wrapper = mount(
       <AppContext.Provider value={loadingData}>
-        <CreatePage match={createMatch} history={history} />
+        <CreatePageComponent match={createMatch} history={history} />
       </AppContext.Provider>
     );
     expect(wrapper.find(Loader).length).toEqual(1);
@@ -89,7 +89,7 @@ describe('test component when in create mode', () => {
   beforeEach(() => {
     wrapper = mount(
       <AppContext.Provider value={withLoadedData}>
-        <CreatePage match={createMatch} history={history} />
+        <CreatePageComponent match={createMatch} history={history} />
       </AppContext.Provider>
     );
   });
@@ -143,7 +143,7 @@ describe('test component when in create mode', () => {
   it('fill all inputs, and select the category, submit the form, addItem should be called with test-library-react', () => {
     const { getByTestId, getByText, container, debug } = render(
       <AppContext.Provider value={withLoadedData}>
-        <CreatePage match={createMatch} history={history} />
+        <CreatePageComponent match={createMatch} history={history} />
       </AppContext.Provider>
     );
     // debug(getByTestId('category-select'));
@@ -170,7 +170,7 @@ describe('test component when in edit mode', () => {
   beforeEach(() => {
     wrapper = mount(
       <AppContext.Provider value={withLoadedData}>
-        <CreatePage match={editMatch} history={history} />
+        <CreatePageComponent match={editMatch} history={history} />
       </AppContext.Provider>
     );
   });

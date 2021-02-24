@@ -1,16 +1,13 @@
-import { useState, useReducer, useRef } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import '@/App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from '@/containers/Home';
 import Create from '@/containers/Create';
 import Login from '@/containers/Login';
-import AppContext, { AppProvider } from './contexts/AppContext';
+import { HomePage, CreatePage, LoginPage } from '@/containers';
+import { AppProvider } from './contexts/AppContext';
 import AuthContext from './contexts/AuthContext';
-import { flattenArr, parseToYearsAndMonth, makeID } from './helpers/utility';
 import useFacebookLogin from './hooks/useFacebookLogin';
-import useLedger from './hooks/useLedger';
-import api from '@/api';
 
 function App() {
   // const [fbResponse, handleFBLogin, handleFBLogout] = useFacebookLogin({

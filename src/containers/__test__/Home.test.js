@@ -2,13 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 // import { MemoryRouter, BrowserRouter as Router } from 'react-router-dom';
 import { MemoryRouter, Router } from 'react-router-dom';
-import Home, { HomePage } from '@/containers/Home';
-import {
-  parseToYearsAndMonth,
-  flattenArr,
-  LIST_VIEW,
-  CHART_VIEW,
-} from '@/helpers/utility';
+import { HomePage } from '@/containers';
+import { parseToYearsAndMonth, flattenArr } from '@/helpers/utility';
 import { LedgerList, Tabs, PieChartItem } from '@/components';
 import { Loader } from '@/components/common';
 import AppContext from '@/contexts/AppContext';
@@ -48,7 +43,7 @@ describe('test Home component init behavior', () => {
     wrapper = mount(
       <MemoryRouter>
         <AppContext.Provider value={initData}>
-          <Home />
+          <HomePage />
         </AppContext.Provider>
       </MemoryRouter>
     );
@@ -61,7 +56,7 @@ describe('test Home component init behavior', () => {
     wrapper = mount(
       <MemoryRouter>
         <AppContext.Provider value={withLoadingData}>
-          <Home />
+          <HomePage />
         </AppContext.Provider>
       </MemoryRouter>
     );
@@ -74,7 +69,7 @@ describe('test home component with loaded data', () => {
   const wrapper = mount(
     <MemoryRouter>
       <AppContext.Provider value={withLoadedData}>
-        <Home />
+        <HomePage />
       </AppContext.Provider>
     </MemoryRouter>
   );
