@@ -1,9 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import '@/App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import Home from '@/containers/Home';
-import Create from '@/containers/Create';
-import Login from '@/containers/Login';
 import { HomePage, CreatePage, LoginPage } from '@/containers';
 import { AppProvider } from './contexts/AppContext';
 import AuthContext from './contexts/AuthContext';
@@ -44,16 +41,16 @@ function App() {
           ) : (
             <Redirect to="/login" />
           )} */}
-            <Home />
+            <HomePage />
           </Route>
           <Route path="/login">
-            <Login />
+            <LoginPage />
           </Route>
           <Route path="/create">
-            <Create />
+            <CreatePage />
           </Route>
           <Route path="/edit/:id">
-            <Create />
+            <CreatePage />
           </Route>
           <Route render={() => <h1>404 not found 頁面去火星了</h1>} />
         </Switch>

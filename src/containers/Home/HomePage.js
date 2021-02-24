@@ -5,25 +5,10 @@ import {
   useEffect,
   useContext,
   useCallback,
+  useRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useRouteMatch, withRouter } from 'react-router-dom';
-
-import {
-  LIST_VIEW,
-  CHART_VIEW,
-  TYPE_OUTCOME,
-  TYPE_INCOME,
-} from '../../helpers/constants';
-import { parseToYearsAndMonth, padLeft } from '../../helpers/utility';
-// import Icon from '../../components/common/Icon';
-// import LedgerList from '../../components/LedgerList';
-// import ViewTab from '../../components/ViewTab';
-// import { Tabs, Tab } from '../../components/Tabs';
-// import TotalNumber from '../../components/TotalNumber';
-// import CreateBtn from '../../components/CreateBtn';
-// import MonthPicker from '../../components/MonthPicker';
-// import PieChart from '../../components/PieChart';
 import { Loader, IconItem } from '@/components/common';
 import {
   MonthPicker,
@@ -34,16 +19,14 @@ import {
   PieChartItem,
   LedgerList,
 } from '@/components';
+import {
+  LIST_VIEW,
+  CHART_VIEW,
+  TYPE_OUTCOME,
+  TYPE_INCOME,
+} from '../../helpers/constants';
 import AppContext from '../../contexts/AppContext';
 import AuthContext from '../../contexts/AuthContext';
-
-/* @param
-  ledgerList //帳目列表
-  currentDate //當前年月
-  totalIncome,totalOutcome //收入支出總和
-  tabView //當前視圖信息
-  帳目表的分類資訊跟月份資訊
-*/
 
 export const HomePageComponent = ({ history, match }) => {
   const {
@@ -54,17 +37,19 @@ export const HomePageComponent = ({ history, match }) => {
     actions,
   } = useContext(AppContext);
 
+  const actionsRef = useRef(actions);
+
   const { handleFBLogout } = useContext(AuthContext);
 
   const [tabView, setTabView] = useState(LIST_VIEW);
   const tabsTexts = [LIST_VIEW, CHART_VIEW];
 
   useEffect(() => {
-    actions.getInitData();
-  }, []);
+    actionsRef.current.getInitData();
+  }, [actionsRef]);
 
   const changeDate = (yearNum, monthNum) => {
-    actions.selectNewMonth(yearNum, monthNum);
+    actionsRef.current.selectNewMonth(yearNum, monthNum);
   };
 
   const changeView = (tabIndex) => {
@@ -80,7 +65,7 @@ export const HomePageComponent = ({ history, match }) => {
   };
 
   const deleteItem = (clickedItem) => {
-    actions.deleteData(clickedItem);
+    actionsRef.current.deleteData(clickedItem);
   };
 
   const listWithCategory = useMemo(() => {

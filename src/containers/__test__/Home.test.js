@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { mount } from 'enzyme';
 // import { MemoryRouter, BrowserRouter as Router } from 'react-router-dom';
 import { MemoryRouter, Router } from 'react-router-dom';
@@ -20,7 +20,6 @@ const initData = {
   ledgerStore: {},
   currentDate: parseToYearsAndMonth(),
   isLoading: false,
-  // categoriesIsLoaded: false,
   actions,
 };
 const withLoadingData = {

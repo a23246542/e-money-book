@@ -32,7 +32,7 @@ const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
       js.src = 'https://connect.facebook.net/en_US/sdk.js';
       fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'facebook-jssdk');
-  }, []);
+  }, [appId, cookie, xfbml, version]);
 
   const handleFBLogin = (e) => {
     e.preventDefault();

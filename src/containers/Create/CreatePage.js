@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect, useContext } from 'react';
+import React, { useState, useMemo, useEffect, useContext, useRef } from 'react';
 import { withRouter, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { TYPE_OUTCOME, TYPE_INCOME } from '@/helpers/constants';
 import { Loader, IconItem } from '@/components/common';
 import { CategorySelect, LedgerForm, Tabs, Tab } from '@/components';
+import { TYPE_OUTCOME, TYPE_INCOME } from '@/helpers/constants';
 import AppContext from '@/contexts/AppContext';
 
 export const CreatePageComponent = ({ match, history }) => {
@@ -14,17 +14,20 @@ export const CreatePageComponent = ({ match, history }) => {
   const [selectedTab, setTab] = useState(TYPE_OUTCOME);
   const [selectedCategory, setCategory] = useState(null);
   const [validationPassed, setValidation] = useState(true);
+  const [state1, setState1] = useState(0);
+  // const { current: actionsRef } = useRef(actions);
+  const actionsRef = useRef(actions);
 
   useEffect(() => {
     const { id } = match.params;
-    actions.getEditData(id).then((data) => {
+    actionsRef.current.getEditData(id).then((data) => {
       const { editItem, categories } = data;
       setTab(id && editItem ? categories[editItem.cid].type : TYPE_OUTCOME);
       setCategory(id && editItem ? categories[editItem.cid] : null);
     });
-  }, []);
+  }, [actionsRef, match.params]);
 
-  const createPageTabs = [
+  const createPageTabs = useRef([
     {
       text: '支出',
       value: TYPE_OUTCOME,
@@ -35,10 +38,10 @@ export const CreatePageComponent = ({ match, history }) => {
       value: TYPE_INCOME,
       iconName: 'IosCash',
     },
-  ];
+  ]);
 
   const tabChange = (index) => {
-    setTab(createPageTabs[index].value);
+    setTab(createPageTabs.current[index].value);
   };
 
   const selectCategory = (category) => {
@@ -57,12 +60,12 @@ export const CreatePageComponent = ({ match, history }) => {
     }
     if (!isEditMode) {
       //創建模式
-      actions.createData(formData, selectedCategory.id).then(() => {
+      actionsRef.current.createData(formData, selectedCategory.id).then(() => {
         history.push('/');
       });
     } else {
       //編輯模式
-      actions.editData(formData, selectedCategory.id).then(() => {
+      actionsRef.current.editData(formData, selectedCategory.id).then(() => {
         history.push('/');
       });
     }
@@ -70,8 +73,10 @@ export const CreatePageComponent = ({ match, history }) => {
 
   //fix 改CreateTabs 首頁改HomeTabs 迴圈
   const selectedTabIndex = useMemo(() => {
-    return createPageTabs.findIndex((item) => item.value === selectedTab); //!!!
-  }, [selectedTab, createPageTabs.length]);
+    return createPageTabs.current.findIndex(
+      (item) => item.value === selectedTab
+    ); //!!!
+  }, [selectedTab, createPageTabs]);
 
   //fix 改list
   const filterCategories = useMemo(() => {
@@ -89,7 +94,7 @@ export const CreatePageComponent = ({ match, history }) => {
     <div className="create-page py-3 px-3">
       {isLoading && <Loader />}
       <Tabs activeIndex={selectedTabIndex} onTabChange={tabChange}>
-        {createPageTabs.map((item, index) => {
+        {createPageTabs.current.map((item, index) => {
           return (
             <Tab key={index}>
               {<IconItem icon={item.iconName} />}

@@ -19,11 +19,10 @@ export const LedgerForm = ({
     if (!ledgerItem.id) {
       return;
     }
-
     setTitle(ledgerItem.title);
     setAmount(ledgerItem.amount);
     setDate(ledgerItem.date);
-  }, [ledgerItem]);
+  }, [ledgerItem.id, ledgerItem.title, ledgerItem.amount, ledgerItem.date]);
 
   const isValidDate = (inputDate) => {
     const nowTimeStamp = new Date();
