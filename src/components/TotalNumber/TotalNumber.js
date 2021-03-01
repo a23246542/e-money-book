@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 
-export const TotalNumber = ({ income, outcome }) => {
+const TotalNumberComponent = ({ income, outcome }) => {
   return (
     <div className="container">
       <ul className="row justify-content-center">
@@ -11,9 +12,9 @@ export const TotalNumber = ({ income, outcome }) => {
   );
 };
 
-TotalNumber.propTypes = {
+TotalNumberComponent.propTypes = {
   income: PropTypes.number.isRequired,
   outcome: PropTypes.number.isRequired,
 };
 
-export default TotalNumber;
+export const TotalNumber = memo(TotalNumberComponent);

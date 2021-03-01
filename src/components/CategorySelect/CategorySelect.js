@@ -9,6 +9,7 @@ export const CategorySelect = ({
   onSelectCategory,
 }) => {
   // const [selectedCategory,setSelectedCategory] = useState(selectedCategory)//@@會重複宣告
+  console.log('CategorySelect');
 
   const selectCategory = (event, category) => {
     // setSelectedCategory(category);

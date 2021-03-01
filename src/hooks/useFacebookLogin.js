@@ -35,6 +35,7 @@ const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
   }, [appId, cookie, xfbml, version]);
 
   const handleFBLogin = (e) => {
+    console.log('[handleFBLogin]');
     e.preventDefault();
     window.FB.login(function (response) {
       console.log(response);

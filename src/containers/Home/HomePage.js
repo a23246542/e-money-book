@@ -48,7 +48,7 @@ export const HomePageComponent = ({ history, match }) => {
     actionsRef.current.getInitData();
   }, [actionsRef]);
 
-  const changeDate = (yearNum, monthNum) => {
+  const choiceDate = (yearNum, monthNum) => {
     actionsRef.current.selectNewMonth(yearNum, monthNum);
   };
 
@@ -172,7 +172,7 @@ export const HomePageComponent = ({ history, match }) => {
                 <MonthPicker
                   year={currentDate.year}
                   month={currentDate.month}
-                  choiceDate={changeDate}
+                  choiceDate={choiceDate}
                   // path={match.path}
                 />
               </div>

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import { padLeft, makeArrByRange } from '@/helpers/utility';
 
-export const MonthPicker = ({ year, month, choiceDate }) => {
+const MonthPickerComponent = ({ year, month, choiceDate }) => {
   const [isOpen, setOpen] = useState(false);
   const [selectedYear, setYear] = useState(year);
   const [selectedMonth, setMonth] = useState(month);
@@ -115,10 +115,19 @@ export const MonthPicker = ({ year, month, choiceDate }) => {
   );
 };
 
-MonthPicker.propTypes = {
+MonthPickerComponent.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.number.isRequired,
   choiceDate: PropTypes.func.isRequired,
 };
 
-export default MonthPicker;
+const areEquals = (prevProps, nextProps) => {
+  if (
+    prevProps.year === nextProps.year &&
+    prevProps.month === nextProps.month
+  ) {
+    return true;
+  }
+};
+
+export const MonthPicker = memo(MonthPickerComponent, areEquals);
