@@ -14,8 +14,6 @@ export const CreatePageComponent = ({ match, history }) => {
   const [selectedTab, setTab] = useState(TYPE_OUTCOME);
   const [selectedCategory, setCategory] = useState(null);
   const [validationPassed, setValidation] = useState(true);
-  const [state1, setState1] = useState(0);
-  // const { current: actionsRef } = useRef(actions);
   const actionsRef = useRef(actions);
 
   useEffect(() => {
@@ -71,21 +69,19 @@ export const CreatePageComponent = ({ match, history }) => {
     }
   };
 
-  //fix 改CreateTabs 首頁改HomeTabs 迴圈
   const selectedTabIndex = useMemo(() => {
     return createPageTabs.current.findIndex(
       (item) => item.value === selectedTab
-    ); //!!!
+    );
   }, [selectedTab, createPageTabs]);
 
-  //fix 改list
+  const categoryIdList = Object.keys(categories);
   const filterCategories = useMemo(() => {
-    const categoryIdList = Object.keys(categories);
     return categoryIdList
       .filter((id) => categories[id].type === selectedTab)
       .map((id) => categories[id]);
-    // },[categoryIdList.length,selectedTab])
-  }, [selectedTab, categories]);
+    //eslint-disable-next-line
+  }, [selectedTab, categoryIdList.length]);
 
   const { id } = match.params;
   const editItem = id && ledgerStore[id] ? ledgerStore[id] : {};

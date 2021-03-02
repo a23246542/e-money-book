@@ -167,7 +167,7 @@ export const AppProvider = ({ children }) => {
     }),
     deleteData: withLoader(async (item) => {
       try {
-        await api.delete(`/leger/${item.id}`);
+        await api.delete(`/ledger/${item.id}`);
         dispatchLedger({
           type: 'deleteItem',
           payload: item,
@@ -183,7 +183,7 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        categories: categories,
+        categories,
         ledgerStore,
         currentDate,
         isLoading,

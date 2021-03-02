@@ -68,11 +68,10 @@ export const HomePageComponent = ({ history, match }) => {
     actionsRef.current.deleteData(clickedItem);
   };
 
+  const categoriesLen = Object.keys(categories).length;
+  const ledgerLen = Object.keys(ledgerStore).length;
   const listWithCategory = useMemo(() => {
     //切換View不會重新來
-    const categoriesLen = Object.keys(categories).length;
-    const ledgerLen = Object.keys(ledgerStore).length;
-
     if (!categoriesLen > 0 || !ledgerLen > 0) {
       return [];
     }
@@ -84,13 +83,12 @@ export const HomePageComponent = ({ history, match }) => {
       cloneObj[id].category = categories[ledgerStore[id].cid];
       return cloneObj[id];
     });
-    // },[ledgerLen,categoriesLen])
-  }, [categories, ledgerStore]); //!!!是否換掉物件 不需ledgerStore.length可重新計算
+    // eslint-disable-next-line
+  }, [ledgerLen, categoriesLen, currentDate.year, currentDate.month]);
 
   const { totalIncome, totalOutcome } = useMemo(() => {
     let totalIncome = 0,
       totalOutcome = 0;
-    // let totalIncome,totalOutcome; //%%%沒給型別變NaN = undefined + number
     if (!listWithCategory.length > 0) {
       return {
         totalIncome: 0,
@@ -114,10 +112,8 @@ export const HomePageComponent = ({ history, match }) => {
       totalIncome,
       totalOutcome,
     };
-    // },[ledgerIdList.length])
-    // },[filteredListWithCategory.length])
-    // },[listWithCategory.length,categoriesLen])//@@
-  }, [listWithCategory, categories]);
+    // eslint-disable-next-line
+  }, [listWithCategory.length, currentDate.year, currentDate.month]);
 
   const generateChartDataByCategory = (
     ledgerItemsWithCategory,
@@ -145,12 +141,14 @@ export const HomePageComponent = ({ history, match }) => {
 
   const chartOutcomeDataByCategory = useMemo(
     () => generateChartDataByCategory(listWithCategory, TYPE_OUTCOME),
-    [listWithCategory]
+    //eslint-disable-next-line
+    [listWithCategory.length, currentDate.year, currentDate.month]
   );
 
   const chartIncomeDataByCategory = useMemo(
     () => generateChartDataByCategory(listWithCategory, TYPE_INCOME),
-    [listWithCategory]
+    //eslint-disable-next-line
+    [listWithCategory.length, currentDate.year, currentDate.month]
   );
 
   return (
