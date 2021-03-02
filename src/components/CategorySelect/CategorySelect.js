@@ -1,18 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { IconItem } from '@/components/common';
 import { Color } from '@/helpers/utility';
 
-export const CategorySelect = ({
+const CategorySelectComponent = ({
   categories,
   selectedCategory,
   onSelectCategory,
 }) => {
-  // const [selectedCategory,setSelectedCategory] = useState(selectedCategory)//@@會重複宣告
-  console.log('CategorySelect');
-
   const selectCategory = (event, category) => {
-    // setSelectedCategory(category);
     onSelectCategory(category);
     event.preventDefault();
   };
@@ -64,10 +60,23 @@ export const CategorySelect = ({
   );
 };
 
-CategorySelect.propTypes = {
+CategorySelectComponent.propTypes = {
   categories: PropTypes.array.isRequired,
   selectedCategory: PropTypes.object,
   onSelectCategory: PropTypes.func.isRequired,
 };
 
-export default CategorySelect;
+const areEquals = (prevProps, nextProps) => {
+  if (prevProps.categories && nextProps.categories) {
+    return prevProps.categories !== nextProps.categories && false;
+  }
+
+  if (prevProps.selectedCategory && nextProps.selectCategory) {
+    return (
+      prevProps.selectedCategory.id !== nextProps.selectedCategory.id && false
+    );
+  }
+  return true;
+};
+
+export const CategorySelect = memo(CategorySelectComponent, areEquals);

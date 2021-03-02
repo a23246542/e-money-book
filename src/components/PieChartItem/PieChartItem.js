@@ -82,5 +82,3 @@ PieChartItem.propTypes = {
   type: PropTypes.string.isRequired,
   chartData: PropTypes.array.isRequired,
 };
-
-export default PieChartItem;

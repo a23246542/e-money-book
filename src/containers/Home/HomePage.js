@@ -173,7 +173,6 @@ export const HomePageComponent = ({ history, match }) => {
                   year={currentDate.year}
                   month={currentDate.month}
                   choiceDate={choiceDate}
-                  // path={match.path}
                 />
               </div>
               <div className="col-12 col-sm-6">

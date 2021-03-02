@@ -71,9 +71,3 @@ LedgerList.propTypes = {
   onModifyItem: PropTypes.func.isRequired,
   onDeleteItem: PropTypes.func.isRequired,
 };
-
-// PriceList.defaultTypes = {
-
-// }
-
-export default LedgerList;
