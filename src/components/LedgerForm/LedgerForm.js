@@ -111,11 +111,10 @@ export const LedgerForm = ({
                 onChange={(e) => {
                   setTitle(e.target.value.trim());
                 }}
-                // ref={(input) => {setTitle(input.current.value)}}//@@原本的操作
               />
-              <small id="emailHelp" className="form-text text-muted">
-                W'ell never share your email with anyone else.
-              </small>
+              {/* <small id="emailHelp" className="form-text text-muted">
+                W&apos;ell never share your email with anyone else.
+              </small> */}
             </div>
           </div>
         </div>

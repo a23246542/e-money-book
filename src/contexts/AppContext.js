@@ -56,7 +56,6 @@ export const AppProvider = ({ children }) => {
           month,
         });
         setIsLoading(false);
-        // return res;//返不返回都可以
       } catch (error) {
         console.log('[selectNewMonth] getURLWithDate failed', error);
       }
