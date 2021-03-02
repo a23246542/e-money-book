@@ -14,8 +14,12 @@ const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
       });
       // 取得使用者登入狀態
       window.FB.getLoginStatus(function (response) {
+        // console.log('[refreshLoginStatus]', response);
+        localStorage.setItem(
+          'facebookClientToken',
+          response?.authResponse?.accessToken
+        );
         setFbResponse(response);
-        console.log(response);
       });
 
       window.FB.AppEvents.logPageView();
@@ -35,10 +39,13 @@ const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
   }, [appId, cookie, xfbml, version]);
 
   const handleFBLogin = (e) => {
-    console.log('[handleFBLogin]');
     e.preventDefault();
     window.FB.login(function (response) {
-      console.log(response);
+      // console.log('handleFBLogin', response);
+      localStorage.setItem(
+        'facebookClientToken',
+        response?.authResponse?.accessToken
+      );
       setFbResponse(response);
     });
   };
@@ -46,7 +53,11 @@ const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
   const handleFBLogout = (e) => {
     e.preventDefault();
     window.FB.logout(function (response) {
-      console.log(response);
+      // console.log('handleFBLogout',response);
+      localStorage.setItem(
+        'facebookClientToken',
+        response?.authResponse?.accessToken
+      );
       setFbResponse(response);
     });
   };
