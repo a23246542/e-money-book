@@ -68,9 +68,9 @@ export const HomePageComponent = ({ history, match }) => {
     actionsRef.current.deleteData(clickedItem);
   };
 
-  const categoriesLen = Object.keys(categories).length;
-  const ledgerLen = Object.keys(ledgerStore).length;
   const listWithCategory = useMemo(() => {
+    const categoriesLen = Object.keys(categories).length;
+    const ledgerLen = Object.keys(ledgerStore).length;
     //切換View不會重新來
     if (!categoriesLen > 0 || !ledgerLen > 0) {
       return [];
@@ -84,7 +84,8 @@ export const HomePageComponent = ({ history, match }) => {
       return cloneObj[id];
     });
     // eslint-disable-next-line
-  }, [ledgerLen, categoriesLen, currentDate.year, currentDate.month]);
+    // }, [ledgerLen, categoriesLen, currentDate.year, currentDate.month]);
+  }, [ledgerStore, categories]);
 
   const { totalIncome, totalOutcome } = useMemo(() => {
     let totalIncome = 0,
@@ -112,8 +113,7 @@ export const HomePageComponent = ({ history, match }) => {
       totalIncome,
       totalOutcome,
     };
-    // eslint-disable-next-line
-  }, [listWithCategory.length, currentDate.year, currentDate.month]);
+  }, [listWithCategory, categories]);
 
   const generateChartDataByCategory = (
     ledgerItemsWithCategory,
@@ -141,14 +141,12 @@ export const HomePageComponent = ({ history, match }) => {
 
   const chartOutcomeDataByCategory = useMemo(
     () => generateChartDataByCategory(listWithCategory, TYPE_OUTCOME),
-    //eslint-disable-next-line
-    [listWithCategory.length, currentDate.year, currentDate.month]
+    [listWithCategory]
   );
 
   const chartIncomeDataByCategory = useMemo(
     () => generateChartDataByCategory(listWithCategory, TYPE_INCOME),
-    //eslint-disable-next-line
-    [listWithCategory.length, currentDate.year, currentDate.month]
+    [listWithCategory]
   );
 
   return (
@@ -204,7 +202,6 @@ export const HomePageComponent = ({ history, match }) => {
                 圖表模式
               </Tab>
             </Tabs>
-            {/* <ViewTab activeTab={tabView} onTabChange={changeView} /> */}
             <CreateBtn onCreateItem={createItem} />
             {tabView === LIST_VIEW && listWithCategory.length > 0 && (
               <LedgerList
@@ -213,12 +210,7 @@ export const HomePageComponent = ({ history, match }) => {
                 onDeleteItem={deleteItem}
               ></LedgerList>
             )}
-            {tabView === LIST_VIEW && listWithCategory.length === 0 && (
-              <div className="no-record alert alert-light text-center">
-                您還沒有記帳紀錄
-              </div>
-            )}
-            {tabView === CHART_VIEW && (
+            {tabView === CHART_VIEW && listWithCategory.length > 0 && (
               <Fragment>
                 <PieChartItem
                   title="本月支出"
@@ -231,6 +223,11 @@ export const HomePageComponent = ({ history, match }) => {
                   chartData={chartIncomeDataByCategory}
                 />
               </Fragment>
+            )}
+            {listWithCategory.length === 0 && (
+              <div className="no-record alert alert-light text-center">
+                您還沒有記帳紀錄
+              </div>
             )}
           </Fragment>
         )}

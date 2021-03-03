@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import App from '@/App';
 import { LedgerForm } from '@/components';
 import { testCategories, testItems } from '@/helpers/testData';
-import api from '@/api';
+import api from '@/api/api';
 import {
   Router,
   MemoryRouter,

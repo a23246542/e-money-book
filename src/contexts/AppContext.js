@@ -1,7 +1,14 @@
 import { createContext, useState, useCallback, useRef } from 'react';
 import useLedger from '@/hooks/useLedger';
 import { flattenArr, parseToYearsAndMonth, makeID } from '@/helpers/utility';
-import api from '@/api';
+import {
+  getLedger,
+  getCategory,
+  getSingleLedgerItem,
+  createLedgerItem,
+  updateLedgerItem,
+  deleteLedgerItem,
+} from '@/api/ledger';
 
 const AppContext = createContext({
   categories: {},
@@ -27,10 +34,11 @@ export const AppProvider = ({ children }) => {
   const actions = {
     getInitData: withLoader(async () => {
       try {
-        const getURLWithDate = `/ledger?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
-        const promiseArr = [api.get('/category'), api.get(getURLWithDate)];
+        const promiseArr = [
+          getCategory(),
+          getLedger(currentDate.year, currentDate.month),
+        ];
         const [resCategory, resLedger] = await Promise.all(promiseArr);
-
         dispatchLedger({
           type: 'fetchItems',
           payload: flattenArr(resLedger.data),
@@ -43,14 +51,11 @@ export const AppProvider = ({ children }) => {
     }),
     selectNewMonth: withLoader(async (year, month) => {
       try {
-        const getURLWithDate = `/ledger?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
-        const resLedger = await api.get(getURLWithDate);
-
+        const resLedger = await getLedger(year, month);
         dispatchLedger({
           type: 'fetchItems',
           payload: flattenArr(resLedger.data),
         });
-
         setCurrentDate({
           year,
           month,
@@ -64,9 +69,9 @@ export const AppProvider = ({ children }) => {
       try {
         //創建頁重整可取得編輯資料
         let promiseArr = [];
-
         if (Object.keys(categories).length === 0) {
-          promiseArr.push(api.get('/category'));
+          // promiseArr.push(api.get('/category'));
+          promiseArr.push(getCategory());
         } else {
           promiseArr.push(new Promise((resolve) => resolve(null)));
         }
@@ -75,8 +80,7 @@ export const AppProvider = ({ children }) => {
           Object.keys(ledgerStore).indexOf(id) > -1
         );
         if (id && !isItemAlreadyFetched) {
-          const getURLWithId = `/ledger/${id}`;
-          promiseArr.push(api.get(getURLWithId));
+          promiseArr.push(getSingleLedgerItem(id));
         }
 
         const [resCategory, resEditItem] = await Promise.all(promiseArr);
@@ -116,7 +120,7 @@ export const AppProvider = ({ children }) => {
         const dateObj = parseToYearsAndMonth(formData.date);
         const timestamp = new Date().getTime();
 
-        const { data: newItem } = await api.post('/ledger', {
+        const { data: newItem } = await createLedgerItem({
           ...formData,
           id: newId,
           cid: selectedCategoryId,
@@ -147,8 +151,8 @@ export const AppProvider = ({ children }) => {
           // timestamp,//%%會不小心把排序提升 創建有就好
           monthCategory: `${dateObj.year}-${dateObj.month}`,
         };
-        const { data: modifiedItem } = await api.patch(
-          `ledger/${formData.id}`,
+        const { data: modifiedItem } = await updateLedgerItem(
+          formData.id,
           updatedItem
         );
 
@@ -166,7 +170,7 @@ export const AppProvider = ({ children }) => {
     }),
     deleteData: withLoader(async (item) => {
       try {
-        await api.delete(`/ledger/${item.id}`);
+        await deleteLedgerItem(item.id);
         dispatchLedger({
           type: 'deleteItem',
           payload: item,
