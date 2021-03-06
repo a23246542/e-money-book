@@ -140,7 +140,7 @@ describe('test component when in create mode', () => {
     }, 100);
   });
 
-  it('fill all inputs, and select the category, submit the form, addItem should be called with test-library-react', () => {
+  it.only('fill all inputs, and select the category, submit the form, addItem should be called with test-library-react', async () => {
     const { getByTestId, getByText, container, debug } = render(
       <AppContext.Provider value={withLoadedData}>
         <CreatePageComponent match={createMatch} history={history} />
@@ -158,10 +158,12 @@ describe('test component when in create mode', () => {
     fireEvent.click(getByTestId('submit'));
 
     const testData = { title: 'new title', amount: 200, date: '2021-01-02' };
-    expect(actions.createData.mock.calls[0]).toEqual([
-      testData,
-      testCategories[0].id,
-    ]);
+    await waitFor(() => {
+      expect(actions.createData.mock.calls[0]).toEqual([
+        testData,
+        testCategories[0].id,
+      ]);
+    });
     cleanup();
   });
 });

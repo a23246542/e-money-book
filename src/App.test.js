@@ -84,6 +84,8 @@ test('mock', () => {
 
 describe.only('test App component init behavior', () => {
   let wrapper;
+  const waitForAsync = () => act(() => Promise.resolve());
+
   beforeAll(() => {
     useFacebookLogin.mockReturnValue([
       {
@@ -140,20 +142,19 @@ describe.only('test App component init behavior', () => {
     jest.restoreAllMocks(); // 需要恢復spyOn
     // console.log('原本的api get', api.get('/ledger'));//會記憶體洩漏 A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find le
   });
-
   //app home加載過後 => app的state資料長度等於test資料長度
-  it('check App Home state with initial action', (done) => {
+  it('check App Home state with initial action', async () => {
     const history = createMemoryHistory();
     const { debug } = render(
       <Router history={history}>
         <App />
       </Router>
     );
-    expect(api.get).toHaveBeenCalledTimes(2);
-    setTimeout(() => {
+
+    await waitFor(() => {
       expect(screen.getAllByText(/編輯/).length).toBe(testItems.length); //
-      done();
-    }, 100);
+    });
+    expect(api.get).toHaveBeenCalledTimes(2);
     // --------------------------------------------------
     //enzyme版本 ok
     // wrapper = mount(
@@ -171,20 +172,22 @@ describe.only('test App component init behavior', () => {
     // }, 0);
   });
 
-  it('check App Home change ViewTab and LedgerList should show right', (done) => {
+  it('check App Home change ViewTab and LedgerList should show right', async () => {
     const history = createMemoryHistory();
     const { debug } = render(
       <Router history={history}>
         <App />
       </Router>
     );
-    setTimeout(() => {
-      fireEvent.click(screen.getByText(/圖表/));
+    await waitForAsync();
+    fireEvent.click(screen.getByText(/圖表/));
+    await waitFor(() => {
       expect(screen.queryByTestId('ledgerList')).toBeNull();
-      fireEvent.click(screen.getByText(/列表/));
+    });
+    fireEvent.click(screen.getByText(/列表/));
+    await waitFor(() => {
       expect(screen.queryByTestId('ledgerList')).toBeInTheDocument();
-      done();
-    }, 100);
+    });
 
     //enzyme版本 ok
     // const history = createMemoryHistory();
@@ -206,24 +209,22 @@ describe.only('test App component init behavior', () => {
   // ----
 
   //首頁加載過資料後 到創建頁呼叫getEditData => 不會再發新api.get，只有mount的兩次
-  it('test getEditData with initial data in create mode', (done) => {
+  it('test getEditData with initial data in create mode', async () => {
     const history = createMemoryHistory();
     const { getByTestId, debug } = render(
       <Router history={history}>
         <App />
       </Router>
     );
-    setTimeout(() => {
-      fireEvent.click(getByTestId('createBtn'));
-      expect(api.get).toHaveBeenCalledTimes(2);
-      expect(history.location.pathname).toBe('/create');
-      done();
-    }, 100);
+    await waitForAsync();
+    fireEvent.click(getByTestId('createBtn'));
+    await waitForAsync();
+    expect(history.location.pathname).toBe('/create');
+    expect(api.get).toHaveBeenCalledTimes(2);
   });
 
   //沒有加載過資料，直接到達創建頁新建
-  it('test getEditData without initial data in create mode', () => {
-    // expect.assertions(2);
+  it('test getEditData without initial data in create mode', async () => {
     const history = createMemoryHistory();
     history.push('/create');
     const { getByTestId, debug } = render(
@@ -241,6 +242,7 @@ describe.only('test App component init behavior', () => {
     // const { container, debug, getByTestId } = renderWithRouter(<App />, {
     //   route: '/create',
     // });
+    await waitForAsync();
     expect(api.get).toHaveBeenCalledTimes(1);
     expect(api.get).toHaveBeenCalledWith('/category');
   });
@@ -253,23 +255,19 @@ describe.only('test App component init behavior', () => {
         <App />
       </Router>
     );
-    await waitFor(async () => {
-      // act(() => {
-      fireEvent.click(
-        await getByTestId('ledger-item-_1fg1wme63').querySelector('.btn-edit')
-      );
-      // fireEvent.click(getByTestId('editBtn-_1fg1wme63'));//也可
-      // });
-    });
-    await waitFor(() => {
-      expect(getByTestId('submit')).toBeInTheDocument();
-    });
+    await waitForAsync();
+    fireEvent.click(
+      getByTestId('ledger-item-_1fg1wme63').querySelector('.btn-edit')
+    );
+    // fireEvent.click(getByTestId('editBtn-_1fg1wme63'));//也可
+    await waitForAsync();
+    expect(getByTestId('submit')).toBeInTheDocument();
     expect(api.get).toHaveBeenCalledTimes(2);
     expect(history.location.pathname).toBe('/edit/_1fg1wme63');
   });
 
   //直接到達編輯頁
-  it('test getEditData without initial data in edit mode', () => {
+  it('test getEditData without initial data in edit mode', async () => {
     // expect.assertions(3);//非同步需要
     const renderWithRouter = (ui, { route = '/' } = {}) => {
       window.history.pushState({}, 'Test page', route);
@@ -282,6 +280,7 @@ describe.only('test App component init behavior', () => {
         route: '/edit/_1fg1wme63',
       }
     );
+    await waitForAsync();
     expect(api.get).toHaveBeenCalledTimes(2);
     expect(api.get).toHaveBeenNthCalledWith(1, '/category');
     expect(api.get).toHaveBeenNthCalledWith(2, '/ledger/_1fg1wme63');
