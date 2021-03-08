@@ -140,7 +140,7 @@ describe('test component when in create mode', () => {
     }, 100);
   });
 
-  it.only('fill all inputs, and select the category, submit the form, addItem should be called with test-library-react', async () => {
+  it('fill all inputs, and select the category, submit the form, addItem should be called with test-library-react', async () => {
     const { getByTestId, getByText, container, debug } = render(
       <AppContext.Provider value={withLoadedData}>
         <CreatePageComponent match={createMatch} history={history} />
@@ -169,11 +169,21 @@ describe('test component when in create mode', () => {
 });
 
 describe('test component when in edit mode', () => {
-  beforeEach(() => {
+  const waitForAsync = () => new Promise((resolve) => setTimeout(resolve, 100));
+  beforeEach(async () => {
     wrapper = mount(
       <AppContext.Provider value={withLoadedData}>
         <CreatePageComponent match={editMatch} history={history} />
       </AppContext.Provider>
+    );
+    await act(
+      () =>
+        new Promise((resolve, reject) =>
+          setImmediate(() => {
+            wrapper.update();
+            resolve();
+          })
+        )
     );
   });
 
@@ -181,15 +191,27 @@ describe('test component when in edit mode', () => {
     (category) => testItem.cid === category.id
   );
 
-  it('should pass the right category to props selectedCategory for CategorySelect', (done) => {
-    setTimeout(() => {
-      //等待getEditDate
-      wrapper.update();
+  it.only('should pass the right category to props selectedCategory for CategorySelect', async () => {
+    // setTimeout(() => {
+    //等待getEditDate
+    // await waitForAsync();
+    // await act(
+    //   () =>
+    //     new Promise((resolve, reject) =>
+    //       setImmediate(() => {
+    //         wrapper.update();
+    //         resolve();
+    //       })
+    //     )
+    // );
+
+    await waitFor(() => {
       expect(wrapper.find(CategorySelect).props().selectedCategory).toEqual(
         selectedCategory
       );
-      done();
-    }, 100);
+    });
+    // done();
+    // }, 100);
   });
 
   it('modify some inputs and submit the form, modifyItem should be called', (done) => {
