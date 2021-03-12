@@ -2,6 +2,8 @@ before_script:
   - npm install
 language:
   - node_js
+script:
+  - npm test
 env:
   - PORT=3000
 node_js:
