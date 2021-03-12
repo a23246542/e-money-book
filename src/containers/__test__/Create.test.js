@@ -169,7 +169,6 @@ describe('test component when in create mode', () => {
 });
 
 describe('test component when in edit mode', () => {
-  const waitForAsync = () => new Promise((resolve) => setTimeout(resolve, 100));
   beforeEach(async () => {
     wrapper = mount(
       <AppContext.Provider value={withLoadedData}>
@@ -191,27 +190,13 @@ describe('test component when in edit mode', () => {
     (category) => testItem.cid === category.id
   );
 
-  it.only('should pass the right category to props selectedCategory for CategorySelect', async () => {
-    // setTimeout(() => {
-    //等待getEditDate
+  it('should pass the right category to props selectedCategory for CategorySelect', async () => {
     // await waitForAsync();
-    // await act(
-    //   () =>
-    //     new Promise((resolve, reject) =>
-    //       setImmediate(() => {
-    //         wrapper.update();
-    //         resolve();
-    //       })
-    //     )
-    // );
-
     await waitFor(() => {
       expect(wrapper.find(CategorySelect).props().selectedCategory).toEqual(
         selectedCategory
       );
     });
-    // done();
-    // }, 100);
   });
 
   it('modify some inputs and submit the form, modifyItem should be called', (done) => {
