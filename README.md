@@ -1,5 +1,7 @@
 # E-MoneyBook 記帳小本本
 
+[![Build Status](https://travis-ci.org/a23246542/e-money-book.svg?branch=master)](https://travis-ci.org/a23246542/e-money-book)
+
 > 這是一份 react hooks 的練習專案，以組件化思想開發設計，並包含組件測試，前後端分離 mock api 對接，到 CICD 應用部屬的專案流程。
 
 ## DEMO
