@@ -12,5 +12,9 @@
     "typescriptreact"
   ],
   "cSpell.ignoreWords": ["rerender"],
-  "editor.fontLigatures": null
+  "editor.fontLigatures": null,
+  "cSpell.words": [
+    "cicd",
+    "ionicon"
+  ]
 }
