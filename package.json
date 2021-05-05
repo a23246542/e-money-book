@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"craco start\" \"npm run mock\"",
+    "dev": "concurrently \"cross-env PORT=3006 craco start\" \"npm run mock\"",
     "server": "craco start",
     "build": "craco build",
     "test": "craco test",
@@ -96,6 +96,7 @@
     "@testing-library/react": "^11.2.2",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.3.2",
     "concurrently": "^5.3.0",
+    "cross-env": "^7.0.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^7.16.0",
