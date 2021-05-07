@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import { padLeft, makeArrByRange } from '@/helpers/utility';
+import style from './style.module.scss';
 
 const MonthPickerComponent = ({ year, month, choiceDate }) => {
   const [isOpen, setOpen] = useState(false);
@@ -50,8 +51,11 @@ const MonthPickerComponent = ({ year, month, choiceDate }) => {
   const yearRange = makeArrByRange(9, -4).map((number) => number + year);
 
   return (
-    <div className="dropdown" ref={nodeMonthPicker} data-testid="MonthPicker">
-      <p>請選擇</p>
+    <div
+      className={`dropdown ${style['monthPicker-dropdown']}`}
+      ref={nodeMonthPicker}
+      data-testid="MonthPicker"
+    >
       <button
         className="btn btn-primary dropdown-toggle"
         onClick={toggleDropdown}
@@ -61,13 +65,13 @@ const MonthPickerComponent = ({ year, month, choiceDate }) => {
       </button>
       {isOpen && (
         <div
-          className="dropdown-menu dropdown-menu-left"
+          className={`${style['dropdownMenu']} dropdown-menu dropdown-menu-left`}
           style={{
             display: 'block',
             left: '50%',
           }} // BS4默認隱藏
         >
-          <div className="row text-center">
+          <div className="row text-center no-gutters">
             <div className="col-6 years-range border-right">
               {yearRange.map((yearNum, index) => (
                 <a

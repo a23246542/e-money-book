@@ -5,6 +5,7 @@ import { Loader, IconItem } from '@/components/common';
 import { CategorySelect, LedgerForm, Tabs, Tab } from '@/components';
 import { TYPE_OUTCOME, TYPE_INCOME } from '@/helpers/constants';
 import AppContext from '@/contexts/AppContext';
+import styleContainer from '../style.module.scss';
 
 export const CreatePageComponent = ({ match, history }) => {
   const { categories, ledgerStore, isLoading, actions } = useContext(
@@ -87,32 +88,34 @@ export const CreatePageComponent = ({ match, history }) => {
   const editItem = id && ledgerStore[id] ? ledgerStore[id] : {};
 
   return (
-    <div className="create-page py-3 px-3">
-      {isLoading && <Loader />}
-      <Tabs activeIndex={selectedTabIndex} onTabChange={tabChange}>
-        {createPageTabs.current.map((item, index) => {
-          return (
-            <Tab key={index}>
-              {<IconItem icon={item.iconName} />}
-              {item.text}
-            </Tab>
-          );
-        })}
-      </Tabs>
-      <CategorySelect
-        categories={filterCategories}
-        selectedCategory={selectedCategory}
-        onSelectCategory={selectCategory}
-      />
-      <LedgerForm
-        ledgerItem={editItem}
-        onFormSubmit={submitForm}
-        onCancelSubmit={cancelSubmit}
-      >
-        {!validationPassed && (
-          <div className="alert alert-warning">請選擇分類選項</div>
-        )}
-      </LedgerForm>
+    <div className={styleContainer['app-wrapper']}>
+      <div className={`${styleContainer['app-container']} create-page p-3`}>
+        {isLoading && <Loader />}
+        <Tabs activeIndex={selectedTabIndex} onTabChange={tabChange}>
+          {createPageTabs.current.map((item, index) => {
+            return (
+              <Tab key={index}>
+                {<IconItem icon={item.iconName} />}
+                {item.text}
+              </Tab>
+            );
+          })}
+        </Tabs>
+        <CategorySelect
+          categories={filterCategories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={selectCategory}
+        />
+        <LedgerForm
+          ledgerItem={editItem}
+          onFormSubmit={submitForm}
+          onCancelSubmit={cancelSubmit}
+        >
+          {!validationPassed && (
+            <div className="alert alert-warning">請選擇分類選項</div>
+          )}
+        </LedgerForm>
+      </div>
     </div>
   );
 };

@@ -27,6 +27,8 @@ import {
 } from '../../helpers/constants';
 import AppContext from '../../contexts/AppContext';
 import AuthContext from '../../contexts/AuthContext';
+import styleContainer from '../style.module.scss';
+import style from './style.module.scss';
 
 export const HomePageComponent = ({ history, match }) => {
   const {
@@ -150,89 +152,88 @@ export const HomePageComponent = ({ history, match }) => {
   );
 
   return (
-    <Fragment>
-      <header className="App-header">
-        <button onClick={(e) => handleFBLogout(e)}>登出</button>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Code
-        </a>
-        <div className="headerWrap">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 col-sm-6">
-                <MonthPicker
-                  year={currentDate.year}
-                  month={currentDate.month}
-                  choiceDate={choiceDate}
-                />
-              </div>
-              <div className="col-12 col-sm-6">
-                <TotalNumber income={totalIncome} outcome={totalOutcome} />
+    <div className={styleContainer['app-wrapper']}>
+      <div className={styleContainer['app-container']}>
+        <header className={style['app-header']}>
+          <button
+            onClick={(e) => handleFBLogout(e)}
+            className={`${style['app-logout']} btn btn-info`}
+          >
+            登出
+          </button>
+          <div className={style['app-headerWrap']}>
+            <div className="container-fluid d-flex justify-content-center">
+              <div className="row w-100">
+                <div className="col-6">
+                  <MonthPicker
+                    year={currentDate.year}
+                    month={currentDate.month}
+                    choiceDate={choiceDate}
+                  />
+                </div>
+                <div className="col-6">
+                  <TotalNumber income={totalIncome} outcome={totalOutcome} />
+                </div>
               </div>
             </div>
           </div>
+        </header>
+        <div className={`${style['app-body']} py-3 px-0`}>
+          {isLoading && <Loader />}
+          {!isLoading && (
+            <Fragment>
+              <Tabs activeIndex={tabIndex} onTabChange={changeView}>
+                <Tab>
+                  <IconItem
+                    icon="IosPaper"
+                    className="mr-2 align-bottom"
+                    fontSize="25px"
+                    color="#007bff"
+                  />
+                  列表模式
+                </Tab>
+                <Tab>
+                  <IconItem
+                    icon="IosPie"
+                    className="mr-2 align-bottom"
+                    fontSize="25px"
+                    color="#007bff"
+                  />
+                  圖表模式
+                </Tab>
+              </Tabs>
+              <CreateBtn onCreateItem={createItem} />
+              {tabView === LIST_VIEW && listWithCategory.length > 0 && (
+                <LedgerList
+                  items={listWithCategory}
+                  onModifyItem={modifyItem}
+                  onDeleteItem={deleteItem}
+                ></LedgerList>
+              )}
+              {tabView === CHART_VIEW && listWithCategory.length > 0 && (
+                <Fragment>
+                  <PieChartItem
+                    title="本月支出"
+                    type={TYPE_OUTCOME}
+                    chartData={chartOutcomeDataByCategory}
+                  />
+                  <PieChartItem
+                    title="本月收入"
+                    type={TYPE_INCOME}
+                    chartData={chartIncomeDataByCategory}
+                  />
+                </Fragment>
+              )}
+              {listWithCategory.length === 0 && (
+                <div className="no-record alert alert-light text-center">
+                  您還沒有記帳紀錄
+                </div>
+              )}
+            </Fragment>
+          )}
         </div>
-      </header>
-      <div className="content-area py-3 px-3">
-        {isLoading && <Loader />}
-        {!isLoading && (
-          <Fragment>
-            <Tabs activeIndex={tabIndex} onTabChange={changeView}>
-              <Tab>
-                <IconItem
-                  icon="IosPaper"
-                  className="mr-2 align-bottom"
-                  fontSize="25px"
-                  color="#007bff"
-                />
-                列表模式
-              </Tab>
-              <Tab>
-                <IconItem
-                  icon="IosPie"
-                  className="mr-2 align-bottom"
-                  fontSize="25px"
-                  color="#007bff"
-                />
-                圖表模式
-              </Tab>
-            </Tabs>
-            <CreateBtn onCreateItem={createItem} />
-            {tabView === LIST_VIEW && listWithCategory.length > 0 && (
-              <LedgerList
-                items={listWithCategory}
-                onModifyItem={modifyItem}
-                onDeleteItem={deleteItem}
-              ></LedgerList>
-            )}
-            {tabView === CHART_VIEW && listWithCategory.length > 0 && (
-              <Fragment>
-                <PieChartItem
-                  title="本月支出"
-                  type={TYPE_OUTCOME}
-                  chartData={chartOutcomeDataByCategory}
-                />
-                <PieChartItem
-                  title="本月收入"
-                  type={TYPE_INCOME}
-                  chartData={chartIncomeDataByCategory}
-                />
-              </Fragment>
-            )}
-            {listWithCategory.length === 0 && (
-              <div className="no-record alert alert-light text-center">
-                您還沒有記帳紀錄
-              </div>
-            )}
-          </Fragment>
-        )}
       </div>
-    </Fragment>
+    </div>
   );
 };
 

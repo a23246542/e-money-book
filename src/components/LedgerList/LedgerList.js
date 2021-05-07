@@ -1,26 +1,35 @@
 import PropTypes from 'prop-types';
 import { IconItem } from '@/components/common';
+import style from './style.module.scss';
 
 export const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
   return (
-    <ul className="list-group" data-testid="ledgerList">
+    <ul className="list-group list-group-flush" data-testid="ledgerList">
       {items.map((item) => {
         return (
           <li
-            className="ledger-item list-group-item d-flex align-items-center"
+            className="ledger-item list-group-item d-flex align-items-center px-0 no-gutters border-top border-bottom"
             key={item.id}
             data-testid={`ledger-item-${item.id}`}
             title="ledger-item"
           >
-            <span className="col-1 badge badge-primary">
-              {<IconItem icon={item.category.iconName} color="#fff" />}
-            </span>
-            <span className="col-5 ledger-title">{item.title}</span>
-            <span className="col-2 font-weight-bold">
+            <div className="col-1 text-center">
+              <span
+                className={`${style['category-icon']} badge badge-primary rounded-circle ml-1`}
+              >
+                <IconItem
+                  icon={item.category.iconName}
+                  color="#fff"
+                  fontSize="20px"
+                />
+              </span>
+            </div>
+            <div className="col-5 ledger-title">{item.title}</div>
+            <div className="col-2 font-weight-bold">
               {item.category.type === 'income' ? '+' : '-'}
-              {item.amount}元
-            </span>
-            <span className="col-2">{item.date}</span>
+              {item.amount}
+            </div>
+            <span className="col-2">{item.date.replace('2021-', '')}</span>
             <button
               className="col-1 btn btn-edit d-flex justify-content-center align-items-center"
               onClick={(e) => {
@@ -32,13 +41,13 @@ export const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
             >
               <IconItem
                 icon="IosCreate"
-                fontSize="35px"
+                fontSize="23px"
                 color="#28a745"
                 style={{
                   marginRight: '5px',
                 }}
               />
-              編輯
+              {/* 編輯 */}
             </button>
             <button
               className="col-1 btn btn-delete d-flex justify-content-center align-items-center"
@@ -50,13 +59,13 @@ export const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
             >
               <IconItem
                 icon="IosCloseCircle"
-                fontSize="30px"
+                fontSize="20px"
                 color="#dc3545"
                 style={{
                   marginRight: '5px',
                 }}
               />
-              刪除
+              {/* 刪除 */}
             </button>
           </li>
         );

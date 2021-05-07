@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import style from './style.module.scss';
 
 export const Tabs = ({ children, activeIndex, onTabChange }) => {
   const selectTab = (e, index) => {
@@ -7,7 +8,10 @@ export const Tabs = ({ children, activeIndex, onTabChange }) => {
     onTabChange(index);
   };
   return (
-    <ul className="nav nav-tabs nav-justified" data-testid="navTabs">
+    <ul
+      className={`${style['tabs']} nav nav-tabs nav-justified`}
+      data-testid="navTabs"
+    >
       {React.Children.map(children, (item, index) => {
         const activeClassName =
           index === activeIndex ? 'nav-link active' : 'nav-link';

@@ -1,0 +1,24 @@
+.app-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  // background-color: #a2dbee;
+  background-color: #d1ecf4;
+  // overflow: hidden;
+  @media (min-width: 767px) {
+    overflow: hidden;
+  }
+}
+
+.app-container {
+  min-width: 375px;
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #fff;
+
+  @media (min-width: 768px) {
+    margin: 80px auto 0;
+    min-height: 780px;
+    border-radius: 5px;
+  }
+}

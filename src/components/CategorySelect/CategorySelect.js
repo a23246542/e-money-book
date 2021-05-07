@@ -26,8 +26,8 @@ const CategorySelectComponent = ({
               selectedCategoryId === item.id ? Color.blue : Color.lightGray;
             const activeClassName =
               selectedCategoryId === item.id
-                ? 'col-3 category-item active'
-                : 'col-3 category-item';
+                ? 'col-3 category-item active mb-2'
+                : 'col-3 category-item mb-2';
             return (
               <div
                 className={activeClassName}

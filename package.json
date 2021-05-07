@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"cross-env PORT=3006 craco start\" \"npm run mock\"",
+    "dev": "concurrently \"cross-env PORT=3006 HTTPS=true craco start\" \"npm run mock\"",
     "server": "craco start",
     "build": "craco build",
     "test": "craco test",
