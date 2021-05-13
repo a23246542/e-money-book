@@ -152,7 +152,7 @@ describe.only('test App component init behavior', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getAllByText(/編輯/).length).toBe(testItems.length); //
+      expect(screen.getAllByTitle('editBtn').length).toBe(testItems.length); //
     });
     expect(api.get).toHaveBeenCalledTimes(2);
     // --------------------------------------------------

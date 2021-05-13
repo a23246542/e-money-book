@@ -8,13 +8,11 @@ const MonthPickerComponent = ({ year, month, choiceDate }) => {
   const [selectedYear, setYear] = useState(year);
   const [selectedMonth, setMonth] = useState(month);
   const nodeMonthPicker = useRef(null); // 指派monthPicker
-
   const docHandleClickWhenIsOpen = useCallback(
     (e) => {
       if (!nodeMonthPicker.current && !isOpen) {
         return;
       }
-
       if (nodeMonthPicker.current.contains(e.target)) {
         // 包含點擊的位置
         return;
@@ -125,13 +123,4 @@ MonthPickerComponent.propTypes = {
   choiceDate: PropTypes.func.isRequired,
 };
 
-const areEquals = (prevProps, nextProps) => {
-  if (
-    prevProps.year === nextProps.year &&
-    prevProps.month === nextProps.month
-  ) {
-    return true;
-  }
-};
-
-export const MonthPicker = memo(MonthPickerComponent, areEquals);
+export const MonthPicker = memo(MonthPickerComponent);

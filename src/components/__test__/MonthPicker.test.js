@@ -69,12 +69,13 @@ describe('test MonthPicker component', () => {
       eventMap[event] = cb;
     });
     wrapper = mount(<MonthPicker {...props} />);
-    wrapper.find('.dropdown-toggle').simulate('click');
 
+    wrapper.find('.dropdown-toggle').simulate('click'); // setOpen
     act(() => {
+      // 模擬觸發click
       eventMap.click({
         // target:ReactDOM.findDOMNode(wrapper.instance()),//被废弃
-        target: wrapper.getDOMNode(),
+        target: wrapper.getDOMNode()[0],
       });
     });
     wrapper.update();

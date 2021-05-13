@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 
-export const LedgerForm = ({
+const LedgerFormComponent = ({
   ledgerItem = {},
   onFormSubmit,
   onCancelSubmit,
@@ -199,10 +199,10 @@ export const LedgerForm = ({
   );
 };
 
-LedgerForm.propTypes = {
+LedgerFormComponent.propTypes = {
   ledgerItem: PropTypes.object,
   onFormSubmit: PropTypes.func.isRequired,
   onCancelSubmit: PropTypes.func.isRequired,
 };
 
-export default LedgerForm;
+export const LedgerForm = memo(LedgerFormComponent);

@@ -1,6 +1,5 @@
 import {
   useState,
-  Fragment,
   useMemo,
   useEffect,
   useContext,
@@ -8,7 +7,7 @@ import {
   useRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import { useRouteMatch, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Loader, IconItem } from '@/components/common';
 import {
   MonthPicker,
@@ -38,37 +37,46 @@ export const HomePageComponent = ({ history, match }) => {
     isLoading,
     actions,
   } = useContext(AppContext);
-
   const actionsRef = useRef(actions);
-
   const { handleFBLogout } = useContext(AuthContext);
-
   const [tabView, setTabView] = useState(LIST_VIEW);
-  const tabsTexts = [LIST_VIEW, CHART_VIEW];
+  const tabsTexts = useMemo(() => [LIST_VIEW, CHART_VIEW], []);
 
   useEffect(() => {
     actionsRef.current.getInitData();
   }, [actionsRef]);
 
-  const choiceDate = (yearNum, monthNum) => {
-    actionsRef.current.selectNewMonth(yearNum, monthNum);
-  };
+  const choiceDate = useCallback(
+    (yearNum, monthNum) => {
+      actionsRef.current.selectNewMonth(yearNum, monthNum);
+    },
+    [actionsRef]
+  );
 
-  const changeView = (tabIndex) => {
-    setTabView(tabsTexts[tabIndex]);
-  };
+  const changeView = useCallback(
+    (tabIndex) => {
+      setTabView(tabsTexts[tabIndex]);
+    },
+    [tabsTexts]
+  );
 
-  const modifyItem = (clickedItem) => {
-    history.push(`/edit/${clickedItem.id}`);
-  };
+  const modifyItem = useCallback(
+    (clickedItem) => {
+      history.push(`/edit/${clickedItem.id}`);
+    },
+    [history]
+  );
 
-  const createItem = () => {
+  const createItem = useCallback(() => {
     history.push('/create');
-  };
+  }, [history]);
 
-  const deleteItem = (clickedItem) => {
-    actionsRef.current.deleteData(clickedItem);
-  };
+  const deleteItem = useCallback(
+    (clickedItem) => {
+      actionsRef.current.deleteData(clickedItem);
+    },
+    [actionsRef]
+  );
 
   const listWithCategory = useMemo(() => {
     const categoriesLen = Object.keys(categories).length;
@@ -85,8 +93,6 @@ export const HomePageComponent = ({ history, match }) => {
       cloneObj[id].category = categories[ledgerStore[id].cid];
       return cloneObj[id];
     });
-    // eslint-disable-next-line
-    // }, [ledgerLen, categoriesLen, currentDate.year, currentDate.month]);
   }, [ledgerStore, categories]);
 
   const { totalIncome, totalOutcome } = useMemo(() => {
@@ -181,7 +187,7 @@ export const HomePageComponent = ({ history, match }) => {
         <div className={`${style['app-body']} py-3 px-0`}>
           {isLoading && <Loader />}
           {!isLoading && (
-            <Fragment>
+            <>
               <Tabs activeIndex={tabIndex} onTabChange={changeView}>
                 <Tab>
                   <IconItem
@@ -211,7 +217,7 @@ export const HomePageComponent = ({ history, match }) => {
                 ></LedgerList>
               )}
               {tabView === CHART_VIEW && listWithCategory.length > 0 && (
-                <Fragment>
+                <>
                   <PieChartItem
                     title="本月支出"
                     type={TYPE_OUTCOME}
@@ -222,14 +228,14 @@ export const HomePageComponent = ({ history, match }) => {
                     type={TYPE_INCOME}
                     chartData={chartIncomeDataByCategory}
                   />
-                </Fragment>
+                </>
               )}
               {listWithCategory.length === 0 && (
                 <div className="no-record alert alert-light text-center">
                   您還沒有記帳紀錄
                 </div>
               )}
-            </Fragment>
+            </>
           )}
         </div>
       </div>

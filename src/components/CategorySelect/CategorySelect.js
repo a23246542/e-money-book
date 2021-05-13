@@ -12,9 +12,7 @@ const CategorySelectComponent = ({
     onSelectCategory(category);
     event.preventDefault();
   };
-
   const selectedCategoryId = selectedCategory && selectedCategory.id;
-
   return (
     <div className="category-select pt-4" data-testid="category-select">
       <div className="container">
@@ -66,17 +64,4 @@ CategorySelectComponent.propTypes = {
   onSelectCategory: PropTypes.func.isRequired,
 };
 
-const areEquals = (prevProps, nextProps) => {
-  if (prevProps.categories && nextProps.categories) {
-    return prevProps.categories !== nextProps.categories && false;
-  }
-
-  if (prevProps.selectedCategory && nextProps.selectCategory) {
-    return (
-      prevProps.selectedCategory.id !== nextProps.selectedCategory.id && false
-    );
-  }
-  return true;
-};
-
-export const CategorySelect = memo(CategorySelectComponent, areEquals);
+export const CategorySelect = memo(CategorySelectComponent);

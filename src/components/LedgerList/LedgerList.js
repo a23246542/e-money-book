@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { IconItem } from '@/components/common';
 import style from './style.module.scss';
 
-export const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
+const LedgerListComponent = ({ items, onModifyItem, onDeleteItem }) => {
   return (
     <ul className="list-group list-group-flush" data-testid="ledgerList">
       {items.map((item) => {
@@ -38,6 +39,7 @@ export const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
               }}
               data-test="editBtn"
               data-testid={`editBtn-${item.id}`}
+              title="editBtn"
             >
               <IconItem
                 icon="IosCreate"
@@ -74,8 +76,10 @@ export const LedgerList = ({ items, onModifyItem, onDeleteItem }) => {
   );
 };
 
-LedgerList.propTypes = {
+LedgerListComponent.propTypes = {
   items: PropTypes.array.isRequired,
   onModifyItem: PropTypes.func.isRequired,
   onDeleteItem: PropTypes.func.isRequired,
 };
+
+export const LedgerList = memo(LedgerListComponent);

@@ -35,7 +35,7 @@ export const Tabs = ({ children, activeIndex, onTabChange }) => {
 };
 
 export const Tab = ({ children }) => {
-  return <React.Fragment>{children}</React.Fragment>;
+  return <>{children}</>;
 };
 
 Tabs.propTypes = {

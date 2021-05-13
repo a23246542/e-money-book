@@ -1,5 +1,12 @@
-import React, { useState, useMemo, useEffect, useContext, useRef } from 'react';
-import { withRouter, useParams } from 'react-router-dom';
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Loader, IconItem } from '@/components/common';
 import { CategorySelect, LedgerForm, Tabs, Tab } from '@/components';
@@ -39,36 +46,40 @@ export const CreatePageComponent = ({ match, history }) => {
     },
   ]);
 
-  const tabChange = (index) => {
+  const tabChange = useCallback((index) => {
     setTab(createPageTabs.current[index].value);
-  };
+  }, []);
 
-  const selectCategory = (category) => {
+  const selectCategory = useCallback((category) => {
     setCategory(category);
-  };
+  }, []);
 
-  const cancelSubmit = () => {
+  const cancelSubmit = useCallback(() => {
     history.push('/');
-  };
+  }, [history]);
 
-  const submitForm = (formData, isEditMode) => {
-    // if(!selectedCategory.id) {//@@@ 會因為null.id報錯
-    if (!selectedCategory) {
-      setValidation(false);
-      return;
-    }
-    if (!isEditMode) {
-      //創建模式
-      actionsRef.current.createData(formData, selectedCategory.id).then(() => {
-        history.push('/');
-      });
-    } else {
-      //編輯模式
-      actionsRef.current.editData(formData, selectedCategory.id).then(() => {
-        history.push('/');
-      });
-    }
-  };
+  const submitForm = useCallback(
+    (formData, isEditMode) => {
+      if (!selectedCategory) {
+        setValidation(false);
+        return;
+      }
+      if (!isEditMode) {
+        //創建模式
+        actionsRef.current
+          .createData(formData, selectedCategory.id)
+          .then(() => {
+            history.push('/');
+          });
+      } else {
+        //編輯模式
+        actionsRef.current.editData(formData, selectedCategory.id).then(() => {
+          history.push('/');
+        });
+      }
+    },
+    [history, selectedCategory]
+  );
 
   const selectedTabIndex = useMemo(() => {
     return createPageTabs.current.findIndex(
@@ -85,7 +96,10 @@ export const CreatePageComponent = ({ match, history }) => {
   }, [selectedTab, categoryIdList.length]);
 
   const { id } = match.params;
-  const editItem = id && ledgerStore[id] ? ledgerStore[id] : {};
+  const editItem = useMemo(
+    () => (id && ledgerStore[id] ? ledgerStore[id] : {}),
+    [id, ledgerStore]
+  );
 
   return (
     <div className={styleContainer['app-wrapper']}>
@@ -125,5 +139,4 @@ CreatePageComponent.propTypes = {
   history: PropTypes.object,
 };
 
-// export default withRouter(CreatePage);
 export const CreatePage = withRouter(CreatePageComponent);

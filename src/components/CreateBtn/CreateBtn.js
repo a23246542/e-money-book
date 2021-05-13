@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import Ionicons from '../../plugin/ionicons';
 
-export const CreateBtn = ({ onCreateItem }) => {
+export const CreateBtnComponent = ({ onCreateItem }) => {
   const { IosAddCircle } = Ionicons;
   return (
     <div
@@ -16,6 +16,8 @@ export const CreateBtn = ({ onCreateItem }) => {
   );
 };
 
-CreateBtn.propTypes = {
+CreateBtnComponent.propTypes = {
   onCreateItem: PropTypes.func.isRequired,
 };
+
+export const CreateBtn = memo(CreateBtnComponent);
