@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
   const [fbResponse, setFbResponse] = useState();
@@ -38,7 +38,7 @@ const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
     })(document, 'script', 'facebook-jssdk');
   }, [appId, cookie, xfbml, version]);
 
-  const handleFBLogin = (e) => {
+  const handleFBLogin = useCallback((e) => {
     e.preventDefault();
     window.FB.login(function (response) {
       // console.log('handleFBLogin', response);
@@ -48,9 +48,9 @@ const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
       );
       setFbResponse(response);
     });
-  };
+  }, []);
 
-  const handleFBLogout = (e) => {
+  const handleFBLogout = useCallback((e) => {
     e.preventDefault();
     window.FB.logout(function (response) {
       // console.log('handleFBLogout',response);
@@ -60,7 +60,7 @@ const useFacebookLogin = ({ appId, cookie, xfbml, version }) => {
       );
       setFbResponse(response);
     });
-  };
+  }, []);
 
   return [fbResponse, handleFBLogin, handleFBLogout];
 };

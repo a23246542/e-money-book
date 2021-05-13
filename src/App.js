@@ -1,52 +1,18 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import '@/App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { HomePage, CreatePage, LoginPage } from '@/containers';
-import { AppProvider } from './contexts/AppContext';
-import AuthContext from './contexts/AuthContext';
-import useFacebookLogin from './hooks/useFacebookLogin';
+import { AppProvider } from '@/contexts/AppContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 function App() {
-  const [fbResponse, handleFBLogin, handleFBLogout] = useFacebookLogin({
-    appId: process.env.REACT_APP_FB_APP_ID,
-    cookie: true,
-    xfbml: true,
-    version: process.env.REACT_APP_FB_APP_VERSION,
-  });
-  const isAtLoginPage = useRouteMatch('/login');
-  // 等待回傳
-  if (!fbResponse) {
-    return <></>;
-  }
-  // 處理使用者輸入其他網址
-  if (fbResponse.status !== 'connected' && !isAtLoginPage) {
-    return <Redirect to="/login" />;
-  }
-
   return (
-    <AuthContext.Provider
-      value={{
-        status: fbResponse.status,
-        authResponse: fbResponse.authResponse,
-        handleFBLogin,
-        handleFBLogout,
-      }}
-    >
+    <AuthProvider>
       <AppProvider>
         <div className="App">
           <Switch>
             <Route path="/" exact>
-              {fbResponse.status === 'connected' ? (
-                <HomePage />
-              ) : (
-                <Redirect to="/login" />
-              )}
+              <HomePage />
             </Route>
             <Route path="/login">
               <LoginPage />
@@ -61,7 +27,7 @@ function App() {
           </Switch>
         </div>
       </AppProvider>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }
 
