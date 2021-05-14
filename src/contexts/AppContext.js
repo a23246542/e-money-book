@@ -40,9 +40,12 @@ export const AppProvider = ({ children }) => {
             getLedger(currentDate.year, currentDate.month),
           ];
           const [resCategory, resLedger] = await Promise.all(promiseArr);
+          const sortByDateLedger = resLedger.data.sort((a, b) => {
+            return Date.parse(a.date) - Date.parse(b.date);
+          });
           dispatchLedger({
             type: 'fetchItems',
-            payload: flattenArr(resLedger.data),
+            payload: flattenArr(sortByDateLedger),
           });
           setCategories(flattenArr(resCategory.data));
           setIsLoading(false);
@@ -53,9 +56,12 @@ export const AppProvider = ({ children }) => {
       selectNewMonth: withLoader(async (year, month) => {
         try {
           const resLedger = await getLedger(year, month);
+          const sortByDateLedger = resLedger.data.sort((a, b) => {
+            return Date.parse(a.date) - Date.parse(b.date);
+          });
           dispatchLedger({
             type: 'fetchItems',
-            payload: flattenArr(resLedger.data),
+            payload: flattenArr(sortByDateLedger),
           });
           setCurrentDate({
             year,
@@ -71,7 +77,6 @@ export const AppProvider = ({ children }) => {
           //創建頁重整可取得編輯資料
           let promiseArr = [];
           if (Object.keys(categories).length === 0) {
-            // promiseArr.push(api.get('/category'));
             promiseArr.push(getCategory());
           } else {
             promiseArr.push(new Promise((resolve) => resolve(null)));
