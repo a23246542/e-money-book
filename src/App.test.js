@@ -1,17 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import App from '@/App';
-import { LedgerForm } from '@/components';
 import { testCategories, testItems } from '@/helpers/testData';
 import api from '@/api/api';
-import {
-  Router,
-  MemoryRouter,
-  BrowserRouter,
-  // createHistory,
-  // createMemorySource,
-  // LocationProvider,
-} from 'react-router-dom';
+import { makeID, parseToYearsAndMonth, padLeft } from '@/helpers/utility';
+import { Router, MemoryRouter, BrowserRouter } from 'react-router-dom';
 import {
   render,
   fireEvent,
@@ -19,70 +12,15 @@ import {
   waitFor,
   screen,
 } from '@testing-library/react';
-import { toBeInTheDocument } from '@testing-library/jest-dom';
+import { setupServer } from 'msw/node';
+import { rest } from 'msw';
 import { createMemoryHistory } from 'history';
-import {
-  createHistory,
-  createMemorySource,
-  LocationProvider,
-} from '@reach/router';
 import { act } from 'react-dom/test-utils';
-jest.mock('./hooks/useFacebookLogin');
+import fakeData from '@/__mocks__/db.json';
 import useFacebookLogin from './hooks/useFacebookLogin';
-// import * as mockUseFacebookLogin from './hooks/useFacebookLogin';
-// import * as useCustomHook from './hooks/useFacebookLogin';
+jest.mock('./hooks/useFacebookLogin');
 
-// jest.mock('./api');
-
-test('mock', () => {
-  // 方法1 工厂 失败
-  // jest.mock('./hooks/useFacebookLogin', () => {
-  //   return {
-  //     __esModule: true,
-  //     default: jest.fn().mockReturnValue([
-  //       {
-  //         status: 'connected',
-  //       },
-  //       jest.fn(),
-  //       jest.fn(),
-  //     ]),
-  //   };
-  // });
-
-  // 方法2 可以
-  useFacebookLogin.mockReturnValue([
-    {
-      status: 'connected',
-    },
-    jest.fn(),
-    jest.fn(),
-  ]);
-
-  // 方法 3 单纯import进来重新指定 失败  "useFacebookLogin" is read-only.
-  // useFacebookLogin = jest.fn().mockReturnValue([
-  //   {
-  //     status: 'connected',
-  //   },
-  //   jest.fn(),
-  //   jest.fn(),
-  // ]);
-
-  // 方法 4
-  // const useFacebookLogin = jest.spyOn(mockUseFacebookLogin, 'default');
-  // useFacebookLogin.mockReturnValue([
-  //   {
-  //     status: 'connected',
-  //   },
-  //   jest.fn(),
-  //   jest.fn(),
-  // ]);
-
-  // 方法5 mocks资料夹 失败
-
-  console.log('呼叫useFacebookLogin hooks~~~', useFacebookLogin());
-});
-
-describe.only('test App component init behavior', () => {
+describe('test App component init behavior', () => {
   let wrapper;
   const waitForAsync = () => act(() => Promise.resolve());
 
@@ -114,17 +52,14 @@ describe.only('test App component init behavior', () => {
         });
       }
     });
-    // api.post = jest.fn().mockImplementation((url) => {
     jest.spyOn(api, 'post').mockImplementation((url) => {
       return Promise.resolve({ data: { ...testItems[0] } });
     });
-    // api.put = jest.fn().mockImplementation((url, updateObj) => {
     jest.spyOn(api, 'patch').mockImplementation((url, updateObj) => {
       //尋找testItems陣列原本id的item
       const modifiedItem = testItems.find((item) => item.id === updateObj.id);
       return Promise.resolve({ data: { ...modifiedItem, ...updateObj } }); //返回覆蓋過後的
     });
-    // api.delete = jest.fn().mockImplementation((url) => {
     jest.spyOn(api, 'delete').mockImplementation((url) => {
       // const id = url.match(/\w+/g)[1]
       // const filteredItem = testItems.find((item) => item.id === id)
@@ -287,11 +222,48 @@ describe.only('test App component init behavior', () => {
   });
 });
 
-describe('test App component with json-server api', () => {
+// describe('test App component with json-server api', () => {
+describe('test App component with msw', () => {
   const waitForAsync = () => new Promise((resolve) => setTimeout(resolve, 100));
+  const promise = Promise.resolve();
+  const apiUrl = process.env.REACT_APP_URL;
+  const currentDateObj = parseToYearsAndMonth();
+  const fakePostData = {
+    id: makeID(),
+    title: 'new title',
+    amount: 300,
+    date: `${currentDateObj.year}-${padLeft(currentDateObj.month)}-10`,
+    cid: 1,
+    timestamp: new Date().getTime(),
+    monthCategory: `${currentDateObj.year}-${currentDateObj.month}`,
+  };
+  const server = setupServer(
+    rest.get(`${apiUrl}/category`, (req, res, ctx) =>
+      res(ctx.json(fakeData?.category))
+    ),
+    rest.get(`${apiUrl}/ledger`, (req, res, ctx) => {
+      const { monthCategory = '' } = Object.fromEntries(req.url.searchParams);
+      const result = fakeData?.ledger?.filter((item) => {
+        return item.monthCategory.includes(monthCategory);
+      });
+      return res(ctx.json(result));
+    }),
+    rest.get(`${apiUrl}/ledger/:id`, (req, res, ctx) =>
+      res(ctx.json(fakeData?.ledger))
+    ),
+    rest.post(`${apiUrl}/ledger`, (req, res, ctx) =>
+      res(ctx.json(fakePostData))
+    ),
+    rest.patch(`${apiUrl}/ledger/:id`, (req, res, ctx) =>
+      res(ctx.json(fakeData?.ledger))
+    ),
+    rest.delete(`${apiUrl}/ledger/:id`, (req, res, ctx) =>
+      res(ctx.json(fakeData?.ledger))
+    )
+  );
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+  beforeAll(() => {
+    server.listen();
     useFacebookLogin.mockReturnValue([
       {
         status: 'connected',
@@ -300,8 +272,13 @@ describe('test App component with json-server api', () => {
       jest.fn(),
     ]);
   });
-  afterEach(cleanup); // 避免A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
-  afterAll(jest.restoreAllMocks);
+
+  afterEach(() => {
+    server.resetHandlers();
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => server.close());
 
   it('click the year&month item, should show the right ledgerItem', async () => {
     jest.spyOn(api, 'get');
@@ -312,12 +289,20 @@ describe('test App component with json-server api', () => {
       </Router>
     );
     await waitForAsync();
-    fireEvent.click(getByTestId('MonthPicker-button'));
-    fireEvent.click(getByTestId('MonthPicker-year-2021'));
-    fireEvent.click(getByTestId('MonthPicker-month-02'));
+    act(() => {
+      fireEvent.click(getByTestId('MonthPicker-button'));
+    });
+    act(() => {
+      fireEvent.click(getByTestId('MonthPicker-year-2021'));
+    });
+    act(() => {
+      fireEvent.click(getByTestId('MonthPicker-month-02'));
+    });
     await waitForAsync();
-    expect(screen.getAllByTitle('ledger-item').length).toBe(4);
-    expect(api.get).toHaveBeenCalledTimes(3);
+    await waitFor(() =>
+      expect(screen.getAllByTitle('ledger-item').length).toBe(4)
+    );
+    await waitFor(() => expect(api.get).toHaveBeenCalledTimes(3));
   });
 
   //觸發app create =>post被觸發一次，之後items增加一個
@@ -335,23 +320,33 @@ describe('test App component with json-server api', () => {
     await waitForAsync();
     fireEvent.click(screen.getByText(/旅行/));
     fireEvent.change(screen.getByTestId('inputTitle'), {
-      target: { value: 'new title' },
+      target: { value: fakePostData.title },
     });
     fireEvent.change(screen.getByTestId('inputAmount'), {
-      target: { value: 300 },
+      target: { value: fakePostData.amount },
     });
     fireEvent.change(screen.getByTestId('inputDate'), {
-      target: { value: '2021-02-02' },
+      target: { value: fakePostData.date },
     });
+    server.use(
+      rest.get(`${apiUrl}/ledger`, (req, res, ctx) => {
+        return res(ctx.json([fakePostData]));
+      })
+    );
     fireEvent.click(screen.getByTestId('submit'));
     await waitForAsync();
-    expect(api.post).toHaveBeenCalledTimes(1);
     expect(screen.getByText('new title')).toBeInTheDocument();
+    expect(api.post).toHaveBeenCalledTimes(1);
   });
 
   //加載後 更新item
-  // 觸發app create => put被觸發一次，新顯示的item是對的
+  // 觸發app create => patch被觸發一次，新顯示的item是對的
   it('test updateItem with initial data', async () => {
+    server.use(
+      rest.get(`${apiUrl}/ledger`, (req, res, ctx) => {
+        return res(ctx.json([fakePostData]));
+      })
+    );
     jest.spyOn(api, 'patch');
     const history = createMemoryHistory();
     history.push('/');
@@ -362,62 +357,37 @@ describe('test App component with json-server api', () => {
     );
     await waitForAsync();
     fireEvent.click(
-      getByTestId('ledger-item-_cg4a9gzya').querySelector('.btn-edit')
+      getByTestId(`ledger-item-${fakePostData.id}`).querySelector('.btn-edit')
     );
     await waitForAsync();
     fireEvent.change(screen.getByTestId('inputTitle'), {
       target: { value: '去彰化玩' },
     });
+    server.use(
+      rest.get(`${apiUrl}/ledger`, (req, res, ctx) => {
+        const updatedItem = { ...fakePostData, title: '去彰化玩' };
+        return res(ctx.json([updatedItem]));
+      })
+    );
     fireEvent.click(screen.getByTestId('submit'));
     await waitForAsync();
-    // debug(screen.getByTestId('ledgerList'));
-    expect(api.patch).toHaveBeenCalledTimes(1);
-    expect(screen.queryByText('去彰化玩')).toBeInTheDocument();
-  });
-
-  it('test updateItem with initial data by using enzyme', (done) => {
-    jest.spyOn(api, 'patch');
-    const history = createMemoryHistory();
-    const wrapper = mount(
-      <Router history={history}>
-        <App />
-      </Router>
-    );
-
-    // const singleItem = testItems.find((item) => item.id === '_cg4a9gzya');
-    const singleItem = {
-      title: '旅行',
-      amount: 10000,
-      date: '2021-02-05',
-      monthCategory: '2021-2',
-      timestamp: 1546646400000,
-      id: '_cg4a9gzya',
-      cid: '1',
-    };
-    const modifiedItem = { ...singleItem, title: '去宜蘭玩' };
-    setTimeout(() => {
-      wrapper.update();
-      wrapper.find('[data-testid="editBtn-_cg4a9gzya"]').simulate('click');
-      setTimeout(() => {
-        wrapper.update();
-        wrapper.find(LedgerForm).invoke('onFormSubmit')(modifiedItem, true);
-        setTimeout(() => {
-          wrapper.update();
-          const newItemTitle = wrapper
-            .find('[data-testid="ledger-item-_cg4a9gzya"]')
-            .children('.ledger-title')
-            .text();
-          expect(newItemTitle).toEqual('去宜蘭玩');
-          expect(api.patch).toHaveBeenCalledTimes(1);
-          done();
-        }, 100);
-      }, 100);
-    }, 100);
+    await waitFor(() => {
+      expect(api.patch).toHaveBeenCalledTimes(1);
+    });
+    await waitFor(() => {
+      expect(screen.queryByText('去彰化玩')).toBeInTheDocument();
+    });
+    await act(() => promise);
   });
 
   //加載後 刪除item
   //觸發app的delete => api delete會呼叫一次，顯示的長度會比test資料少一個
   it('test deleteItem with initial data', async () => {
+    server.use(
+      rest.get(`${apiUrl}/ledger`, (req, res, ctx) => {
+        return res(ctx.json([fakePostData]));
+      })
+    );
     jest.spyOn(api, 'delete');
     const history = createMemoryHistory();
     history.push('/');
@@ -428,12 +398,20 @@ describe('test App component with json-server api', () => {
     );
     await waitForAsync(); // 等待首頁加載
     fireEvent.click(
-      screen.getByTestId('ledger-item-__1fg1wme63').querySelector('.btn-delete')
+      screen
+        .getByTestId(`ledger-item-${fakePostData.id}`)
+        .querySelector('.btn-delete')
+    );
+    server.use(
+      rest.get(`${apiUrl}/ledger`, (req, res, ctx) => {
+        const noData = {};
+        return res(ctx.json([noData]));
+      })
     );
     await waitForAsync(); // api更新
     await waitFor(() => {
       expect(api.delete).toHaveBeenCalledTimes(1);
-      expect(screen.queryByTestId('ledger-item-__1fg1wme63')).toBeNull();
+      expect(screen.queryByTestId(`ledger-item-${fakePostData.id}`)).toBeNull();
     });
   });
 });

@@ -91,7 +91,7 @@ const LedgerFormComponent = ({
   };
 
   return (
-    <div className="container">
+    <div className="container" data-testid="LedgerForm">
       <form className="pt-5 px-2">
         <div className="form-group">
           <div className="row">

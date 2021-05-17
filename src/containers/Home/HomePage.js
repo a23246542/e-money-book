@@ -158,7 +158,7 @@ export const HomePageComponent = ({ history, match }) => {
   );
 
   return (
-    <div className={styleContainer['app-wrapper']}>
+    <div className={styleContainer['app-wrapper']} data-testid="HomePage">
       <div className={styleContainer['app-container']}>
         <header className={style['app-header']}>
           <button

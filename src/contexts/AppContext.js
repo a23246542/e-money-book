@@ -127,7 +127,6 @@ export const AppProvider = ({ children }) => {
           const newId = makeID();
           const dateObj = parseToYearsAndMonth(formData.date);
           const timestamp = new Date().getTime();
-
           const { data: newItem } = await createLedgerItem({
             ...formData,
             id: newId,
@@ -140,7 +139,7 @@ export const AppProvider = ({ children }) => {
             type: 'addItem',
             payload: {
               newItem,
-              newId,
+              newId: newItem.id,
             },
           });
           return newItem;

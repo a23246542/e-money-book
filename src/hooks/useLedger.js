@@ -29,25 +29,25 @@ const ledgerReducer = (state, action) => {
       delete cloneObj[id];
       return cloneObj;
     }
-    case 'createItem': {
-      const { selectedCategoryId, formData } = payload;
-      dateObj = parseToYearsAndMonth(formData.date);
-      timestamp = new Date().getTime();
-      const newId = makeID();
+    // case 'createItem': {
+    //   const { selectedCategoryId, formData } = payload;
+    //   dateObj = parseToYearsAndMonth(formData.date);
+    //   timestamp = new Date().getTime();
+    //   const newId = makeID();
 
-      const newItem = {
-        ...formData,
-        id: newId,
-        cid: selectedCategoryId,
-        monthCategory: `${dateObj.year}-${dateObj.month}`,
-        timestamp,
-      };
-      // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
-      return {
-        ...state,
-        [newId]: newItem,
-      };
-    }
+    //   const newItem = {
+    //     ...formData,
+    //     id: newId,
+    //     cid: selectedCategoryId,
+    //     monthCategory: `${dateObj.year}-${dateObj.month}`,
+    //     timestamp,
+    //   };
+    //   // return {...state, newId: newItem};//%%%属性沒辦法直接存取變數會變字串
+    //   return {
+    //     ...state,
+    //     [newId]: newItem,
+    //   };
+    // }
     case 'addItem': {
       const { newItem, newId } = payload;
       return {
