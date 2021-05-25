@@ -19,7 +19,28 @@
   width: 320px;
   padding: 30px;
   border-radius: 30px;
-  background-color: rgba(4, 190, 254, 0.7);
+  background-color: rgba(4, 190, 254, 0.3);
+}
+
+.logo-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 180px;
+  margin: 0 auto;
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 20px;
+    margin: -7px auto 0;
+    top: 50%;
+    left: -7px;
+    right: 0;
+    background: url('../../assets/images/chain.svg') no-repeat;
+    background-size: contain;
+  }
 }
 
 .fb-button {

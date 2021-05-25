@@ -17,8 +17,8 @@ import { rest } from 'msw';
 import { createMemoryHistory } from 'history';
 import { act } from 'react-dom/test-utils';
 import fakeData from '@/__mocks__/db.json';
-import useFacebookLogin from './hooks/useFacebookLogin';
-jest.mock('./hooks/useFacebookLogin');
+import useFacebookLogin from '@/hooks/useFacebookLogin';
+jest.mock('@/hooks/useFacebookLogin');
 
 describe('test App component init behavior', () => {
   let wrapper;

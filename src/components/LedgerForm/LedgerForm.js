@@ -1,5 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
+import style from './style.module.scss';
 
 const LedgerFormComponent = ({
   ledgerItem = {},
@@ -126,7 +127,7 @@ const LedgerFormComponent = ({
               </label>
             </div>
             <div className="col-10">
-              <div className="input-group">
+              <div className={`${style.inputAmount} input-group`}>
                 <div className="input-group-prepend">
                   <span className="input-group-text">$</span>
                 </div>

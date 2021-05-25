@@ -162,7 +162,7 @@ export const HomePageComponent = ({ history, match }) => {
       <div className={styleContainer['app-container']}>
         <header className={style['app-header']}>
           <button
-            onClick={(e) => handleFBLogout(e)}
+            onClick={handleFBLogout}
             className={`${style['app-logout']} btn btn-info`}
           >
             登出
