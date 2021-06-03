@@ -232,7 +232,9 @@ describe('test App component with msw', () => {
     id: makeID(),
     title: 'new title',
     amount: 300,
-    date: `${currentDateObj.year}-${padLeft(currentDateObj.month)}-10`,
+    date: `${currentDateObj.year}-${padLeft(currentDateObj.month)}-${padLeft(
+      new Date().getDate()
+    )}`,
     cid: 1,
     timestamp: new Date().getTime(),
     monthCategory: `${currentDateObj.year}-${currentDateObj.month}`,
@@ -249,7 +251,7 @@ describe('test App component with msw', () => {
       return res(ctx.json(result));
     }),
     rest.get(`${apiUrl}/ledger/:id`, (req, res, ctx) =>
-      res(ctx.json(fakeData?.ledger))
+      res(ctx.json(fakePostData))
     ),
     rest.post(`${apiUrl}/ledger`, (req, res, ctx) =>
       res(ctx.json(fakePostData))

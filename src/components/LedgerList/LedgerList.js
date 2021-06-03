@@ -9,14 +9,14 @@ const LedgerListComponent = ({ items, onModifyItem, onDeleteItem }) => {
       {items.map((item) => {
         return (
           <li
-            className="ledger-item list-group-item d-flex align-items-center px-0 no-gutters border-top border-bottom"
+            className="ledger-item list-group-item d-flex align-items-center pr-0 pl-2 no-gutters border-top border-bottom"
             key={item.id}
             data-testid={`ledger-item-${item.id}`}
             title="ledger-item"
           >
             <div className="col-1 text-center">
               <span
-                className={`${style['category-icon']} badge badge-primary rounded-circle ml-1`}
+                className={`${style['category-icon']} badge badge-primary rounded-circle`}
               >
                 <IconItem
                   icon={item.category.iconName}

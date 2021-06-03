@@ -1,11 +1,4 @@
-import {
-  useState,
-  useMemo,
-  useEffect,
-  useContext,
-  useCallback,
-  useRef,
-} from 'react';
+import { useState, useMemo, useEffect, useContext, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Loader, IconItem } from '@/components/common';
@@ -37,20 +30,19 @@ export const HomePageComponent = ({ history, match }) => {
     isLoading,
     actions,
   } = useContext(AppContext);
-  const actionsRef = useRef(actions);
   const { handleFBLogout } = useContext(AuthContext);
   const [tabView, setTabView] = useState(LIST_VIEW);
   const tabsTexts = useMemo(() => [LIST_VIEW, CHART_VIEW], []);
 
   useEffect(() => {
-    actionsRef.current.getInitData();
-  }, [actionsRef]);
+    actions.getInitData();
+  }, []); //eslint-disable-line
 
   const choiceDate = useCallback(
     (yearNum, monthNum) => {
-      actionsRef.current.selectNewMonth(yearNum, monthNum);
+      actions.selectNewMonth(yearNum, monthNum);
     },
-    [actionsRef]
+    [actions]
   );
 
   const changeView = useCallback(
@@ -73,9 +65,9 @@ export const HomePageComponent = ({ history, match }) => {
 
   const deleteItem = useCallback(
     (clickedItem) => {
-      actionsRef.current.deleteData(clickedItem);
+      actions.deleteData(clickedItem);
     },
-    [actionsRef]
+    [actions]
   );
 
   const listWithCategory = useMemo(() => {

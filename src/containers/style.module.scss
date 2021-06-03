@@ -3,13 +3,23 @@
   min-height: 100vh;
   // background-color: #a2dbee;
   background-color: #d1ecf4;
-  // overflow: hidden;
   @media (min-width: 767px) {
     overflow: hidden;
+  }
+
+  &.create-page {
+    .app-container {
+      min-height: 840px;
+      overflow: hidden;
+      @media (min-width: 768px) {
+        min-height: 100vh;
+      }
+    }
   }
 }
 
 .app-container {
+  position: relative;
   min-width: 375px;
   max-width: 520px;
   margin: 0 auto;

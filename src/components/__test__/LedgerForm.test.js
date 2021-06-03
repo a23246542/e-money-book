@@ -54,7 +54,7 @@ describe('test LedgerForm component', () => {
     // 要是空的
     it('render LedgerForm with no data should see three input and no value', () => {
       expect(getInputValue('#inputTitle', wrapper)).toEqual('');
-      expect(getInputValue('#inputAmount', wrapper)).toEqual('0'); //
+      expect(getInputValue('#inputAmount', wrapper)).toEqual(''); //
       expect(getInputValue('#inputDate', wrapper)).toEqual('');
     });
     it('should not be seen alert element', () => {
@@ -168,7 +168,6 @@ describe('test LedgerForm component', () => {
       });
       wrapper.update();
       wrapper.find('#cancel').simulate('click');
-      // console.log(props.onFormSubmit.mock);
 
       expect(props.onFormSubmit).not.toHaveBeenCalled(); // 需clearAllMocks
       expect(props.onCancelSubmit).toHaveBeenCalled();

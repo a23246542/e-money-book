@@ -9,7 +9,7 @@ const LedgerFormComponent = ({
   children,
 }) => {
   const [title, setTitle] = useState('');
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
   const [formValidate, setFormValidate] = useState({
     validatePass: true,
@@ -21,22 +21,22 @@ const LedgerFormComponent = ({
       return;
     }
     setTitle(ledgerItem.title);
-    setAmount(ledgerItem.amount);
+    setAmount(ledgerItem.amount.toString());
     setDate(ledgerItem.date);
   }, [ledgerItem.id, ledgerItem.title, ledgerItem.amount, ledgerItem.date]);
 
   const isValidDate = (inputDate) => {
-    const nowTimeStamp = new Date();
-    const selectTimeStamp = Date.parse(inputDate);
+    const nowTimeStamp = new Date().getTime();
+    const selectTimeStamp = new Date(inputDate).setHours(0, 0, 0, 0);
     return selectTimeStamp <= nowTimeStamp;
   };
 
   const submitForm = (e) => {
     e.preventDefault();
-
     const isEditMode = !!ledgerItem.id;
+    const amountNumber = Number(amount);
     if (title && amount && date) {
-      if (amount < 0) {
+      if (amountNumber < 0) {
         setFormValidate({
           validatePass: false,
           alertMessage: '數字不能為負',
@@ -56,7 +56,7 @@ const LedgerFormComponent = ({
             {
               ...ledgerItem,
               title,
-              amount,
+              amount: amountNumber,
               date,
             },
             isEditMode
@@ -68,7 +68,7 @@ const LedgerFormComponent = ({
           onFormSubmit(
             {
               title,
-              amount,
+              amount: amountNumber,
               date,
             },
             isEditMode
@@ -113,9 +113,6 @@ const LedgerFormComponent = ({
                   setTitle(e.target.value.trim());
                 }}
               />
-              {/* <small id="emailHelp" className="form-text text-muted">
-                W&apos;ell never share your email with anyone else.
-              </small> */}
             </div>
           </div>
         </div>
@@ -136,9 +133,9 @@ const LedgerFormComponent = ({
                   className="form-control"
                   id="inputAmount"
                   data-testid="inputAmount"
-                  value={amount || 0}
+                  value={amount || ''}
                   onChange={(e) => {
-                    setAmount(e.target.value.trim() * 1);
+                    setAmount(e.target.value.trim().toString());
                   }} //@@
                 />
               </div>
@@ -178,9 +175,7 @@ const LedgerFormComponent = ({
           id="submit"
           data-testid="submit"
           className="btn btn-primary mx-3"
-          onClick={(e) => {
-            submitForm(e);
-          }}
+          onClick={submitForm}
         >
           提交
         </button>

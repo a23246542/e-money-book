@@ -134,7 +134,7 @@ export const AppProvider = ({ children }) => {
             monthCategory: `${dateObj.year}-${dateObj.month}`,
             timestamp,
           });
-
+          setCurrentDate(dateObj);
           dispatchLedger({
             type: 'addItem',
             payload: {
@@ -142,6 +142,7 @@ export const AppProvider = ({ children }) => {
               newId: newItem.id,
             },
           });
+          setIsLoading(false);
           return newItem;
         } catch (error) {
           console.log('[createData] postURLWithData failed', error);
@@ -150,19 +151,17 @@ export const AppProvider = ({ children }) => {
       editData: withLoader(async (formData, newCategoryId) => {
         try {
           const dateObj = parseToYearsAndMonth(formData.date);
-          const timestamp = new Date(formData.date).getTime(); //@年月日轉排序
 
           const updatedItem = {
             ...formData,
             cid: newCategoryId,
-            // timestamp,//%%會不小心把排序提升 創建有就好
             monthCategory: `${dateObj.year}-${dateObj.month}`,
           };
           const { data: modifiedItem } = await updateLedgerItem(
             formData.id,
             updatedItem
           );
-
+          setCurrentDate(dateObj);
           dispatchLedger({
             type: 'updateItem',
             payload: {
@@ -189,13 +188,7 @@ export const AppProvider = ({ children }) => {
         }
       }),
     }),
-    [
-      categories,
-      currentDate.month,
-      currentDate.year,
-      dispatchLedger,
-      ledgerStore,
-    ]
+    [categories, currentDate, dispatchLedger, ledgerStore]
   );
 
   const appContextValue = useMemo(

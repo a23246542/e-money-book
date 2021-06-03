@@ -13,6 +13,7 @@ import { CategorySelect, LedgerForm, Tabs, Tab } from '@/components';
 import { TYPE_OUTCOME, TYPE_INCOME } from '@/helpers/constants';
 import AppContext from '@/contexts/AppContext';
 import styleContainer from '../style.module.scss';
+import style from './style.module.scss';
 
 export const CreatePageComponent = ({ match, history }) => {
   const { categories, ledgerStore, isLoading, actions } = useContext(
@@ -22,16 +23,15 @@ export const CreatePageComponent = ({ match, history }) => {
   const [selectedTab, setTab] = useState(TYPE_OUTCOME);
   const [selectedCategory, setCategory] = useState(null);
   const [validationPassed, setValidation] = useState(true);
-  const actionsRef = useRef(actions);
 
   useEffect(() => {
     const { id } = match.params;
-    actionsRef.current.getEditData(id).then((data) => {
+    actions.getEditData(id).then((data) => {
       const { editItem, categories } = data;
       setTab(id && editItem ? categories[editItem.cid].type : TYPE_OUTCOME);
       setCategory(id && editItem ? categories[editItem.cid] : null);
     });
-  }, [actionsRef, match.params]);
+  }, [match.params]); //eslint-disable-line
 
   const createPageTabs = useRef([
     {
@@ -66,19 +66,17 @@ export const CreatePageComponent = ({ match, history }) => {
       }
       if (!isEditMode) {
         //創建模式
-        actionsRef.current
-          .createData(formData, selectedCategory.id)
-          .then(() => {
-            history.push('/');
-          });
+        actions.createData(formData, selectedCategory.id).then(() => {
+          history.push('/');
+        });
       } else {
         //編輯模式
-        actionsRef.current.editData(formData, selectedCategory.id).then(() => {
+        actions.editData(formData, selectedCategory.id).then(() => {
           history.push('/');
         });
       }
     },
-    [history, selectedCategory]
+    [history, selectedCategory, actions]
   );
 
   const selectedTabIndex = useMemo(() => {
@@ -96,15 +94,20 @@ export const CreatePageComponent = ({ match, history }) => {
   }, [selectedTab, categoryIdList.length]);
 
   const { id } = match.params;
-  const editItem = useMemo(
-    () => (id && ledgerStore[id] ? ledgerStore[id] : {}),
-    [id, ledgerStore]
-  );
+  const editItem = useMemo(() => {
+    return id && ledgerStore[id] ? ledgerStore[id] : {};
+  }, [id, ledgerStore]);
 
   return (
-    <div className={styleContainer['app-wrapper']}>
-      <div className={`${styleContainer['app-container']} create-page p-3`}>
-        {isLoading && <Loader />}
+    <div className={`${styleContainer['app-wrapper']} ${style['create-page']}`}>
+      <div
+        className={`${styleContainer['app-container']} ${style['app-container']} p-3`}
+      >
+        {isLoading && (
+          <div className={style['loader-bg']}>
+            <Loader />
+          </div>
+        )}
         <Tabs activeIndex={selectedTabIndex} onTabChange={tabChange}>
           {createPageTabs.current.map((item, index) => {
             return (
