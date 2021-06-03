@@ -7,6 +7,5 @@ script:
 env:
   - PORT=3000
 node_js:
-  - '10'
   - '12'
   - '14'
