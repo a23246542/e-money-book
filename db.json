@@ -163,7 +163,7 @@
     },
     {
       "title": "出去玩",
-      "amount": 10000,
+      "amount": 3600,
       "date": "2021-02-02",
       "monthCategory": "2021-2",
       "timestamp": 1546646400008,
@@ -200,11 +200,92 @@
     {
       "title": "旅遊票券",
       "amount": 300,
-      "date": "2021-05-10",
+      "date": "2021-03-10",
       "id": "_4vgtr0pm9",
       "cid": "1",
-      "monthCategory": "2021-5",
+      "monthCategory": "2021-3",
       "timestamp": 1621005719345
+    },
+    {
+      "title": "costco採購",
+      "amount": 2600,
+      "date": "2021-06-06",
+      "id": "_887e41683",
+      "cid": "3",
+      "monthCategory": "2021-6",
+      "timestamp": 1624295193711
+    },
+    {
+      "title": "悠遊卡",
+      "amount": 500,
+      "date": "2021-06-17",
+      "id": "_2my7bbm5f",
+      "cid": "5",
+      "monthCategory": "2021-6",
+      "timestamp": 1624295264365
+    },
+    {
+      "title": "發票兌獎",
+      "amount": 1000,
+      "date": "2021-06-12",
+      "id": "_cj5r02axc",
+      "cid": "16",
+      "monthCategory": "2021-6",
+      "timestamp": 1624295338569
+    },
+    {
+      "title": "買飼料",
+      "amount": 600,
+      "date": "2021-05-06",
+      "id": "_fnuywf03m",
+      "cid": "9",
+      "monthCategory": "2021-5",
+      "timestamp": 1624295423116
+    },
+    {
+      "title": "季獎金",
+      "amount": 2200,
+      "date": "2021-06-21",
+      "id": "_i4i62inzf",
+      "cid": "10",
+      "monthCategory": "2021-6",
+      "timestamp": 1624295503204
+    },
+    {
+      "title": "股票",
+      "amount": 6000,
+      "date": "2021-05-21",
+      "id": "_lq8yjyqmr",
+      "cid": "12",
+      "monthCategory": "2021-5",
+      "timestamp": 1624296305582
+    },
+    {
+      "title": "健身房",
+      "amount": 800,
+      "date": "2021-04-24",
+      "id": "_2p3cwnamy",
+      "cid": "14",
+      "monthCategory": "2021-4",
+      "timestamp": 1624296348981
+    },
+    {
+      "title": "手機殼",
+      "amount": 770,
+      "date": "2021-04-05",
+      "id": "_rnsit1d62",
+      "cid": "4",
+      "monthCategory": "2021-4",
+      "timestamp": 1624296375059
+    },
+    {
+      "title": "母親節餐廳",
+      "amount": 3200,
+      "date": "2021-05-12",
+      "id": "_mr558r6ig",
+      "cid": "2",
+      "monthCategory": "2021-5",
+      "timestamp": 1624296504191
     }
   ]
 }
