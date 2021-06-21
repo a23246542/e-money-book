@@ -52,14 +52,14 @@ export const PieChartItem = ({ title, type, chartData }) => {
 
   return (
     <div className="pie-chart-component" data-testid="pieChart">
-      <h3 className="text-center mt-5">{title}</h3>
+      <h3 className="text-center mt-5 h4">{title}</h3>
       <ResponsiveContainer width={'100%'} height={300}>
-        <PieChart>
+        <PieChart width={200} height={200}>
           <Pie
             data={chartData}
-            cx={'50%'}
-            cy={'40%'}
-            outerRadius={100}
+            cx={'50%'} // x軸位置
+            cy={'40%'} // y軸位置
+            outerRadius={80} // 外半徑
             fill="#8884d8"
             labelline={true}
             label={renderCustomizedLabel}

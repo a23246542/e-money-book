@@ -7,6 +7,7 @@ const LedgerListComponent = ({ items, onModifyItem, onDeleteItem }) => {
   return (
     <ul className="list-group list-group-flush" data-testid="ledgerList">
       {items.map((item) => {
+        const excludedYearDate = item.date.split('-').slice(1).join('-');
         return (
           <li
             className="ledger-item list-group-item d-flex align-items-center pr-0 pl-2 no-gutters border-top border-bottom"
@@ -30,7 +31,7 @@ const LedgerListComponent = ({ items, onModifyItem, onDeleteItem }) => {
               {item.category.type === 'income' ? '+' : '-'}
               {item.amount}
             </div>
-            <span className="col-2">{item.date.replace('2021-', '')}</span>
+            <span className="col-2">{excludedYearDate}</span>
             <button
               className="col-1 btn btn-edit d-flex justify-content-center align-items-center"
               onClick={(e) => {
