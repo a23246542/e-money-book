@@ -33,7 +33,7 @@
     "start": "node server.js",
     "dev": "concurrently \"cross-env PORT=3006 HTTPS=true craco start\" \"npm run mock\"",
     "server": "craco start",
-    "build": "craco --openssl-legacy-provider build",
+    "build": "craco build --openssl-legacy-provider",
     "test": "craco test",
     "eject": "react-scripts eject",
     "format": "prettier src/**/*.{js,jsx,scss,css,md} --write && eslint src/**/*.{js,jsx} --fix",
