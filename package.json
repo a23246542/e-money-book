@@ -10,7 +10,7 @@
   "private": true,
   "homepage": "./",
   "engines": {
-    "node": ">=12.0.0"
+    "node": "12.x"
   },
   "dependencies": {
     "@craco/craco": "^6.1.1",
@@ -33,7 +33,7 @@
     "start": "node server.js",
     "dev": "concurrently \"cross-env PORT=3006 HTTPS=true craco start\" \"npm run mock\"",
     "server": "craco start",
-    "build": "craco build",
+    "build": "craco --openssl-legacy-provider build",
     "test": "craco test",
     "eject": "react-scripts eject",
     "format": "prettier src/**/*.{js,jsx,scss,css,md} --write && eslint src/**/*.{js,jsx} --fix",
